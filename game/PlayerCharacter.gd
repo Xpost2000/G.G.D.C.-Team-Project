@@ -29,7 +29,7 @@ func movement_direction_vector():
 const SPRINTING_SPEED = 512;
 const WALKING_SPEED = SPRINTING_SPEED/2;
 	
-func _physics_process(delta):
+func _physics_process(_delta):
 	var movement_direction = movement_direction_vector();
 	var velocity = movement_direction * WALKING_SPEED;
 	

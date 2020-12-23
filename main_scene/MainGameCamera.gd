@@ -21,7 +21,7 @@ func _on_LevelTiles_notify_camera_of_level_bounds(level_bounds, tile_size):
 		level_bounds.size * tile_size
 	);
 
-func _process(delta):
+func _process(_delta):
 	if bounding_by_level:
 		set_new_bounds_from_rectangle(current_level_bounds);
 	else:

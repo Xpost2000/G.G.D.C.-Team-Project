@@ -13,16 +13,15 @@ func load_new_level_scene(name):
 		level_information.remove_child(child);
 	level_information.add_child(loaded_scene);
 	return loaded_scene;
-
+	
+const LevelTransitionClass = preload("res://game/LevelTransition.gd");
 func setup_new_level_scene(player, level_transition, loaded_scene):
 	var landmark_node = loaded_scene.find_node("Entities").find_node(level_transition.landmark_node);
 	
 	if landmark_node:
-		player.just_transitioned_from_other_level = true;
+		if landmark_node is LevelTransitionClass:
+			player.just_transitioned_from_other_level = true;
 		player_node.position = landmark_node.position;
-		print(landmark_node.name)
-		print(landmark_node.position);
-		print(landmark_node.get_position());
 
 var player_load_context_info;
 var level_transition_load_context_info;

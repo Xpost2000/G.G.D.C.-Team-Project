@@ -45,12 +45,7 @@ const WALKING_SPEED = SPRINTING_SPEED/2;
 func can_sprint():
 	return (sprinting_stamina > 0.0) && (stamina_regeneration_cooldown_timer <= 0.0);
 
-func _physics_process(delta):
-	var movement_direction = movement_direction_vector();
-	var sprinting = Input.is_action_pressed("game_sprinting_action");
-	var velocity = movement_direction * (SPRINTING_SPEED 
-	if sprinting && can_sprint() else WALKING_SPEED);
-	
+func handle_sprinting(sprinting, delta):
 	if sprinting && can_sprint():
 		sprinting_stamina -= delta * 55.0;
 		if sprinting_stamina <= 0:
@@ -62,6 +57,14 @@ func _physics_process(delta):
 		stamina_regeneration_cooldown_timer -= delta;
 	
 	sprinting_stamina = clamp(sprinting_stamina, 0, SPRINTING_STAMINA_MAX);
+
+func _physics_process(delta):
+	var movement_direction = movement_direction_vector();
+	var sprinting = Input.is_action_pressed("game_sprinting_action");
+	var velocity = movement_direction * (SPRINTING_SPEED 
+	if sprinting && can_sprint() else WALKING_SPEED);
+	
+	handle_sprinting(sprinting, delta);
 	velocity = move_and_slide(velocity, Vector2.UP);
 	
 	emit_signal("report_sprinting_information", 

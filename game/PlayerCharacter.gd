@@ -52,7 +52,7 @@ func _physics_process(delta):
 			stamina_regeneration_cooldown_timer = STAMINA_REGENERATION_COOLDOWN_TIME;
 	else:
 		sprinting_stamina += delta * 25;
-
+ 
 	if stamina_regeneration_cooldown_timer > 0:
 		stamina_regeneration_cooldown_timer -= delta;
 	

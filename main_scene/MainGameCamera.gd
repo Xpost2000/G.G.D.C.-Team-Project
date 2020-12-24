@@ -15,7 +15,7 @@ func set_new_bounds_from_rectangle(rectangle):
 		limit_right = 10000000;
 		limit_bottom = 1000000;
 
-func _on_LevelTiles_notify_camera_of_level_bounds(level_bounds, tile_size):
+func notify_camera_of_level_bounds(level_bounds, tile_size):
 	current_level_bounds = Rect2(
 		level_bounds.position * tile_size,
 		level_bounds.size * tile_size

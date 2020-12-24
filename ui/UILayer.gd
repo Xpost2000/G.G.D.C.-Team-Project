@@ -4,6 +4,13 @@ signal notify_finished_level_load_related_fading();
 onready var stamina_bar = $SprintingStaminaBar;
 onready var stamina_bar_max_dimensions = $SprintingStaminaBar.rect_size;
 onready var ui_dimmer = $DimmerRect;
+onready var inventory_ui = $InventoryUI;
+
+var test_names = ["Dingle Berry", "Potato", "Fermented Yeast", "Salami"];
+func _ready():
+	inventory_ui.get_node("Inventory/InventoryItemList").fixed_icon_size = Vector2(32,32);
+	for i in range(0, 30):
+		inventory_ui.get_node("Inventory/InventoryItemList").add_item(test_names[i % 4], load("res://images/inventory-icons/dumpy_sword.png"));
 
 func _on_PlayerCharacter_report_sprinting_information(stamina_percent, can_sprint, _trying_to_sprint):
 	if can_sprint:
@@ -41,4 +48,3 @@ func _process(delta):
 				fade_hold_timer += delta;
 			else:
 				fade_hold_timer = 0;
-	pass;

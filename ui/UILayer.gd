@@ -7,10 +7,14 @@ onready var ui_dimmer = $DimmerRect;
 onready var inventory_ui = $InventoryUI;
 
 var test_names = ["Dingle Berry", "Potato", "Fermented Yeast", "Salami"];
+var test_inventory = ["test_item", "test_item"];
 func _ready():
 	inventory_ui.get_node("Inventory/InventoryItemList").fixed_icon_size = Vector2(32,32);
-	for i in range(0, 30):
-		inventory_ui.get_node("Inventory/InventoryItemList").add_item(test_names[i % 4], load("res://images/inventory-icons/dumpy_sword.png"));
+	inventory_ui.update_based_on_entity(test_inventory);
+#   for inventory_item_name in test_inventory:
+#       var item_info = ItemDatabase.get_item(inventory_item_name);
+#   	inventory_ui.get_node("Inventory/InventoryItemList").add_item(item_info.name,
+#                                                                     item_info.inventory_icon_path);
 
 func _on_PlayerCharacter_report_sprinting_information(stamina_percent, can_sprint, _trying_to_sprint):
 	if can_sprint:

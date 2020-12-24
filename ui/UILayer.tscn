@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=2]
+[gd_scene load_steps=17 format=2]
 
 [ext_resource path="res://fonts/Alkhemikal.ttf" type="DynamicFontData" id=1]
 [ext_resource path="res://images/party-icons/main_character_icon.png" type="Texture" id=2]
@@ -8,6 +8,7 @@
 [ext_resource path="res://images/light_blob.png" type="Texture" id=6]
 [ext_resource path="res://ui/Inventory.gd" type="Script" id=7]
 [ext_resource path="res://ui/ItemPreview.gd" type="Script" id=8]
+[ext_resource path="res://ui/InventoryUI.gd" type="Script" id=9]
 
 [sub_resource type="DynamicFont" id=1]
 size = 30
@@ -144,6 +145,7 @@ margin_left = 63.0
 margin_top = 29.0
 margin_right = 103.0
 margin_bottom = 69.0
+script = ExtResource( 9 )
 __meta__ = {
 "_edit_use_anchors_": false
 }

@@ -21,3 +21,8 @@ func set_information(name, description, preview_texture):
 	set_preview_name(name);
 	set_preview_sprite(preview_texture);
 	set_preview_description(description);
+
+func set_information_based_on_item(item_name):
+	set_information(ItemDatabase.get_item(item_name).name,
+					ItemDatabase.get_item(item_name).description,
+					ItemDatabase.get_item(item_name).inventory_preview_image);

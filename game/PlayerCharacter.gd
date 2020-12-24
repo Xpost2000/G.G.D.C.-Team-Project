@@ -1,5 +1,9 @@
 extends KinematicBody2D
 
+# our main issue, is that these guys don't represent one.
+# This is a PARTY, not a singular entity. That's the main thing we
+# have to figure out.
+
 signal transitioning_to_another_level(player, level_transition);
 signal report_sprinting_information(stamina_percent, can_sprint, trying_to_sprint);
 

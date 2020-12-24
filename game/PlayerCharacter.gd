@@ -1,5 +1,6 @@
 extends KinematicBody2D
 
+signal transitioning_to_another_level(player, level_transition);
 signal report_sprinting_information(stamina_percent, can_sprint, trying_to_sprint);
 
 const SPRINTING_STAMINA_MAX = 75;
@@ -63,3 +64,16 @@ func _physics_process(delta):
 				float(sprinting_stamina)/float(SPRINTING_STAMINA_MAX),
 				can_sprint(), 
 				sprinting);
+
+const LevelTransitionClass = preload("res://game/LevelTransition.gd");
+
+# This is a stupid variable to prevent a potentially stupid bug.
+# This would be solved by a state machine, but it's too early to marry ourselves
+# to that, and it would take more time than doing this.
+var just_transitioned_from_other_level = false;
+func _on_InteractableArea_area_entered(area):
+	if area is LevelTransitionClass:
+		if just_transitioned_from_other_level:
+			just_transitioned_from_other_level = false;
+		else:
+			emit_signal("transitioning_to_another_level", self, area);

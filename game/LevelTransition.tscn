@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://game/LevelTransition.gd" type="Script" id=1]
+
+[node name="LevelTransition" type="Area2D"]
+position = Vector2( 2.49976, -4.6373 )
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_group_": true
+}

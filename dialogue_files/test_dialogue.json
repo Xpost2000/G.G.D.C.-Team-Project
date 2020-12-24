@@ -1,0 +1,10 @@
+{
+    "start": {
+        "speaker" : "PlayerCharacter",
+        "text": "What the hell is this perverted crap?",
+        "next": "part2"
+    },
+    "part2": {
+        "speaker_name": "Welcome to the tutorial level!"
+    }
+}

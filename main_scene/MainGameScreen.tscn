@@ -119,3 +119,4 @@ script = ExtResource( 6 )
 
 [node name="UILayer" parent="." instance=ExtResource( 1 )]
 [connection signal="notify_camera_of_level_bounds" from="LevelInformation/LevelTiles" to="PersistentThings/MainGameCamera" method="_on_LevelTiles_notify_camera_of_level_bounds"]
+[connection signal="report_sprinting_information" from="PersistentThings/PlayerCharacter" to="UILayer" method="_on_PlayerCharacter_report_sprinting_information"]

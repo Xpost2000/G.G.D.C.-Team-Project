@@ -1,3 +1,4 @@
+#TODO Rename this to Actor or something.
 extends KinematicBody2D
 
 # our main issue, is that these guys don't represent one.
@@ -98,6 +99,10 @@ const WALKING_SPEED = SPRINTING_SPEED/2;
 func can_sprint():
 	return (sprinting_stamina > 0.0) && (stamina_regeneration_cooldown_timer <= 0.0);
 
+func get_party_member(index):
+	# later I'll do checking.
+	return party_members[index];
+
 func handle_sprinting(sprinting, delta):
 	if sprinting && can_sprint():
 		sprinting_stamina -= delta * 55.0;
@@ -111,15 +116,19 @@ func handle_sprinting(sprinting, delta):
 	
 	sprinting_stamina = clamp(sprinting_stamina, 0, SPRINTING_STAMINA_MAX);
 
+var self_paused = false;
+var sprinting = false;
+
 func _physics_process(delta):
-	var movement_direction = movement_direction_vector();
-	var sprinting = Input.is_action_pressed("game_sprinting_action");
-	var velocity = movement_direction * (SPRINTING_SPEED 
-	if sprinting && can_sprint() else WALKING_SPEED);
-	
-	handle_sprinting(sprinting, delta);
-	velocity = move_and_slide(velocity, Vector2.UP);
-	
+	if !self_paused:
+		var movement_direction = movement_direction_vector();
+		sprinting = Input.is_action_pressed("game_sprinting_action");
+		var velocity = movement_direction * (SPRINTING_SPEED 
+		if sprinting && can_sprint() else WALKING_SPEED);
+
+		handle_sprinting(sprinting, delta);
+		velocity = move_and_slide(velocity, Vector2.UP);
+		
 	emit_signal("report_inventory_contents",
 				self, inventory);
 	emit_signal("report_sprinting_information", 
@@ -141,3 +150,6 @@ func _on_InteractableArea_area_entered(area):
 			just_transitioned_from_other_level = false;
 		else:
 			emit_signal("transitioning_to_another_level", self, area);
+
+func _on_UILayer_set_game_action_pause_state(value):
+	self_paused = value;

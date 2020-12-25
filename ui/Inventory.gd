@@ -24,7 +24,8 @@ func _on_InventoryItemList_item_activated(index):
 	var inventory_item_entry_information = currently_observing_inventory[index];
 	if inventory_item_entry_information[1] > 0:
 		inventory_item_entry_information[1] -= 1;
-		ItemDatabase.apply_item_to(currently_observing_thing, inventory_item_entry_information[0]);
+		ItemDatabase.apply_item_to(currently_observing_thing.get_party_member(0),
+								   inventory_item_entry_information[0]);
 		print("prompt for usage on item");
 	else:
 		currently_observing_inventory.erase(inventory_item_entry_information);

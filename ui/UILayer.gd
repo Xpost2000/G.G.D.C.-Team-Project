@@ -1,5 +1,6 @@
 extends CanvasLayer
 signal notify_finished_level_load_related_fading();
+signal set_game_action_pause_state(value);
 
 onready var stamina_bar = $SprintingStaminaBar;
 onready var stamina_bar_max_dimensions = $SprintingStaminaBar.rect_size;
@@ -37,7 +38,13 @@ func _on_MainGameScreen_notify_ui_of_level_load():
 # But I'm only using this like once so whatever.
 var fade_hold_timer = 0.0;
 var fade_hold_timer_max = 0.5;
+
+var showing_inventory = false;
+
 func _process(delta):
+	if Input.is_action_just_pressed("game_action_open_inventory"):
+		toggle_inventory();
+
 	match dimmer_fade_reason:
 		DIMMER_NOT_FADING: 
 			if ui_dimmer.finished_fade():
@@ -52,3 +59,24 @@ func _process(delta):
 				fade_hold_timer += delta;
 			else:
 				fade_hold_timer = 0;
+
+	if !showing_inventory:
+		inventory_ui.hide();
+		inventory_ui.set_process(false);
+	else:
+		inventory_ui.show();
+		inventory_ui.set_process(true);
+
+func show_inventory():
+	showing_inventory = true;
+	emit_signal("set_game_action_pause_state", true);
+
+func close_inventory():
+	showing_inventory = false;
+	emit_signal("set_game_action_pause_state", false);
+
+func toggle_inventory():
+	if showing_inventory:
+		close_inventory();
+	else:
+		show_inventory();

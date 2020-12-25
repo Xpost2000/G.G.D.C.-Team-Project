@@ -2,9 +2,9 @@ extends Node2D
 
 signal notify_ui_of_level_load();
 
-onready var level_information = $LevelInformation;
-onready var player_node = $PersistentThings/PlayerCharacter;
-onready var ui_layer = $UILayer;
+onready var game_layer = $GameLayer;
+onready var level_information = $GameLayer/LevelInformation;
+onready var player_node = $GameLayer/PersistentThings/PlayerCharacter;
 
 func load_new_level_scene(name):
 	var loaded_scene = load(name).instance();

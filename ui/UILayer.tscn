@@ -59,7 +59,6 @@ __meta__ = {
 disabled = true
 
 [node name="InventoryUI" type="Control" parent="."]
-visible = false
 margin_left = 63.0
 margin_top = 29.0
 margin_right = 103.0

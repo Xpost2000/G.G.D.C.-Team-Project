@@ -8,6 +8,7 @@ signal transitioning_to_another_level(player, level_transition);
 signal report_sprinting_information(stamina_percent, can_sprint, trying_to_sprint);
 # of course I should just be reporting the player in any case...
 signal report_inventory_contents(player, player_inventory);
+signal report_party_info_to_ui(party_members, amount_of_gold);
 
 const SPRINTING_STAMINA_MAX = 75;
 const STAMINA_REGENERATION_COOLDOWN_TIME = 1.66; # seconds
@@ -42,7 +43,10 @@ class PartyMember:
 		self.experience = 0;
 		self.experience_to_next = 150;
 
+		self.party_icon = load("res://images/party-icons/unknown_character_icon.png");
 		self.stats = PartyMemberStatBlock.new();
+
+	var party_icon: Texture;
 
 	var name: String;
 	var health: int;
@@ -56,28 +60,21 @@ class PartyMember:
 
 	var stats: PartyMemberStatBlock;
 
-var health = 100;
 var sprinting_stamina = SPRINTING_STAMINA_MAX;
 
-# Expect inventories to look like this
-#
-# [
-#  { "name_of_item", count }
-# ]
-#
 var party_members = [];
 var inventory = [];
 
 var gold = 0;
 
 func add_party_member_default(name):
-	print("TODO");
-	pass;
+	party_members.push_back(PartyMember.new(name, 100, 100));
 
 func add_party_member(party_member):
 	pass;
 
 func _ready():
+	add_party_member_default("Mr. Protagonist");
 	inventory = [["healing_grass", 15],
 				 ["healing_pod", 5]];
 	pass;
@@ -129,6 +126,8 @@ func _physics_process(delta):
 				float(sprinting_stamina)/float(SPRINTING_STAMINA_MAX),
 				can_sprint(), 
 				sprinting);
+	emit_signal("report_party_info_to_ui",
+				party_members, gold)
 
 const LevelTransitionClass = preload("res://game/LevelTransition.gd");
 

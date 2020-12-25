@@ -5,9 +5,13 @@ onready var stamina_bar = $SprintingStaminaBar;
 onready var stamina_bar_max_dimensions = $SprintingStaminaBar.rect_size;
 onready var ui_dimmer = $DimmerRect;
 onready var inventory_ui = $InventoryUI;
+onready var party_member_information_holder = $PartyMemberInformation;
 
 func _ready():
 	inventory_ui.get_node("Inventory/InventoryItemList").fixed_icon_size = Vector2(32,32);
+
+func _on_PlayerCharacter_report_party_info_to_ui(party_members, amount_of_gold):
+	party_member_information_holder.update_with_party_information(party_members, amount_of_gold);
 
 func _on_PlayerCharacter_report_inventory_contents(player, player_inventory):
 	inventory_ui.update_based_on_entity(player, player_inventory);

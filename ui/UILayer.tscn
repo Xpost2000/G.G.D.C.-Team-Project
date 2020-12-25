@@ -1,9 +1,9 @@
 [gd_scene load_steps=13 format=2]
 
 [ext_resource path="res://fonts/Alkhemikal.ttf" type="DynamicFontData" id=1]
+[ext_resource path="res://ui/PartyMemberInformation.gd" type="Script" id=2]
 [ext_resource path="res://ui/UILayer.gd" type="Script" id=3]
 [ext_resource path="res://ui/DimmerRect.gd" type="Script" id=4]
-[ext_resource path="res://ui/PartyMemberCard.tscn" type="PackedScene" id=5]
 [ext_resource path="res://images/light_blob.png" type="Texture" id=6]
 [ext_resource path="res://ui/Inventory.gd" type="Script" id=7]
 [ext_resource path="res://ui/ItemPreview.gd" type="Script" id=8]
@@ -32,12 +32,11 @@ script = ExtResource( 3 )
 [node name="PartyMemberInformation" type="VBoxContainer" parent="."]
 margin_right = 303.0
 margin_bottom = 599.0
+script = ExtResource( 2 )
 __meta__ = {
 "_edit_group_": true,
 "_edit_use_anchors_": false
 }
-
-[node name="MemberCard" parent="PartyMemberInformation" instance=ExtResource( 5 )]
 
 [node name="SprintingStaminaBar" type="ColorRect" parent="."]
 margin_left = 424.0
@@ -60,6 +59,7 @@ __meta__ = {
 disabled = true
 
 [node name="InventoryUI" type="Control" parent="."]
+visible = false
 margin_left = 63.0
 margin_top = 29.0
 margin_right = 103.0

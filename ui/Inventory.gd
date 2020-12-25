@@ -1,5 +1,7 @@
 extends ColorRect
 
+signal prompt_for_item_usage_selection(party_members, item_name);
+
 onready var inventory_item_list = $InventoryItemList;
 onready var item_preview_widget = $ItemPreview;
 
@@ -36,6 +38,9 @@ func _on_InventoryItemList_item_activated(index):
 									   inventory_item_entry_information[0]);
 		else:
 			print("prompt for usage on item");
+			emit_signal("prompt_for_item_usage_selection",
+						currently_observing_thing.party_members,
+						inventory_item_entry_information[0]);
 
 
 func _on_InventoryItemList_nothing_selected():

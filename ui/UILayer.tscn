@@ -1,9 +1,10 @@
-[gd_scene load_steps=13 format=2]
+[gd_scene load_steps=16 format=2]
 
 [ext_resource path="res://fonts/Alkhemikal.ttf" type="DynamicFontData" id=1]
 [ext_resource path="res://ui/PartyMemberInformation.gd" type="Script" id=2]
 [ext_resource path="res://ui/UILayer.gd" type="Script" id=3]
 [ext_resource path="res://ui/DimmerRect.gd" type="Script" id=4]
+[ext_resource path="res://ui/PartyMemberSelectionForItemConsumation.gd" type="Script" id=5]
 [ext_resource path="res://images/light_blob.png" type="Texture" id=6]
 [ext_resource path="res://ui/Inventory.gd" type="Script" id=7]
 [ext_resource path="res://ui/ItemPreview.gd" type="Script" id=8]
@@ -23,6 +24,14 @@ font_data = ExtResource( 1 )
 
 [sub_resource type="DynamicFont" id=7]
 size = 49
+font_data = ExtResource( 1 )
+
+[sub_resource type="DynamicFont" id=8]
+size = 72
+font_data = ExtResource( 1 )
+
+[sub_resource type="DynamicFont" id=9]
+size = 36
 font_data = ExtResource( 1 )
 
 [node name="UILayer" type="CanvasLayer"]
@@ -140,6 +149,37 @@ align = 1
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="PartyMemberSelection" type="ColorRect" parent="InventoryUI"]
+margin_left = 339.0
+margin_top = 148.0
+margin_right = 725.0
+margin_bottom = 443.0
+color = Color( 0, 0, 0, 1 )
+script = ExtResource( 5 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="InventoryUI/PartyMemberSelection"]
+margin_left = 4.00452
+margin_top = -1.33484
+margin_right = 387.005
+margin_bottom = 93.6652
+custom_fonts/font = SubResource( 8 )
+text = "Use on Who?"
+align = 1
+valign = 1
+
+[node name="Selections" type="ItemList" parent="InventoryUI/PartyMemberSelection"]
+margin_left = 27.0
+margin_top = 88.0
+margin_right = 352.0
+margin_bottom = 271.0
+custom_fonts/font = SubResource( 9 )
+[connection signal="prompt_for_item_usage_selection" from="InventoryUI/Inventory" to="InventoryUI" method="_on_Inventory_prompt_for_item_usage_selection"]
 [connection signal="item_activated" from="InventoryUI/Inventory/InventoryItemList" to="InventoryUI/Inventory" method="_on_InventoryItemList_item_activated"]
 [connection signal="item_selected" from="InventoryUI/Inventory/InventoryItemList" to="InventoryUI/Inventory" method="_on_InventoryItemList_item_selected"]
 [connection signal="nothing_selected" from="InventoryUI/Inventory/InventoryItemList" to="InventoryUI/Inventory" method="_on_InventoryItemList_nothing_selected"]
+[connection signal="ask_to_close_prompt" from="InventoryUI/PartyMemberSelection" to="InventoryUI" method="_on_PartyMemberSelection_ask_to_close_prompt"]
+[connection signal="item_activated" from="InventoryUI/PartyMemberSelection/Selections" to="InventoryUI/PartyMemberSelection" method="_on_Selections_item_activated"]

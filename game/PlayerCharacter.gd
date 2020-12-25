@@ -76,6 +76,7 @@ func add_party_member(party_member):
 
 func _ready():
 	add_party_member_default("Mr. Protagonist");
+	add_party_member_default("Mr. Deuteragonist");
 	inventory = [["healing_grass", 15],
 				 ["healing_pod", 5]];
 	pass;

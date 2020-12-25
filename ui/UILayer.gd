@@ -80,3 +80,7 @@ func toggle_inventory():
 		close_inventory();
 	else:
 		show_inventory();
+
+
+func _on_Inventory_prompt_for_item_usage_selection(party_members, item_name):
+	pass # Replace with function body.

@@ -20,15 +20,22 @@ func update_based_on_entity(thing, inventory):
 func _ready():
 	pass
 
+func _process(delta):
+	# This is probably not safe to do. 
+	if currently_observing_thing && currently_observing_inventory:
+		for inventory_item_entry_information in currently_observing_inventory:
+			if inventory_item_entry_information[1] <= 0:
+				currently_observing_inventory.erase(inventory_item_entry_information);
+
 func _on_InventoryItemList_item_activated(index):
 	var inventory_item_entry_information = currently_observing_inventory[index];
-	if inventory_item_entry_information[1] > 0:
+	if inventory_item_entry_information[1] >= 0:
 		inventory_item_entry_information[1] -= 1;
-		ItemDatabase.apply_item_to(currently_observing_thing.get_party_member(0),
-								   inventory_item_entry_information[0]);
-		print("prompt for usage on item");
-	else:
-		currently_observing_inventory.erase(inventory_item_entry_information);
+		if (len(currently_observing_thing.party_members) == 1):
+			ItemDatabase.apply_item_to(currently_observing_thing.get_party_member(0),
+									   inventory_item_entry_information[0]);
+		else:
+			print("prompt for usage on item");
 
 
 func _on_InventoryItemList_nothing_selected():

@@ -63,6 +63,7 @@ script = ExtResource( 6 )
 
 [node name="UILayer" parent="." instance=ExtResource( 1 )]
 [connection signal="notify_ui_of_level_load" from="." to="UILayer" method="_on_MainGameScreen_notify_ui_of_level_load"]
+[connection signal="report_inventory_contents" from="PersistentThings/PlayerCharacter" to="UILayer" method="_on_PlayerCharacter_report_inventory_contents"]
 [connection signal="report_sprinting_information" from="PersistentThings/PlayerCharacter" to="UILayer" method="_on_PlayerCharacter_report_sprinting_information"]
 [connection signal="transitioning_to_another_level" from="PersistentThings/PlayerCharacter" to="." method="_on_PlayerCharacter_transitioning_to_another_level"]
 [connection signal="area_entered" from="PersistentThings/PlayerCharacter/InteractableArea" to="PersistentThings/PlayerCharacter" method="_on_InteractableArea_area_entered"]

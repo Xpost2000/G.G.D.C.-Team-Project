@@ -6,6 +6,7 @@ extends KinematicBody2D
 
 signal transitioning_to_another_level(player, level_transition);
 signal report_sprinting_information(stamina_percent, can_sprint, trying_to_sprint);
+signal report_inventory_contents(player_inventory);
 
 const SPRINTING_STAMINA_MAX = 75;
 const STAMINA_REGENERATION_COOLDOWN_TIME = 1.66; # seconds
@@ -23,8 +24,19 @@ var intelligence = 10;
 var charisma = 10;
 var luck = -10;
 
+# Expect inventories to look like this
+#
+# [
+#  { "name_of_item", count }
+# ]
+#
+var inventory = [];
+var gold = 0;
+
 func _ready():
-	pass
+	inventory = [["healing_grass", 15],
+				 ["healing_pod", 5]];
+	pass;
 
 func movement_direction_vector():
 	var movement_direction = Vector2.ZERO;
@@ -67,6 +79,8 @@ func _physics_process(delta):
 	handle_sprinting(sprinting, delta);
 	velocity = move_and_slide(velocity, Vector2.UP);
 	
+	emit_signal("report_inventory_contents",
+				inventory);
 	emit_signal("report_sprinting_information", 
 				float(sprinting_stamina)/float(SPRINTING_STAMINA_MAX),
 				can_sprint(), 

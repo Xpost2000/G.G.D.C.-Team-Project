@@ -9,8 +9,8 @@ onready var inventory_ui = $InventoryUI;
 func _ready():
 	inventory_ui.get_node("Inventory/InventoryItemList").fixed_icon_size = Vector2(32,32);
 
-func _on_PlayerCharacter_report_inventory_contents(player_inventory):
-	inventory_ui.update_based_on_entity(player_inventory);
+func _on_PlayerCharacter_report_inventory_contents(player, player_inventory):
+	inventory_ui.update_based_on_entity(player, player_inventory);
 
 func _on_PlayerCharacter_report_sprinting_information(stamina_percent, can_sprint, _trying_to_sprint):
 	if can_sprint:

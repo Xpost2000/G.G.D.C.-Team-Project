@@ -6,7 +6,8 @@ extends KinematicBody2D
 
 signal transitioning_to_another_level(player, level_transition);
 signal report_sprinting_information(stamina_percent, can_sprint, trying_to_sprint);
-signal report_inventory_contents(player_inventory);
+# of course I should just be reporting the player in any case...
+signal report_inventory_contents(player, player_inventory);
 
 const SPRINTING_STAMINA_MAX = 75;
 const STAMINA_REGENERATION_COOLDOWN_TIME = 1.66; # seconds
@@ -80,7 +81,7 @@ func _physics_process(delta):
 	velocity = move_and_slide(velocity, Vector2.UP);
 	
 	emit_signal("report_inventory_contents",
-				inventory);
+				self, inventory);
 	emit_signal("report_sprinting_information", 
 				float(sprinting_stamina)/float(SPRINTING_STAMINA_MAX),
 				can_sprint(), 

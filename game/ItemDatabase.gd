@@ -57,6 +57,18 @@ func _ready():
 											   "images/inventory-icons/previews/preview_golden_pantaloons.png",
 											   250,
 											   30);
+func apply_item_to(thing, item_name):
+	var item_to_apply = get_item(item_name);
+
+	match item_to_apply.type:
+		ITEM_TYPE_HEALING_ITEM:
+			# Make thing play animation to drink item?
+			thing.health += int(item_to_apply.magnitude);
+			print("healing item");
+			pass;
+		ITEM_TYPE_STAT_BOOSTING_ITEM:
+			print("place holder stat booster");
+			pass;
 	
 func get_item(name):
 	return items_dictionary[name];

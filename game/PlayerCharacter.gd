@@ -14,16 +14,50 @@ const STAMINA_REGENERATION_COOLDOWN_TIME = 1.66; # seconds
 
 var stamina_regeneration_cooldown_timer = 0.0;
 
+class PartyMemberStatBlock:
+	func _init():
+		self.dexterity = 10;
+		self.constitution = 10;
+		self.willpower = 10;
+		self.intelligence = 10;
+		self.charisma = 10;
+		self.luck = 10;
+
+	var strength: int;
+	var dexterity: int;
+	var constitution: int;
+	var willpower: int;
+	var intelligence: int;
+	var charisma: int;
+	var luck: int;
+
+class PartyMember:
+	func _init(name, health, defense):
+		self.name = name;
+		self.health = health;
+		self.max_health = health;
+		self.defense = defense;
+
+		self.level = 1;
+		self.experience = 0;
+		self.experience_to_next = 150;
+
+		self.stats = PartyMemberStatBlock.new();
+
+	var name: String;
+	var health: int;
+	var max_health: int;
+
+	var defense: int;
+
+	var level: int;
+	var experience: int;
+	var experience_to_next: int;
+
+	var stats: PartyMemberStatBlock;
+
 var health = 100;
 var sprinting_stamina = SPRINTING_STAMINA_MAX;
-
-var strength = 10;
-var dexterity = 10;
-var constitution = 10;
-var willpower = 10;
-var intelligence = 10;
-var charisma = 10;
-var luck = -10;
 
 # Expect inventories to look like this
 #
@@ -31,8 +65,17 @@ var luck = -10;
 #  { "name_of_item", count }
 # ]
 #
+var party_members = [];
 var inventory = [];
+
 var gold = 0;
+
+func add_party_member_default(name):
+	print("TODO");
+	pass;
+
+func add_party_member(party_member):
+	pass;
 
 func _ready():
 	inventory = [["healing_grass", 15],

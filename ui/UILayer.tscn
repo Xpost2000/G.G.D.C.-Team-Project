@@ -1,7 +1,6 @@
-[gd_scene load_steps=17 format=2]
+[gd_scene load_steps=13 format=2]
 
 [ext_resource path="res://fonts/Alkhemikal.ttf" type="DynamicFontData" id=1]
-[ext_resource path="res://images/party-icons/main_character_icon.png" type="Texture" id=2]
 [ext_resource path="res://ui/UILayer.gd" type="Script" id=3]
 [ext_resource path="res://ui/DimmerRect.gd" type="Script" id=4]
 [ext_resource path="res://ui/PartyMemberCard.tscn" type="PackedScene" id=5]
@@ -9,16 +8,6 @@
 [ext_resource path="res://ui/Inventory.gd" type="Script" id=7]
 [ext_resource path="res://ui/ItemPreview.gd" type="Script" id=8]
 [ext_resource path="res://ui/InventoryUI.gd" type="Script" id=9]
-
-[sub_resource type="DynamicFont" id=1]
-size = 30
-font_data = ExtResource( 1 )
-
-[sub_resource type="DynamicFont" id=2]
-font_data = ExtResource( 1 )
-
-[sub_resource type="Theme" id=3]
-default_font = SubResource( 2 )
 
 [sub_resource type="DynamicFont" id=4]
 size = 30
@@ -49,76 +38,6 @@ __meta__ = {
 }
 
 [node name="MemberCard" parent="PartyMemberInformation" instance=ExtResource( 5 )]
-
-[node name="MemberCard2" type="ColorRect" parent="PartyMemberInformation"]
-margin_top = 104.0
-margin_right = 303.0
-margin_bottom = 204.0
-rect_min_size = Vector2( 285, 100 )
-color = Color( 0, 0, 0, 1 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="CardLayout" type="HBoxContainer" parent="PartyMemberInformation/MemberCard2"]
-margin_top = 4.0
-margin_right = 392.0
-margin_bottom = 132.0
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="TextureRect" type="TextureRect" parent="PartyMemberInformation/MemberCard2/CardLayout"]
-margin_right = 64.0
-margin_bottom = 128.0
-texture = ExtResource( 2 )
-stretch_mode = 3
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="MemberInfo" type="VBoxContainer" parent="PartyMemberInformation/MemberCard2/CardLayout"]
-margin_left = 68.0
-margin_right = 263.0
-margin_bottom = 128.0
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="MemberName" type="Label" parent="PartyMemberInformation/MemberCard2/CardLayout/MemberInfo"]
-margin_right = 195.0
-margin_bottom = 31.0
-custom_fonts/font = SubResource( 1 )
-text = "ALPHABET SOUP"
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="MemberStats" type="VBoxContainer" parent="PartyMemberInformation/MemberCard2/CardLayout/MemberInfo"]
-margin_top = 35.0
-margin_right = 195.0
-margin_bottom = 91.0
-theme = SubResource( 3 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="Health" type="Label" parent="PartyMemberInformation/MemberCard2/CardLayout/MemberInfo/MemberStats"]
-margin_right = 195.0
-margin_bottom = 16.0
-text = "HEALTH: 100/100"
-
-[node name="Defense" type="Label" parent="PartyMemberInformation/MemberCard2/CardLayout/MemberInfo/MemberStats"]
-margin_top = 20.0
-margin_right = 195.0
-margin_bottom = 36.0
-text = "DEFENSE: 100/100"
-
-[node name="Experience" type="Label" parent="PartyMemberInformation/MemberCard2/CardLayout/MemberInfo/MemberStats"]
-margin_top = 40.0
-margin_right = 195.0
-margin_bottom = 56.0
-text = "XP TO NEXT: 0/1000"
 
 [node name="SprintingStaminaBar" type="ColorRect" parent="."]
 margin_left = 424.0

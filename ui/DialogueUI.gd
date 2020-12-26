@@ -1,5 +1,7 @@
 extends Control
 
+var reference_to_game_scene = null;
+
 enum {DIALOGUE_TERMINATION_REASON_DEFAULT}
 class DialogueTerminationReason:
 	var type: int;
@@ -130,10 +132,21 @@ func goto_scene(scene):
 
 			match current_scene_object.speaker.type:
 				DIALOGUE_SPEAKER_NODE_IN_LEVEL:
-					dialogue_speaker_name.text = "NODER";
+					var node_in_question = reference_to_game_scene.find_node(current_scene_object.speaker.node_name)
+					if node_in_question:
+						# assume is player and look for party name.
+						# for more final reasons, I'd subclass the node and
+						# check those nodes manually, so I can do dispatch
+						# based on type to find the best name
+						dialogue_speaker_name.text = node_in_question.get_party_member(0).name;
+						dialogue_speaker_portrait.texture = load("res://images/portraits/protagonist/neutral.png");
+					else:
+						dialogue_speaker_name.text = "???";
 					pass;
 				DIALOGUE_SPEAKER_MANUAL_SPECIFIED:
-					dialogue_speaker_name.text = "MANUAL";
+					dialogue_speaker_name.text = current_scene_object.speaker.name;
+					print(("res://images/portraits/" + current_scene_object.speaker.speaker_portrait_path + "/neutral.png"));
+					dialogue_speaker_portrait.texture = load("res://images/portraits/" + current_scene_object.speaker.speaker_portrait_path + "/neutral.png");
 					pass;
 
 			if current_scene_object.choices && len(current_scene_object.choices) > 0:

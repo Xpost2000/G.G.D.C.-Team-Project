@@ -1,6 +1,7 @@
 extends Node2D
 
 signal notify_ui_of_level_load();
+signal ask_ui_to_open_test_dialogue();
 
 onready var game_layer = $GameLayer;
 onready var level_information = $GameLayer/LevelInformation;
@@ -40,3 +41,8 @@ func _on_UILayer_notify_finished_level_load_related_fading():
 	var full_scene_path = "res://scenes/" + level_transition.scene_to_transition_to + ".tscn";
 	var loaded_scene = load_new_level_scene(full_scene_path);
 	setup_new_level_scene(player, level_transition, loaded_scene);
+
+func _on_PlayerCharacter_test_open_conversation():
+	# emit_signal("ask_ui_to_open_and_begin_dialogue_file", "");
+	emit_signal("ask_ui_to_open_test_dialogue");
+	print("open test convo");

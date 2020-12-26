@@ -10,6 +10,7 @@ signal report_sprinting_information(stamina_percent, can_sprint, trying_to_sprin
 # of course I should just be reporting the player in any case...
 signal report_inventory_contents(player, player_inventory);
 signal report_party_info_to_ui(party_members, amount_of_gold);
+signal test_open_conversation;
 
 const SPRINTING_STAMINA_MAX = 75;
 const STAMINA_REGENERATION_COOLDOWN_TIME = 1.66; # seconds
@@ -120,6 +121,9 @@ func handle_sprinting(sprinting, delta):
 var self_paused = false;
 var sprinting = false;
 
+func handle_interact_key(delta):
+	emit_signal("test_open_conversation");
+
 func _physics_process(delta):
 	if !self_paused:
 		var movement_direction = movement_direction_vector();
@@ -129,6 +133,9 @@ func _physics_process(delta):
 
 		handle_sprinting(sprinting, delta);
 		velocity = move_and_slide(velocity, Vector2.UP);
+
+		if Input.is_action_just_pressed("game_interact_action"):
+			handle_interact_key(delta);
 		
 	emit_signal("report_inventory_contents",
 				self, inventory);

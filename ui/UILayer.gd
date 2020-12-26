@@ -7,6 +7,7 @@ onready var stamina_bar_max_dimensions = $SprintingStaminaBar.rect_size;
 onready var ui_dimmer = $DimmerRect;
 onready var inventory_ui = $InventoryUI;
 onready var party_member_information_holder = $PartyMemberInformation;
+onready var dialogue_ui = $DialogueUI;
 
 func _ready():
 	inventory_ui.get_node("Inventory/InventoryItemList").fixed_icon_size = Vector2(32,32);
@@ -81,6 +82,8 @@ func toggle_inventory():
 	else:
 		show_inventory();
 
-
 func _on_Inventory_prompt_for_item_usage_selection(party_members, item_name):
 	pass # Replace with function body.
+
+func _on_MainGameScreen_ask_ui_to_open_test_dialogue():
+	dialogue_ui.open_test_dialogue();

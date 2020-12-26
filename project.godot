@@ -25,6 +25,7 @@ config/icon="res://icon.png"
 [autoload]
 
 ItemDatabase="*res://game/ItemDatabase.gd"
+Utilities="*res://game/Utilities.gd"
 
 [display]
 

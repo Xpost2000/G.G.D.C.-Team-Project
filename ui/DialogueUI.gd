@@ -67,21 +67,21 @@ class DialogueScene:
 	var next_for_continue: String;
 	var choices: Array;
 
-func make_scene_linear(speaker, text, next):
+func make_scene_linear(speaker, text, next, mood=""):
 	var new_dialogue_scene = DialogueScene.new();
 	new_dialogue_scene.speaker = speaker;
 	new_dialogue_scene.text = text;
 	new_dialogue_scene.next_for_continue = next if next else "";
 	new_dialogue_scene.choices = [];
-	new_dialogue_scene.mood = "";
+	new_dialogue_scene.mood = mood;
 	return new_dialogue_scene;
 
-func make_scene_branching(speaker, text, choices):
+func make_scene_branching(speaker, text, choices, mood=""):
 	var new_dialogue_scene = DialogueScene.new();
 	new_dialogue_scene.speaker = speaker;
 	new_dialogue_scene.text = text;
 	new_dialogue_scene.next_for_continue = "";
-	new_dialogue_scene.mood = "";
+	new_dialogue_scene.mood = mood;
 	new_dialogue_scene.choices = choices if choices else [];
 	return new_dialogue_scene;
 
@@ -108,7 +108,8 @@ func open_test_dialogue():
 
 	scenes["differ"] = make_scene_linear(make_manual_speaker("???", "testerbester"),
 										 "Really? I don't quite think so.",
-										 "optimistic");
+										 "optimistic",
+										 "happy");
 
 	scenes["optimistic"] = make_scene_linear(make_manual_speaker("???", "testerbester"),
 										 "You have to be more optimistic sometimes.",
@@ -116,7 +117,11 @@ func open_test_dialogue():
 
 	scenes["sorry"] = make_scene_linear(make_node_speaker("PlayerCharacter"),
 										"Dude just shut up. Let me act emo and edgy.",
-										null);
+										"dick");
+
+	scenes["dick"] = make_scene_linear(make_manual_speaker("???", "testerbester"),
+									   "You don't have to be such a dick about it.",
+									   null, "angry");
 	goto_scene("start");
 	initial_opening = true;
 
@@ -130,6 +135,8 @@ func goto_scene(scene):
 			var current_scene_object = scenes[current_scene];
 			dialogue_text.text = current_scene_object.text;
 
+			var mood = current_scene_object.mood if !current_scene_object.mood.empty() else "neutral";
+
 			match current_scene_object.speaker.type:
 				DIALOGUE_SPEAKER_NODE_IN_LEVEL:
 					var node_in_question = reference_to_game_scene.find_node(current_scene_object.speaker.node_name)
@@ -139,14 +146,21 @@ func goto_scene(scene):
 						# check those nodes manually, so I can do dispatch
 						# based on type to find the best name
 						dialogue_speaker_name.text = node_in_question.get_party_member(0).name;
-						dialogue_speaker_portrait.texture = load("res://images/portraits/protagonist/neutral.png");
+						var requested_texture = load("res://images/portraits/protagonist/" + mood + ".png");
+						if requested_texture:
+							dialogue_speaker_portrait.texture = requested_texture;
+						else:
+							dialogue_speaker_portrait.texture = load("res://images/portraits/protagonist/neutral.png");
 					else:
 						dialogue_speaker_name.text = "???";
 					pass;
 				DIALOGUE_SPEAKER_MANUAL_SPECIFIED:
 					dialogue_speaker_name.text = current_scene_object.speaker.name;
-					print(("res://images/portraits/" + current_scene_object.speaker.speaker_portrait_path + "/neutral.png"));
-					dialogue_speaker_portrait.texture = load("res://images/portraits/" + current_scene_object.speaker.speaker_portrait_path + "/neutral.png");
+					var requested_texture = load("res://images/portraits/" + current_scene_object.speaker.speaker_portrait_path + "/" + mood + ".png");
+					if requested_texture:
+						dialogue_speaker_portrait.texture = requested_texture;
+					else:
+						dialogue_speaker_portrait.texture = ("res://images/portraits/" + current_scene_object.speaker.speaker_portrait_path + "/neutral.png");
 					pass;
 
 			if current_scene_object.choices && len(current_scene_object.choices) > 0:

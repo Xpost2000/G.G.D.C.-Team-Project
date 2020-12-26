@@ -13,7 +13,7 @@ signal notify_dialogue_terminated(reason_of_termination);
 
 onready var dialogue_speaker_portrait = $DialogueCharacterPortrait;
 onready var dialogue_text = $DialogueBackground/DialogueText;
-onready var dialogue_speaker_name = $DialogueBackground/SpeakerTextLabelContainer/DialogueText;
+onready var dialogue_speaker_name = $DialogueBackground/SpeakerTextLabelContainer/SpeakerName;
 onready var dialogue_choices_container = $DialogueBackground/ChoicesContainer;
 onready var dialogue_continue_prompt = $DialogueBackground/ContinuePrompt;
 
@@ -39,6 +39,7 @@ func make_node_speaker(node_name):
 
 func make_manual_speaker(name, speaker_portrait_path):
 	var new_dialogue_speaker = DialogueSpeaker.new();
+	new_dialogue_speaker.type = DIALOGUE_SPEAKER_MANUAL_SPECIFIED;
 	new_dialogue_speaker.name = name;
 	new_dialogue_speaker.speaker_portrait_path = speaker_portrait_path;
 	return new_dialogue_speaker;
@@ -128,8 +129,12 @@ func goto_scene(scene):
 			dialogue_text.text = current_scene_object.text;
 
 			match current_scene_object.speaker.type:
-				DIALOGUE_SPEAKER_NODE_IN_LEVEL: pass; #TODO
-				DIALOGUE_SPEAKER_MANUAL_SPECIFIED: pass; #TODO
+				DIALOGUE_SPEAKER_NODE_IN_LEVEL:
+					dialogue_speaker_name.text = "NODER";
+					pass;
+				DIALOGUE_SPEAKER_MANUAL_SPECIFIED:
+					dialogue_speaker_name.text = "MANUAL";
+					pass;
 
 			if current_scene_object.choices && len(current_scene_object.choices) > 0:
 				dialogue_continue_prompt.hide();

@@ -92,6 +92,13 @@ func is_linear():
 # I don't really like having these "safety hatch" variables
 # but they don't really hurt to add, and it's a fast fix.
 var initial_opening = false;
+
+# always assume in dialogue_files/
+func load_dialogue_from_file(filename):
+	var file_contents = Utilities.read_entire_file_as_string("dialogue_files/" + file_name);
+	print("TODO TODO TODO");
+	.error_out_please();
+
 func open_test_dialogue():
 	print("okay");
 	scenes["start"] = make_scene_linear(make_node_speaker("PlayerCharacter"),

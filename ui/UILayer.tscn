@@ -171,3 +171,4 @@ custom_fonts/font = SubResource( 3 )
 custom_colors/font_color = Color( 1, 0.933333, 0.164706, 1 )
 text = "Continue..."
 flat = true
+[connection signal="notify_dialogue_terminated" from="DialogueUI" to="." method="_on_DialogueUI_notify_dialogue_terminated"]

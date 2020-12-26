@@ -86,4 +86,14 @@ func _on_Inventory_prompt_for_item_usage_selection(party_members, item_name):
 	pass # Replace with function body.
 
 func _on_MainGameScreen_ask_ui_to_open_test_dialogue():
+	emit_signal("set_game_action_pause_state", true);
+	dialogue_ui.show();
 	dialogue_ui.open_test_dialogue();
+
+enum {DIALOGUE_TERMINATION_REASON_DEFAULT}
+func _on_DialogueUI_notify_dialogue_terminated(reason):
+	match reason.type:
+		DIALOGUE_TERMINATION_REASON_DEFAULT: pass;
+
+	dialogue_ui.hide();
+	emit_signal("set_game_action_pause_state", false);

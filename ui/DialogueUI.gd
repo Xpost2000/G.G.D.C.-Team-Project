@@ -1,5 +1,16 @@
 extends Control
 
+enum {DIALOGUE_TERMINATION_REASON_DEFAULT}
+class DialogueTerminationReason:
+	var type: int;
+
+func dialogue_terminate_normal():
+	var termination_reason = DialogueTerminationReason.new();
+	termination_reason.type = DIALOGUE_TERMINATION_REASON_DEFAULT;
+	return termination_reason;
+
+signal notify_dialogue_terminated(reason_of_termination);
+
 onready var dialogue_speaker_portrait = $DialogueCharacterPortrait;
 onready var dialogue_text = $DialogueBackground/DialogueText;
 onready var dialogue_speaker_name = $DialogueBackground/SpeakerTextLabelContainer/DialogueText;
@@ -71,11 +82,17 @@ func make_scene_branching(speaker, text, choices):
 	new_dialogue_scene.choices = choices if choices else [];
 	return new_dialogue_scene;
 
+func is_linear():
+	var current_scene_object = scenes[current_scene];
+	return len(current_scene_object.choices) == 0;
 
+# I don't really like having these "safety hatch" variables
+# but they don't really hurt to add, and it's a fast fix.
+var initial_opening = false;
 func open_test_dialogue():
 	print("okay");
 	scenes["start"] = make_scene_linear(make_node_speaker("PlayerCharacter"),
-										"Tester besting dialogue",
+										"This is a linear scene. This is referring to the fact we only go one direction... As in continue...",
 										"next");
 	scenes["next"] = make_scene_branching(make_node_speaker("PlayerCharacter"),
 												   "This one has choices",
@@ -84,32 +101,59 @@ func open_test_dialogue():
 													DialogueChoice.new("AISODOISADIOSADIOASD", "meaningless")]);
 	scenes["meaningless"] = make_scene_linear(make_node_speaker("PlayerCharacter"),
 											  "In the end... It was meaningless. Free will is an illusion.",
-											  null);
+											  "differ");
+
+	scenes["differ"] = make_scene_linear(make_manual_speaker("???", "testerbester"),
+										 "Really? I don't quite think so.",
+										 "optimistic");
+
+	scenes["optimistic"] = make_scene_linear(make_manual_speaker("???", "testerbester"),
+										 "You have to be more optimistic sometimes.",
+										 "sorry");
+
+	scenes["sorry"] = make_scene_linear(make_node_speaker("PlayerCharacter"),
+										"Dude just shut up. Let me act emo and edgy.",
+										null);
 	goto_scene("start");
+	initial_opening = true;
 
 func _ready():
-	pass;
+	hide();
 
 func goto_scene(scene):
 	current_scene = scene;
-	var current_scene_object = scenes[current_scene];
-	if current_scene_object:
-		dialogue_text.text = current_scene_object.text;
+	if !current_scene.empty():
+		if current_scene in scenes:
+			var current_scene_object = scenes[current_scene];
+			dialogue_text.text = current_scene_object.text;
 
-		match current_scene_object.speaker.type:
-			DIALOGUE_SPEAKER_NODE_IN_LEVEL: pass; #TODO
-			DIALOGUE_SPEAKER_MANUAL_SPECIFIED: pass; #TODO
+			match current_scene_object.speaker.type:
+				DIALOGUE_SPEAKER_NODE_IN_LEVEL: pass; #TODO
+				DIALOGUE_SPEAKER_MANUAL_SPECIFIED: pass; #TODO
 
-		if current_scene_object.choices && len(current_scene_object.choices) > 0:
-			dialogue_continue_prompt.hide();
-			dialogue_choices_container.show();
+			if current_scene_object.choices && len(current_scene_object.choices) > 0:
+				dialogue_continue_prompt.hide();
+				dialogue_choices_container.show();
 
-			for dialogue_choice_container_child in dialogue_choices_container.get_children():
-				dialogue_choices_container.remove_child(dialogue_choice_container_child);
-			# add choices
-		else:
-			dialogue_choices_container.hide();
-			dialogue_continue_prompt.show();
+				for dialogue_choice_container_child in dialogue_choices_container.get_children():
+					dialogue_choices_container.remove_child(dialogue_choice_container_child);
+				# add choices
+				for dialogue_choice in current_scene_object.choices:
+					var choice_button = Button.new();
+					choice_button.text = dialogue_choice.text;
+					choice_button.connect("pressed", self, "goto_scene", [dialogue_choice.next]);
+					dialogue_choices_container.add_child(choice_button);
+			else:
+				dialogue_choices_container.hide();
+				dialogue_continue_prompt.show();
+	else:
+		emit_signal("notify_dialogue_terminated", dialogue_terminate_normal());
 
 func _process(delta):
-	pass;
+	if !initial_opening:
+		if current_scene in scenes:
+			var current_scene_object = scenes[current_scene];
+			if is_linear() && Input.is_action_just_pressed("game_interact_action"):
+				goto_scene(current_scene_object.next_for_continue);
+	else:
+		initial_opening = false;

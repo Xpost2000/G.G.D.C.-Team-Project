@@ -1,0 +1,149 @@
+[gd_scene load_steps=13 format=2]
+
+[ext_resource path="res://ui/PartyMemberSelectionForItemConsumation.gd" type="Script" id=1]
+[ext_resource path="res://ui/Inventory.gd" type="Script" id=2]
+[ext_resource path="res://fonts/Alkhemikal.ttf" type="DynamicFontData" id=3]
+[ext_resource path="res://images/light_blob.png" type="Texture" id=4]
+[ext_resource path="res://ui/ItemPreview.gd" type="Script" id=5]
+[ext_resource path="res://ui/InventoryUI.gd" type="Script" id=6]
+
+[sub_resource type="DynamicFont" id=1]
+size = 30
+use_mipmaps = true
+font_data = ExtResource( 3 )
+
+[sub_resource type="Theme" id=2]
+default_font = SubResource( 1 )
+
+[sub_resource type="DynamicFont" id=3]
+size = 24
+font_data = ExtResource( 3 )
+
+[sub_resource type="DynamicFont" id=4]
+size = 49
+font_data = ExtResource( 3 )
+
+[sub_resource type="DynamicFont" id=5]
+size = 72
+font_data = ExtResource( 3 )
+
+[sub_resource type="DynamicFont" id=6]
+size = 36
+font_data = ExtResource( 3 )
+
+[node name="InventoryUI" type="Control"]
+margin_left = 63.0
+margin_top = 29.0
+margin_right = 103.0
+margin_bottom = 69.0
+script = ExtResource( 6 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Inventory" type="ColorRect" parent="."]
+margin_right = 1148.0
+margin_bottom = 657.0
+color = Color( 0.0313726, 0.0470588, 0.0901961, 1 )
+script = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="InventoryItemList" type="ItemList" parent="Inventory"]
+margin_left = 20.0
+margin_top = 21.0
+margin_right = 681.0
+margin_bottom = 632.0
+theme = SubResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ItemPreview" type="ColorRect" parent="Inventory"]
+margin_left = 719.005
+margin_top = 7.66974
+margin_right = 1132.0
+margin_bottom = 641.67
+color = Color( 0.0196078, 0.0117647, 0.0980392, 1 )
+script = ExtResource( 5 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ItemDescription" type="RichTextLabel" parent="Inventory/ItemPreview"]
+margin_left = 43.4938
+margin_top = 339.303
+margin_right = 380.494
+margin_bottom = 624.303
+custom_fonts/normal_font = SubResource( 3 )
+bbcode_enabled = true
+bbcode_text = "This is an item of great renown, or something. Pretty sure I found this in a dumpster, but I guess no one actually has to know that right?
+
+Right????
+
+[color=yellow]
+Sell Value: $???
+Type: ???
+[/color]"
+text = "This is an item of great renown, or something. Pretty sure I found this in a dumpster, but I guess no one actually has to know that right?
+
+Right????
+
+
+Sell Value: $???
+Type: ???
+"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ItemPreviewSprite" type="Sprite" parent="Inventory/ItemPreview"]
+position = Vector2( 206.66, 188.295 )
+texture = ExtResource( 4 )
+
+[node name="ItemName" type="Label" parent="Inventory/ItemPreview"]
+margin_left = 16.991
+margin_top = 1.66284
+margin_right = 387.991
+margin_bottom = 68.6628
+custom_fonts/font = SubResource( 4 )
+text = "Dingleberry"
+align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="PartyMemberSelection" type="ColorRect" parent="."]
+margin_left = 339.0
+margin_top = 148.0
+margin_right = 725.0
+margin_bottom = 443.0
+color = Color( 0, 0, 0, 1 )
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="PartyMemberSelection"]
+margin_left = 4.00452
+margin_top = -1.33484
+margin_right = 387.005
+margin_bottom = 93.6652
+custom_fonts/font = SubResource( 5 )
+text = "Use on Who?"
+align = 1
+valign = 1
+
+[node name="Selections" type="ItemList" parent="PartyMemberSelection"]
+margin_left = 27.0
+margin_top = 88.0
+margin_right = 352.0
+margin_bottom = 271.0
+custom_fonts/font = SubResource( 6 )
+[connection signal="prompt_for_item_usage_selection" from="Inventory" to="." method="_on_Inventory_prompt_for_item_usage_selection"]
+[connection signal="item_activated" from="Inventory/InventoryItemList" to="Inventory" method="_on_InventoryItemList_item_activated"]
+[connection signal="item_selected" from="Inventory/InventoryItemList" to="Inventory" method="_on_InventoryItemList_item_selected"]
+[connection signal="nothing_selected" from="Inventory/InventoryItemList" to="Inventory" method="_on_InventoryItemList_nothing_selected"]
+[connection signal="ask_to_close_prompt" from="PartyMemberSelection" to="." method="_on_PartyMemberSelection_ask_to_close_prompt"]
+[connection signal="item_activated" from="PartyMemberSelection/Selections" to="PartyMemberSelection" method="_on_Selections_item_activated"]

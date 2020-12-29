@@ -1,3 +1,34 @@
+# TODO metadata for AI usage.
+class PartyMemberAttack:
+	func _init(name, magnitude, accuracy):
+		self.name = name;
+		self.magnitude = magnitude;
+		self.accuracy = accuracy;
+
+	var name: String;
+	var type: int;
+	var magnitude: int;
+	# 0 - 1.0
+	var accuracy: float;
+
+enum {ABILITY_TYPE_NONE}
+# TODO metadata for AI usage.
+class PartyMemberAbility:
+	func _init(name, description, magnitude, accuracy, cost):
+		self.name = name;
+		self.description = description;
+		self.magnitude = magnitude;
+		self.accuracy = accuracy;
+		self.cost = cost;
+
+	var name: String;
+	var description: String;
+	var type: int;
+	var cost: int;
+	var magnitude: int;
+	# 0 - 1.0
+	var accuracy: float;
+
 const PartyMemberStatBlock = preload("res://game/PartyMemberStatBlock.gd");
 
 var party_icon: Texture;
@@ -48,11 +79,17 @@ func load_battle_portrait(name):
 func load_party_icon(name):
 	self.party_icon = load("res://images/party-icons/" + name + "_icon.png");
 
+func random_attack_index():
+	return randi() % len(attacks);
+
 func dead():
 	return health <= 0;
 
 func take_damage(amount):
 	health -= amount;
+
+func handle_ability(ability):
+	print("TOIDOASOIDIOSDIOSADIOASDIOSADOISAOID");
 
 func award_experience(amount):
 	experience += amount;
@@ -62,31 +99,3 @@ func award_experience(amount):
 		var remainder = experience_to_next - experience;
 		level += 1;
 		experience = remainder;
-
-class PartyMemberAttack:
-	func _init(name, magnitude, accuracy):
-		self.name = name;
-		self.magnitude = magnitude;
-		self.accuracy = accuracy;
-
-	var name: String;
-	var type: int;
-	var magnitude: int;
-	# 0 - 1.0
-	var accuracy: float;
-
-class PartyMemberAbility:
-	func _init(name, description, magnitude, accuracy, cost):
-		self.name = name;
-		self.description = description;
-		self.magnitude = magnitude;
-		self.accuracy = accuracy;
-		self.cost = cost;
-
-	var name: String;
-	var description: String;
-	var type: int;
-	var cost: int;
-	var magnitude: int;
-	# 0 - 1.0
-	var accuracy: float;

@@ -12,6 +12,7 @@ onready var right_side_info = $BattleUILayer/RightSidePartyInfo;
 onready var battle_turn_widget = $BattleUILayer/TurnMeter;
 onready var battle_log_widget = $BattleUILayer/Battlelog;
 
+# MAKE THIS OF TYPE P.C.
 var party_on_the_left;
 var party_on_the_right;
 
@@ -25,8 +26,36 @@ enum {BATTLE_TURN_ACTION_SKIP_TURN,
 	  BATTLE_TURN_ACTION_DO_ATTACK,
 	  BATTLE_TURN_ACTION_DO_ABILITY,
 	  BATTLE_TURN_ACTION_FLEE}
+
 func skip_turn(actor_self):
 	return BattleTurnAction.new(BATTLE_TURN_ACTION_SKIP_TURN, actor_self);
+
+func flee(actor_self):
+	return BattleTurnAction.new(BATTLE_TURN_ACTION_FLEE, actor_self);
+
+func ability(actor_self, actor_target, which_ability):
+	var ability_action = BattleTurnAction.new(BATTLE_TURN_ACTION_DO_ABILITY,
+											  actor_self);
+	ability_action.actor_target = actor_target;
+	ability_action.index = which_ability;
+
+	return ability_action;
+
+func use_item(actor_self, actor_target, which_item):
+	var ability_action = BattleTurnAction.new(BATTLE_TURN_ACTION_USE_ITEM,
+											  actor_self);
+	ability_action.actor_target = actor_target;
+	ability_action.index = which_item;
+
+	return ability_action;
+
+func attack(actor_self, actor_target, which_attack):
+	var attack_action = BattleTurnAction.new(BATTLE_TURN_ACTION_DO_ATTACK,
+											 actor_self);
+	attack_action.actor_target = actor_target;
+	attack_action.index = which_attack;
+
+	return attack_action;
 
 func push_message_to_battlelog(message):
 	var new_label = Label.new();
@@ -121,7 +150,8 @@ func _process(delta):
 			BATTLE_SIDE_NEITHER: pass;
 			BATTLE_SIDE_RIGHT:
 				if artificial_thinking_time >= ARTIFICIAL_THINKING_TIME_MAX:
-					battle_information.decided_action = skip_turn(active_actor);
+					# battle_information.decided_action = skip_turn(active_actor);
+					battle_information.decided_action = attack(active_actor, party_on_the_left[0], active_actor.random_attack_index());
 					artificial_thinking_time = 0;
 					print("beep boop robot thoughts");
 				else:
@@ -134,17 +164,36 @@ func _process(delta):
 	else:
 		print("Doing turn action.");
 
-		var turn_action	 = battle_information.decided_action;
+		var turn_action	= battle_information.decided_action;
+		var current_actor = turn_action.actor_self;
+		var target_actor = turn_action.actor_target;
+		
 		match turn_action.type:
 			BATTLE_TURN_ACTION_SKIP_TURN:
 				push_message_to_battlelog("Skipping turn...");
 			BATTLE_TURN_ACTION_USE_ITEM:
 				push_message_to_battlelog("Using item");
+				# WHOOPS, THIS DOESN'T WORK BECAUSE I ONLY PASS THE RAW PARTY MEMBER ARRAY.
+				# I SHOULD PASS THE ENTIRE PARTY INFO (gold and inventory).
+				# var selected_item = current_actor.get_item
 			BATTLE_TURN_ACTION_DO_ATTACK:
 				push_message_to_battlelog("attacking something");
+				# TODO figure out how I would do animation based on this.
+				var selected_attack = current_actor.attacks[turn_action.index];
+				push_message_to_battlelog(current_actor.name + " performs " + selected_attack.name);
+				# insert plays animation!
+				# TODO randomized attack hit chance or whatevers.
+				target_actor.take_damage(selected_attack.magnitude);
 			BATTLE_TURN_ACTION_DO_ABILITY: 
 				push_message_to_battlelog("using ability");
+				# TODO figure out how I would do animation based on this.
+				var selected_ability = current_actor.abilities[turn_action.index];
+				push_message_to_battlelog(current_actor.name + " performs " + selected_ability.name);
+				# insert plays animation!
+				# TODO randomized ability hit chance or whatevers. (unless it's like a friendly)
+				target_actor.handle_ability(selected_ability);
 			BATTLE_TURN_ACTION_FLEE: 
+				# this would emit a signal...
 				push_message_to_battlelog("fleeing from fight!");
 
 		if battle_information.decided_action.done():

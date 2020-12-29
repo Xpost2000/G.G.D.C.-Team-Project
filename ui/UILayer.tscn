@@ -11,8 +11,8 @@ layer = 0
 script = ExtResource( 3 )
 
 [node name="PartyMemberInformation" type="VBoxContainer" parent="."]
-margin_right = 303.0
-margin_bottom = 599.0
+margin_right = 394.0
+margin_bottom = 752.0
 script = ExtResource( 2 )
 __meta__ = {
 "_edit_group_": true,

@@ -10,6 +10,7 @@ var party_on_the_left;
 var party_on_the_right;
 
 const PartyMember = preload("res://game/PartyMember.gd");
+onready var party_member_card_prefab = preload("res://ui/PartyMemberCard.tscn");
 
 func _ready():
 	# stupid filler test data

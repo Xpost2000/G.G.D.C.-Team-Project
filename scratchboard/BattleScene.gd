@@ -16,27 +16,22 @@ var party_on_the_left;
 var party_on_the_right;
 
 const PartyMember = preload("res://game/PartyMember.gd");
+const BattleTurnAction = preload("res://game/BattleTurnAction.gd");
+const BattleTurnStatus = preload("res://game/BattleTurnStatus.gd");
+
+# keep this stupid thing in sync... Cause no enum types or no public export anyways...
+enum {BATTLE_TURN_ACTION_SKIP_TURN,
+	  BATTLE_TURN_ACTION_USE_ITEM,
+	  BATTLE_TURN_ACTION_DO_ATTACK,
+	  BATTLE_TURN_ACTION_DO_ABILITY,
+	  BATTLE_TURN_ACTION_FLEE}
+func skip_turn(actor_self):
+	return BattleTurnAction.new(BATTLE_TURN_ACTION_SKIP_TURN, actor_self);
 
 func push_message_to_battlelog(message):
 	var new_label = Label.new();
 	new_label.text = message;
 	battle_log_widget.add_child(new_label);
-
-class BattleTurnStatus:
-	var active_actor_index: int;
-	# This doesn't care about sides... Just give it in the order of initiative.
-	var participants: Array;
-
-	func _init():
-		self.active_actor_index = 0;
-		self.participants = [];
-
-	func advance_actor():
-		active_actor_index += 1;
-		active_actor_index %= len(participants);
-
-	func active_actor():
-		return participants[active_actor_index];
 
 var battle_information = BattleTurnStatus.new();
 
@@ -119,23 +114,48 @@ func advance_actor():
 const ARTIFICIAL_THINKING_TIME_MAX = 1.0;
 var artificial_thinking_time = 0;
 func _process(delta):
-	match whose_side_is_active(battle_information.active_actor()):
-		BATTLE_SIDE_NEITHER: pass;
-		BATTLE_SIDE_RIGHT:
-			# SKIP!
-			if artificial_thinking_time >= ARTIFICIAL_THINKING_TIME_MAX:
-				advance_actor();
-				artificial_thinking_time = 0;
-				print("beep boop robot thoughts");
-			else:
-				artificial_thinking_time += delta;
-		BATTLE_SIDE_LEFT:
-			if Input.is_action_just_pressed("ui_end"):
+	if !battle_information.decided_action:
+		var active_actor = battle_information.active_actor();
+
+		match whose_side_is_active(active_actor):
+			BATTLE_SIDE_NEITHER: pass;
+			BATTLE_SIDE_RIGHT:
+				if artificial_thinking_time >= ARTIFICIAL_THINKING_TIME_MAX:
+					battle_information.decided_action = skip_turn(active_actor);
+					artificial_thinking_time = 0;
+					print("beep boop robot thoughts");
+				else:
+					artificial_thinking_time += delta;
+				pass;
+			BATTLE_SIDE_LEFT:
+				if Input.is_action_just_pressed("ui_end"):
+					battle_information.decided_action = skip_turn(active_actor);
+				pass;
+	else:
+		print("Doing turn action.");
+
+		var turn_action	 = battle_information.decided_action;
+		match turn_action.type:
+			BATTLE_TURN_ACTION_SKIP_TURN:
 				push_message_to_battlelog("Skipping turn...");
-				advance_actor();
-			
+			BATTLE_TURN_ACTION_USE_ITEM:
+				push_message_to_battlelog("Using item");
+			BATTLE_TURN_ACTION_DO_ATTACK:
+				push_message_to_battlelog("attacking something");
+			BATTLE_TURN_ACTION_DO_ABILITY: 
+				push_message_to_battlelog("using ability");
+			BATTLE_TURN_ACTION_FLEE: 
+				push_message_to_battlelog("fleeing from fight!");
+
+		if battle_information.decided_action.done():
+			advance_actor();
+		else:
+			print("not done!");
+					
+				
 	battle_turn_widget.update_view_of_turns(battle_information);
 	update_battlelog(delta);
+
 
 # TODO, scuffy
 var on_opponent = false;

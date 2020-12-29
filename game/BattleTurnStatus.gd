@@ -13,6 +13,11 @@ func _init():
 func advance_actor():
 	active_actor_index += 1;
 	active_actor_index %= len(participants);
+
+	while active_actor().dead():
+		active_actor_index += 1;
+		active_actor_index %= len(participants);
+
 	decided_action = null;
 
 func active_actor():

@@ -47,8 +47,16 @@ func update_view_of_turns(turn_information):
 	for card in range(0, CARDS_TO_DISPLAY):
 		var turn_actor = turn_information.participants[(card+turn_information.active_actor_index) % len(turn_information.participants)];
 
+		var display_color;
+		if turn_actor.dead():
+			display_color = Color.darkred;
+		elif turn_information.active_actor() == turn_actor:
+			display_color = Color.green;
+		else:
+			display_color = Color.white;
+			
 		TurnStackLayout.add_child(make_texture_rect_card(
 			turn_actor.portrait_battle_icon,
 			card_width, card_height,
-			Color.green if turn_information.active_actor() == turn_actor else Color.white));
+			display_color));
 		

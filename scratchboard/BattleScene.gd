@@ -76,8 +76,8 @@ func _ready():
 		PartyMember.new("Sekiro", 150, 100)
 		];
 
-	party_on_the_left[0].load_battle_portrait("sekiro_test");
-	party_on_the_left[1].load_battle_portrait("sekijo_test");
+	party_on_the_left[1].load_battle_portrait("sekiro_test");
+	party_on_the_left[0].load_battle_portrait("sekijo_test");
 
 	party_on_the_right[0].load_battle_portrait("genichiro_test");
 	party_on_the_right[1].load_battle_portrait("isshin_test");

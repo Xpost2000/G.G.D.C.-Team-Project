@@ -1,5 +1,29 @@
 extends Node2D
 
+enum {
+	COMBAT_FINISHED_REASON_FLEE, # The winning party is the one that didn't flee.
+	COMBAT_FINISHED_REASON_DEFEAT_OF, # The winning party is the last one standing.
+	COMBAT_FINISHED_REASON_FORCED # There are no winners or losers.
+	}
+class CombatFinishReasonData:
+	func _init(type, winner, loser):
+		self.type = type;
+		self.winning_party = winner;
+		self.losing_party = loser;
+		
+	var type: int;
+	var winning_party: Array;
+	var losing_party: Array;
+
+func combat_finished_flee(initiator, opponent):
+	return CombatFinishReasonData.new(COMBAT_FINISHED_REASON_FLEE, opponent, initiator);
+func combat_finished_defeated(initiator, opponent):
+	return CombatFinishReasonData.new(COMBAT_FINISHED_REASON_DEFEAT_OF, initiator, opponent);
+func combat_finished_force(initiator, opponent):
+	return CombatFinishReasonData.new(COMBAT_FINISHED_REASON_FORCED, null, null);
+
+signal combat_finished(combat_finished_information);
+
 onready var battle_layer = $BattleLayer;
 onready var battle_ui_layer = $BattleUILayer;
 
@@ -116,7 +140,7 @@ func update_battlelog(delta):
 			var last = battle_log_widget.get_children()[messages_in_log-1];
 			battle_log_widget.remove_child(last);
 			battle_log_timer_to_clear_next_message = 0;
-		battle_log_timer_to_clear_next_message += delta;
+			battle_log_timer_to_clear_next_message += delta;
 	else:
 		battle_log_timer_to_clear_next_message = 0;
 
@@ -133,7 +157,7 @@ func whose_side_is_active(active_actor):
 		return BATTLE_SIDE_RIGHT;
 	elif active_actor in party_on_the_left:
 		return BATTLE_SIDE_LEFT;
-			
+	
 	return BATTLE_SIDE_NEITHER;
 
 func advance_actor():
@@ -156,11 +180,9 @@ func _process(delta):
 					print("beep boop robot thoughts");
 				else:
 					artificial_thinking_time += delta;
-				pass;
 			BATTLE_SIDE_LEFT:
 				if Input.is_action_just_pressed("ui_end"):
 					battle_information.decided_action = skip_turn(active_actor);
-				pass;
 	else:
 		print("Doing turn action.");
 
@@ -196,11 +218,31 @@ func _process(delta):
 				# this would emit a signal...
 				push_message_to_battlelog("fleeing from fight!");
 
+				var initiator = null;
+				var opponent = null;
+				match whose_side_is_active(current_actor):
+					BATTLE_SIDE_RIGHT:
+						initiator = party_on_the_right;
+						opponent = party_on_the_left;
+					BATTLE_SIDE_LEFT:
+						initiator = party_on_the_left;
+						opponent = party_on_the_right;
+
+				# TODO PartyMembers might want to know that they're part of a party...
+				emit_signal("combat_finished", combat_finished_flee(initiator, opponent));
+
+		# Check if the battle can end for any other reasons here...
+		# mainly, the only other reason is if EVERYONE on a party is dead.
+
+		# Basically this.
+		# if party_on_the_right.all_members_dead():
+		# if party_on_the_left.all_members_dead():
+
 		if battle_information.decided_action.done():
 			advance_actor();
 		else:
 			print("not done!");
-					
+			
 				
 	battle_turn_widget.update_view_of_turns(battle_information);
 	update_battlelog(delta);

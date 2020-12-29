@@ -16,7 +16,6 @@ const SPRINTING_STAMINA_MAX = 75;
 const STAMINA_REGENERATION_COOLDOWN_TIME = 1.66; # seconds
 
 var stamina_regeneration_cooldown_timer = 0.0;
-
 var sprinting_stamina = SPRINTING_STAMINA_MAX;
 
 const PartyMember = preload("res://game/PartyMember.gd");

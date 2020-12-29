@@ -144,15 +144,19 @@ func _ready():
 
 func movement_direction_vector():
 	var movement_direction = Vector2.ZERO;
-	if Input.is_action_pressed("ui_left"):
-		movement_direction.x = -1;
-	elif Input.is_action_pressed("ui_right"):
-		movement_direction.x = 1;
-		
-	if Input.is_action_pressed("ui_up"):
-		movement_direction.y = -1;
-	elif Input.is_action_pressed("ui_down"):
-		movement_direction.y = 1;
+
+	# consider based off main party member.
+	if !party_members[0].dead():
+		if Input.is_action_pressed("ui_left"):
+			movement_direction.x = -1;
+		elif Input.is_action_pressed("ui_right"):
+			movement_direction.x = 1;
+
+		if Input.is_action_pressed("ui_up"):
+			movement_direction.y = -1;
+		elif Input.is_action_pressed("ui_down"):
+			movement_direction.y = 1;
+
 	return movement_direction.normalized();
 
 const SPRINTING_SPEED = 512;
@@ -191,7 +195,7 @@ func _physics_process(delta):
 		var velocity = movement_direction * (SPRINTING_SPEED 
 		if sprinting && can_sprint() else WALKING_SPEED);
 
-		handle_sprinting(sprinting, delta);
+		handle_sprinting(sprinting && (movement_direction.length() != 0), delta);
 		velocity = move_and_slide(velocity, Vector2.UP);
 
 		if Input.is_action_just_pressed("game_interact_action"):

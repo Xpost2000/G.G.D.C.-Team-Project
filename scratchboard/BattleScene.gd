@@ -10,11 +10,17 @@ onready var left_side_info = $BattleUILayer/LeftSidePartyInfo;
 onready var right_side_info = $BattleUILayer/RightSidePartyInfo;
 
 onready var battle_turn_widget = $BattleUILayer/TurnMeter;
+onready var battle_log_widget = $BattleUILayer/Battlelog;
 
 var party_on_the_left;
 var party_on_the_right;
 
 const PartyMember = preload("res://game/PartyMember.gd");
+
+func push_message_to_battlelog(message):
+	var new_label = Label.new();
+	new_label.text = message;
+	battle_log_widget.add_child(new_label);
 
 class BattleTurnStatus:
 	var active_actor_index: int;
@@ -76,11 +82,27 @@ func _ready():
 	battle_information.participants += party_on_the_left;
 	battle_information.participants += party_on_the_right;
 
+# TODO Special message log labels, with their own special lifetime to delete themselves.
+const BATTLE_LOG_MESSAGE_CLEAR_TIME = 0.85;
+var battle_log_timer_to_clear_next_message = 0;
+func update_battlelog(delta):
+	var messages_in_log = len(battle_log_widget.get_children());
+	if messages_in_log > 0:
+		if battle_log_timer_to_clear_next_message >= BATTLE_LOG_MESSAGE_CLEAR_TIME:
+			var last = battle_log_widget.get_children()[messages_in_log-1];
+			battle_log_widget.remove_child(last);
+			battle_log_timer_to_clear_next_message = 0;
+		battle_log_timer_to_clear_next_message += delta;
+	else:
+		battle_log_timer_to_clear_next_message = 0;
+
 func _process(delta):
 	if Input.is_action_just_pressed("ui_end"):
 		battle_information.advance_actor();
+		push_message_to_battlelog("The turn goes to " + battle_information.active_actor().name);
 
 	battle_turn_widget.update_view_of_turns(battle_information);
+	update_battlelog(delta);
 
 # TODO, scuffy
 var on_opponent = false;

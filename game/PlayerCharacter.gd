@@ -17,79 +17,9 @@ const STAMINA_REGENERATION_COOLDOWN_TIME = 1.66; # seconds
 
 var stamina_regeneration_cooldown_timer = 0.0;
 
-class PartyMemberStatBlock:
-	func _init():
-		self.dexterity = 10;
-		self.constitution = 10;
-		self.willpower = 10;
-		self.intelligence = 10;
-		self.charisma = 10;
-		self.luck = 10;
-
-	var strength: int;
-	var dexterity: int;
-	var constitution: int;
-	var willpower: int;
-	var intelligence: int;
-	var charisma: int;
-	var luck: int;
-
-
-# Basically dummy holders.
-class PartyMemberAttack:
-	var name: String;
-	var type: int;
-	var magnitude: int;
-	# 0 - 1.0
-	var accuracy: float;
-
-class PartyMemberAbility:
-	var name: String;
-	var description: String;
-	var type: int;
-	var magnitude: int;
-	# 0 - 1.0
-	var accuracy: float;
-
-class PartyMember:
-	func _init(name, health, defense):
-		self.name = name;
-		self.health = health;
-		self.max_health = health;
-		self.defense = defense;
-
-		self.level = 1;
-		self.experience = 0;
-		self.experience_to_next = 150;
-
-		self.party_icon = load("res://images/party-icons/unknown_character_icon.png");
-		self.stats = PartyMemberStatBlock.new();
-
-		self.abilities = [];
-		self.attacks = [];
-
-	func dead():
-		return health <= 0;
-
-	var party_icon: Texture;
-
-	var name: String;
-	var health: int;
-	var max_health: int;
-
-	var defense: int;
-
-	# of their respective types...
-	var abilities: Array;
-	var attacks: Array;
-
-	var level: int;
-	var experience: int;
-	var experience_to_next: int;
-
-	var stats: PartyMemberStatBlock;
-
 var sprinting_stamina = SPRINTING_STAMINA_MAX;
+
+const PartyMember = preload("res://game/PartyMember.gd");
 
 var party_members = [];
 var inventory = [];

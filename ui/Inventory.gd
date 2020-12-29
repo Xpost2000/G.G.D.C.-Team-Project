@@ -31,6 +31,8 @@ func _process(delta):
 
 func _on_InventoryItemList_item_activated(index):
 	var inventory_item_entry_information = currently_observing_inventory[index];
+
+	# TODO change to use new functions defined.
 	if inventory_item_entry_information[1] >= 0:
 		inventory_item_entry_information[1] -= 1;
 		if (len(currently_observing_thing.party_members) == 1):

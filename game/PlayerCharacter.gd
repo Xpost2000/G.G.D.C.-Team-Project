@@ -34,6 +34,23 @@ class PartyMemberStatBlock:
 	var charisma: int;
 	var luck: int;
 
+
+# Basically dummy holders.
+class PartyMemberAttack:
+	var name: String;
+	var type: int;
+	var magnitude: int;
+	# 0 - 1.0
+	var accuracy: float;
+
+class PartyMemberAbility:
+	var name: String;
+	var description: String;
+	var type: int;
+	var magnitude: int;
+	# 0 - 1.0
+	var accuracy: float;
+
 class PartyMember:
 	func _init(name, health, defense):
 		self.name = name;
@@ -48,6 +65,12 @@ class PartyMember:
 		self.party_icon = load("res://images/party-icons/unknown_character_icon.png");
 		self.stats = PartyMemberStatBlock.new();
 
+		self.abilities = [];
+		self.attacks = [];
+
+	func dead():
+		return health <= 0;
+
 	var party_icon: Texture;
 
 	var name: String;
@@ -55,6 +78,10 @@ class PartyMember:
 	var max_health: int;
 
 	var defense: int;
+
+	# of their respective types...
+	var abilities: Array;
+	var attacks: Array;
 
 	var level: int;
 	var experience: int;
@@ -73,7 +100,34 @@ func add_party_member_default(name):
 	party_members.push_back(PartyMember.new(name, 100, 100));
 
 func add_party_member(party_member):
-	pass;
+	party_members.push_back(party_member);
+
+# -1 means all.
+func find_item_of_name_in_inventory(item_name):
+	var index_of_item_to_remove = -1;
+	for item in inventory:
+		if item[0] == item_name:
+			index_of_item_to_remove = inventory.find(item);
+			break;
+	return index_of_item_to_remove;
+	
+func remove_item_from_inventory(item_name, amount=-1):
+	var index_of_item_to_remove = find_item_of_name_in_inventory(item_name);
+	if amount == -1:
+		inventory[index_of_item_to_remove][1] = 0;
+	else:
+		inventory[index_of_item_to_remove][1] -= 1;
+
+	if inventory[index_of_item_to_remove][1] <= 0:
+		inventory.erase(inventory[index_of_item_to_remove]);
+
+func add_item(item_name, amount=1):
+	var index_of_item = find_item_of_name_in_inventory(item_name);
+
+	if index_of_item == -1:
+		inventory.append([item_name, amount]);
+	else:
+		inventory[index_of_item][1] += 1;
 
 func _ready():
 	add_party_member_default("Mr. Protagonist");
@@ -94,7 +148,7 @@ func movement_direction_vector():
 	elif Input.is_action_pressed("ui_down"):
 		movement_direction.y = 1;
 	return movement_direction.normalized();
-	
+
 const SPRINTING_SPEED = 512;
 const WALKING_SPEED = SPRINTING_SPEED/2;
 
@@ -112,10 +166,10 @@ func handle_sprinting(sprinting, delta):
 			stamina_regeneration_cooldown_timer = STAMINA_REGENERATION_COOLDOWN_TIME;
 	else:
 		sprinting_stamina += delta * 25;
- 
+		
 	if stamina_regeneration_cooldown_timer > 0:
 		stamina_regeneration_cooldown_timer -= delta;
-	
+		
 	sprinting_stamina = clamp(sprinting_stamina, 0, SPRINTING_STAMINA_MAX);
 
 var self_paused = false;
@@ -136,7 +190,7 @@ func _physics_process(delta):
 
 		if Input.is_action_just_pressed("game_interact_action"):
 			handle_interact_key(delta);
-		
+			
 	emit_signal("report_inventory_contents",
 				self, inventory);
 	emit_signal("report_sprinting_information", 

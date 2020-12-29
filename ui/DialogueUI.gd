@@ -95,9 +95,10 @@ var initial_opening = false;
 
 # always assume in dialogue_files/
 func load_dialogue_from_file(filename):
-	var file_contents = Utilities.read_entire_file_as_string("dialogue_files/" + file_name);
-	print("TODO TODO TODO");
-	.error_out_please();
+	pass;
+	# var file_contents = Utilities.read_entire_file_as_string("dialogue_files/" + file_name);
+	# print("TODO TODO TODO");
+	# .error_out_please();
 
 func open_test_dialogue():
 	print("okay");

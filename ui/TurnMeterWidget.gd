@@ -39,8 +39,13 @@ func _ready():
 
 func update_view_of_turns(turn_information):
 	clear_self();
+	# I can be more flexible with turn information later
+	# by defining artifical cooldowns or something...
+
+	# This is basically what happens when cooldown = 0, which means they
+	# will be added on at the same position or something.
 	for card in range(0, CARDS_TO_DISPLAY):
-		var turn_actor = turn_information.participants[card % len(turn_information.participants)];
+		var turn_actor = turn_information.participants[(card+turn_information.active_actor_index) % len(turn_information.participants)];
 
 		TurnStackLayout.add_child(make_texture_rect_card(
 			turn_actor.portrait_battle_icon,

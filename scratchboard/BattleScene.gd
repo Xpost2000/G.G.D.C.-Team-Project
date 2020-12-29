@@ -75,6 +75,11 @@ func _ready():
 
 	battle_information.participants += party_on_the_left;
 	battle_information.participants += party_on_the_right;
+
+func _process(delta):
+	if Input.is_action_just_pressed("ui_end"):
+		battle_information.advance_actor();
+
 	battle_turn_widget.update_view_of_turns(battle_information);
 
 # TODO, scuffy

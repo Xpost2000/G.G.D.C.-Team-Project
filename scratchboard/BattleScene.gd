@@ -96,11 +96,44 @@ func update_battlelog(delta):
 	else:
 		battle_log_timer_to_clear_next_message = 0;
 
-func _process(delta):
-	if Input.is_action_just_pressed("ui_end"):
-		battle_information.advance_actor();
-		push_message_to_battlelog("The turn goes to " + battle_information.active_actor().name);
+# Technically... This doesn't matter to me... What I really care about
+# is the "brain" controller.
+# For now I'm ALWAYS assuming the player side is on the left, which is why I'm doing
+# this...
+# Ideally, I'd start the battle and pass "controller_type" to the sides so that way we can have
+# the player on the left side or something.
+enum {BATTLE_SIDE_NEITHER, BATTLE_SIDE_RIGHT, BATTLE_SIDE_LEFT};
 
+func whose_side_is_active(active_actor):
+	if active_actor in party_on_the_right:
+		return BATTLE_SIDE_RIGHT;
+	elif active_actor in party_on_the_left:
+		return BATTLE_SIDE_LEFT;
+			
+	return BATTLE_SIDE_NEITHER;
+
+func advance_actor():
+	battle_information.advance_actor();
+	push_message_to_battlelog("The turn goes to " + battle_information.active_actor().name);
+	
+const ARTIFICIAL_THINKING_TIME_MAX = 1.0;
+var artificial_thinking_time = 0;
+func _process(delta):
+	match whose_side_is_active(battle_information.active_actor()):
+		BATTLE_SIDE_NEITHER: pass;
+		BATTLE_SIDE_RIGHT:
+			# SKIP!
+			if artificial_thinking_time >= ARTIFICIAL_THINKING_TIME_MAX:
+				advance_actor();
+				artificial_thinking_time = 0;
+				print("beep boop robot thoughts");
+			else:
+				artificial_thinking_time += delta;
+		BATTLE_SIDE_LEFT:
+			if Input.is_action_just_pressed("ui_end"):
+				push_message_to_battlelog("Skipping turn...");
+				advance_actor();
+			
 	battle_turn_widget.update_view_of_turns(battle_information);
 	update_battlelog(delta);
 

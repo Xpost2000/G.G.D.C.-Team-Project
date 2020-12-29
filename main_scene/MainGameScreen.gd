@@ -46,3 +46,8 @@ func _on_PlayerCharacter_test_open_conversation():
 	# emit_signal("ask_ui_to_open_and_begin_dialogue_file", "");
 	emit_signal("ask_ui_to_open_test_dialogue");
 	print("open test convo");
+
+func _process(delta):
+	if player_node.all_members_dead():
+		print("everyone died. I'm acknowledging this to work later.");
+		player_node.self_paused = true;

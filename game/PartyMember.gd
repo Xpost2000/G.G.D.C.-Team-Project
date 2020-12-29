@@ -1,6 +1,7 @@
 const PartyMemberStatBlock = preload("res://game/PartyMemberStatBlock.gd");
 
 var party_icon: Texture;
+var portrait_battle_icon: Texture;
 
 var name: String;
 var health: int;
@@ -35,10 +36,14 @@ func _init(name, health, defense, mana=100):
 	self.experience_to_next = 150;
 
 	self.party_icon = load("res://images/party-icons/unknown_character_icon.png");
+	self.portrait_battle_icon = load("res://images/party-icons/unknown_character_turn_portrait.png");
 	self.stats = PartyMemberStatBlock.new();
 
 	self.abilities = [];
 	self.attacks = [];
+
+func load_battle_portrait(name):
+	self.portrait_battle_icon = load("res://images/battle/portraits/" + name + "_turn_portrait.png");
 
 func load_party_icon(name):
 	self.party_icon = load("res://images/party-icons/" + name + "_icon.png");

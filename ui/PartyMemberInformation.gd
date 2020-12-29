@@ -5,7 +5,7 @@ func remove_all_children():
 	for child in get_children():
 		remove_child(child);
 
-func update_with_party_information(party_members, amount_of_gold):
+func update_with_party_information(party_members, amount_of_gold=0):
 	remove_all_children();
 
 	for party_member in party_members:

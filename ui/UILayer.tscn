@@ -1,7 +1,7 @@
 [gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://ui/InventoryUI.tscn" type="PackedScene" id=1]
-[ext_resource path="res://ui/PartyMemberInformation.gd" type="Script" id=2]
+[ext_resource path="res://ui/PartyMemberInformationLayoutUI.tscn" type="PackedScene" id=2]
 [ext_resource path="res://ui/UILayer.gd" type="Script" id=3]
 [ext_resource path="res://ui/DimmerRect.gd" type="Script" id=4]
 [ext_resource path="res://ui/DialogueUI.tscn" type="PackedScene" id=5]
@@ -10,14 +10,7 @@
 layer = 0
 script = ExtResource( 3 )
 
-[node name="PartyMemberInformation" type="VBoxContainer" parent="."]
-margin_right = 394.0
-margin_bottom = 752.0
-script = ExtResource( 2 )
-__meta__ = {
-"_edit_group_": true,
-"_edit_use_anchors_": false
-}
+[node name="PartyMemberInformation" parent="." instance=ExtResource( 2 )]
 
 [node name="SprintingStaminaBar" type="ColorRect" parent="."]
 margin_left = 424.0

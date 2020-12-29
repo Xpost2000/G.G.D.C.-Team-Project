@@ -6,11 +6,33 @@ onready var battle_ui_layer = $BattleUILayer;
 onready var left_side_participants = $BattleLayer/LeftSideParticipants;
 onready var right_side_participants = $BattleLayer/RightSideParticipants;
 
+onready var left_side_info = $BattleUILayer/LeftSidePartyInfo;
+onready var right_side_info = $BattleUILayer/RightSidePartyInfo;
+
+onready var battle_turn_widget = $BattleUILayer/TurnMeter;
+
 var party_on_the_left;
 var party_on_the_right;
 
 const PartyMember = preload("res://game/PartyMember.gd");
-onready var party_member_card_prefab = preload("res://ui/PartyMemberCard.tscn");
+
+class BattleTurnStatus:
+	var active_actor_index: int;
+	# This doesn't care about sides... Just give it in the order of initiative.
+	var participants: Array;
+
+	func _init():
+		self.active_actor_index = 0;
+		self.participants = [];
+
+	func advance_actor():
+		active_actor_index += 1;
+		active_actor_index %= len(participants);
+
+	func active_actor():
+		return participants[active_actor_index];
+
+var battle_information = BattleTurnStatus.new();
 
 func _ready():
 	# stupid filler test data
@@ -21,8 +43,14 @@ func _ready():
 
 	party_on_the_left = [
 		PartyMember.new("Sekijo", 150, 100),
-		PartyMember.new("Sekiro", 150, 100),
+		PartyMember.new("Sekiro", 150, 100)
 		];
+
+	party_on_the_left[0].load_battle_portrait("sekiro_test");
+	party_on_the_left[1].load_battle_portrait("sekijo_test");
+
+	party_on_the_right[0].load_battle_portrait("genichiro_test");
+	party_on_the_right[1].load_battle_portrait("isshin_test");
 
 	party_on_the_left[0].attacks = [PartyMember.PartyMemberAttack.new("Vertical Slash", 67, 1),
 									PartyMember.PartyMemberAttack.new("Thrust", 90, 0.6)];
@@ -41,7 +69,13 @@ func _ready():
 									 PartyMember.PartyMemberAttack.new("Dragonflash", 140, 0.95)];
 	party_on_the_right[1].abilities = [PartyMember.PartyMemberAbility.new("Dragonslash", "Mushin art", 440, 1.0, 350),
 									   PartyMember.PartyMemberAbility.new("One Mind", "Death", 600, 1.5, 300)];
-	pass
+	
+	left_side_info.update_with_party_information(party_on_the_left);
+	right_side_info.update_with_party_information(party_on_the_right);
+
+	battle_information.participants += party_on_the_left;
+	battle_information.participants += party_on_the_right;
+	battle_turn_widget.update_view_of_turns(battle_information);
 
 # TODO, scuffy
 var on_opponent = false;

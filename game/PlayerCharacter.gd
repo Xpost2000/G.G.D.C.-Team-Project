@@ -96,6 +96,12 @@ var inventory = [];
 
 var gold = 0;
 
+func all_members_dead():
+	for party_member in party_members:
+		if !party_member.dead():
+			return false;
+	return true;
+
 func add_party_member_default(name):
 	party_members.push_back(PartyMember.new(name, 100, 100));
 

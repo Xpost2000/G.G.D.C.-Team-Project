@@ -59,7 +59,10 @@ func _physics_process(delta):
 
 func _ready():
 	set_walking_speed(100);
-	add_party_member_default("The Father");
-	add_party_member_default("The Son");
-	add_party_member_default("The Holy Spirit");
+	var father = add_party_member_default("The Father");
+	father.load_battle_portrait("isshin_test");
+	var son = add_party_member_default("The Son");
+	son.load_battle_portrait("sekijo_test");
+	var spirit = add_party_member_default("The Holy Spirit");
+	spirit.load_battle_portrait("genichiro_test");
 	pass

@@ -52,12 +52,13 @@ func _on_PlayerCharacter_test_open_conversation():
 
 func _on_PlayerCharacter_request_to_open_battle(left, right):
 	print("starting fight")
+	# print(left.party_members);
+	# print(right.party_members);
+	GameGlobals.switch_to_scene(2);
+	GameGlobals.battle_screen.begin_battle(left, right);
 	pass;
 
 func _process(delta):
-	if Input.is_action_just_pressed("ui_end"):
-		GameGlobals.switch_to_scene(2);
-
 	if player_node.all_members_dead():
 		player_node.self_paused = true;
 		# stupid but whatever.

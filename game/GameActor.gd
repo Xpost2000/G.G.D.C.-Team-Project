@@ -31,10 +31,13 @@ func all_members_dead():
 	return true;
 
 func add_party_member_default(name):
-	party_members.push_back(PartyMember.new(name, 100, 100));
+	var new_member = PartyMember.new(name, 100, 100)
+	party_members.push_back(new_member);
+	return new_member;
 
 func add_party_member(party_member):
 	party_members.push_back(party_member);
+	return party_member;
 
 # -1 means all.
 func find_item_of_name_in_inventory(item_name):

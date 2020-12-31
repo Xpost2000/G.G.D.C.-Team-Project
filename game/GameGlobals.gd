@@ -28,9 +28,10 @@ var battle_screen;
 enum{ MAIN_GAME_SCENE,
 	  MAIN_MENU_SCENE,
 	  BATTLE_SCENE }
-
-func _deferred_set_scene(scene):
-	print("SWITCH SCENE");
+	
+# I'm not deferring this cause I don't delete the
+# scenes... Ever...
+func switch_to_scene(scene):
 	var scene_object;
 	match scene:
 		MAIN_GAME_SCENE: scene_object = main_game_screen;
@@ -41,9 +42,6 @@ func _deferred_set_scene(scene):
 	var last_child = root.get_children()[-1];
 	root.remove_child(last_child);
 	root.add_child(scene_object);
-	
-func switch_to_scene(scene_val):
-	call_deferred("_deferred_set_scene", scene_val);
 
 func _ready():
 	print("preloading all scenes at least once.");

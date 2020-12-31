@@ -88,8 +88,18 @@ func push_message_to_battlelog(message):
 
 var battle_information = BattleTurnStatus.new();
 
+func begin_battle(left, right):
+	party_on_the_left = left;
+	party_on_the_right = right;
+
+	left_side_info.update_with_party_information(party_on_the_left.party_members);
+	right_side_info.update_with_party_information(party_on_the_right.party_members);
+
+	battle_information.participants = [];
+	battle_information.participants += party_on_the_left.party_members;
+	battle_information.participants += party_on_the_right.party_members;
+
 func _ready():
-	# stupid filler test data
 	party_on_the_right = [
 		PartyMember.new("Genichiro Ashina", 150, 100),
 		PartyMember.new("Isshin Ashina", 450, 100),
@@ -153,9 +163,9 @@ func update_battlelog(delta):
 enum {BATTLE_SIDE_NEITHER, BATTLE_SIDE_RIGHT, BATTLE_SIDE_LEFT};
 
 func whose_side_is_active(active_actor):
-	if active_actor in party_on_the_right:
+	if active_actor in party_on_the_right.party_members:
 		return BATTLE_SIDE_RIGHT;
-	elif active_actor in party_on_the_left:
+	elif active_actor in party_on_the_left.party_members:
 		return BATTLE_SIDE_LEFT;
 	
 	return BATTLE_SIDE_NEITHER;
@@ -167,9 +177,8 @@ func advance_actor():
 const ARTIFICIAL_THINKING_TIME_MAX = 1.0;
 var artificial_thinking_time = 0;
 func _process(delta):
-	if Input.is_action_just_pressed("ui_end"):
-		GameGlobals.switch_to_scene(0);
-
+	# if Input.is_action_just_pressed("ui_end"):
+	#	GameGlobals.switch_to_scene(0);
 	if !battle_information.decided_action:
 		var active_actor = battle_information.active_actor();
 
@@ -178,7 +187,9 @@ func _process(delta):
 			BATTLE_SIDE_RIGHT:
 				if artificial_thinking_time >= ARTIFICIAL_THINKING_TIME_MAX:
 					# battle_information.decided_action = skip_turn(active_actor);
-					battle_information.decided_action = attack(active_actor, party_on_the_left[0], active_actor.random_attack_index());
+					battle_information.decided_action = attack(active_actor,
+															   party_on_the_left.party_members[0],
+															   active_actor.random_attack_index());
 					artificial_thinking_time = 0;
 					print("beep boop robot thoughts");
 				else:
@@ -226,10 +237,10 @@ func _process(delta):
 				match whose_side_is_active(current_actor):
 					BATTLE_SIDE_RIGHT:
 						initiator = party_on_the_right;
-						opponent = party_on_the_left;
+						opponent = party_on_the_left.party_members;
 					BATTLE_SIDE_LEFT:
 						initiator = party_on_the_left;
-						opponent = party_on_the_right;
+						opponent = party_on_the_right.party_members;
 
 				# TODO PartyMembers might want to know that they're part of a party...
 				emit_signal("combat_finished", combat_finished_flee(initiator, opponent));

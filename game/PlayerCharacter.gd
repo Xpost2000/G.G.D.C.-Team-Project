@@ -12,8 +12,10 @@ signal request_to_open_battle(left, right);
 signal test_open_conversation;
 
 func _ready():
-	add_party_member_default("Mr. Protagonist");
-	add_party_member_default("Mr. Deuteragonist");
+	var protag = add_party_member_default("Mr. Protagonist");
+	protag.load_battle_portrait("sekijo_test");
+	var deutag = add_party_member_default("Mr. Deuteragonist");
+	protag.load_battle_portrait("sekiro_test");
 	inventory = [["healing_grass", 15],
 				 ["healing_pod", 5]];
 	pass;

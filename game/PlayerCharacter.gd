@@ -61,6 +61,7 @@ const LevelTransitionClass = preload("res://game/LevelTransition.gd");
 # to that, and it would take more time than doing this.
 var just_transitioned_from_other_level = false;
 func _on_InteractableArea_area_entered(area):
+	print("OKA?")
 	if area is LevelTransitionClass:
 		if just_transitioned_from_other_level:
 			just_transitioned_from_other_level = false;

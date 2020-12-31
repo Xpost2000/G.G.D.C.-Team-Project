@@ -1,10 +1,45 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=20 format=2]
 
 [ext_resource path="res://ui/InventoryUI.tscn" type="PackedScene" id=1]
 [ext_resource path="res://ui/PartyMemberInformationLayoutUI.tscn" type="PackedScene" id=2]
 [ext_resource path="res://ui/UILayer.gd" type="Script" id=3]
 [ext_resource path="res://ui/DimmerRect.gd" type="Script" id=4]
 [ext_resource path="res://ui/DialogueUI.tscn" type="PackedScene" id=5]
+[ext_resource path="res://fonts/Alkhemikal.ttf" type="DynamicFontData" id=6]
+
+[sub_resource type="DynamicFont" id=1]
+size = 64
+font_data = ExtResource( 6 )
+
+[sub_resource type="DynamicFont" id=2]
+size = 32
+use_mipmaps = true
+font_data = ExtResource( 6 )
+
+[sub_resource type="Theme" id=3]
+default_font = SubResource( 2 )
+
+[sub_resource type="StyleBoxFlat" id=14]
+bg_color = Color( 0, 0, 0, 1 )
+
+[sub_resource type="StyleBoxEmpty" id=6]
+
+[sub_resource type="StyleBoxEmpty" id=7]
+
+[sub_resource type="StyleBoxEmpty" id=8]
+
+[sub_resource type="StyleBoxEmpty" id=4]
+
+[sub_resource type="StyleBoxFlat" id=15]
+bg_color = Color( 0, 0, 0, 1 )
+
+[sub_resource type="StyleBoxEmpty" id=10]
+
+[sub_resource type="StyleBoxEmpty" id=11]
+
+[sub_resource type="StyleBoxEmpty" id=12]
+
+[sub_resource type="StyleBoxEmpty" id=13]
 
 [node name="UILayer" type="CanvasLayer"]
 layer = 0
@@ -35,3 +70,56 @@ disabled = true
 [node name="InventoryUI" parent="." instance=ExtResource( 1 )]
 
 [node name="DialogueUI" parent="." instance=ExtResource( 5 )]
+
+[node name="DeathScreenUI" type="Control" parent="."]
+margin_right = 40.0
+margin_bottom = 40.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Background" type="ColorRect" parent="DeathScreenUI"]
+margin_right = 1280.0
+margin_bottom = 720.0
+color = Color( 0.309804, 0, 0.0156863, 0.576471 )
+
+[node name="\?" type="Label" parent="DeathScreenUI"]
+margin_top = 87.0
+margin_right = 1280.0
+margin_bottom = 720.0
+custom_fonts/font = SubResource( 1 )
+text = "DEATH...
+
+Better luck next time."
+align = 1
+
+[node name="Selections" type="VBoxContainer" parent="DeathScreenUI"]
+margin_left = 376.836
+margin_top = 398.531
+margin_right = 848.836
+margin_bottom = 702.531
+theme = SubResource( 3 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Restart" type="Button" parent="DeathScreenUI/Selections"]
+margin_right = 472.0
+margin_bottom = 32.0
+custom_styles/hover = SubResource( 14 )
+custom_styles/pressed = SubResource( 6 )
+custom_styles/focus = SubResource( 7 )
+custom_styles/disabled = SubResource( 8 )
+custom_styles/normal = SubResource( 4 )
+text = "Restart Game"
+
+[node name="Quit" type="Button" parent="DeathScreenUI/Selections"]
+margin_top = 36.0
+margin_right = 472.0
+margin_bottom = 68.0
+custom_styles/hover = SubResource( 15 )
+custom_styles/pressed = SubResource( 10 )
+custom_styles/focus = SubResource( 11 )
+custom_styles/disabled = SubResource( 12 )
+custom_styles/normal = SubResource( 13 )
+text = "Quit Game"

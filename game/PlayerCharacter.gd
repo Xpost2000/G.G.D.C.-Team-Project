@@ -111,14 +111,13 @@ func handle_sprinting(sprinting, delta):
 		
 	sprinting_stamina = clamp(sprinting_stamina, 0, SPRINTING_STAMINA_MAX);
 
-var self_paused = false;
 var sprinting = false;
 
 func handle_interact_key(delta):
 	emit_signal("test_open_conversation");
 
 func _physics_process(delta):
-	if !self_paused:
+	if !GameGlobals.paused():
 		var movement_direction = movement_direction_vector();
 		sprinting = Input.is_action_pressed("game_sprinting_action");
 		var velocity = movement_direction * (SPRINTING_SPEED 
@@ -151,6 +150,3 @@ func _on_InteractableArea_area_entered(area):
 			just_transitioned_from_other_level = false;
 		else:
 			emit_signal("transitioning_to_another_level", self, area);
-
-func _on_UILayer_set_game_action_pause_state(value):
-	self_paused = value;

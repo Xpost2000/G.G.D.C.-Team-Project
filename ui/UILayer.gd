@@ -1,6 +1,5 @@
 extends CanvasLayer
 signal notify_finished_level_load_related_fading();
-signal set_game_action_pause_state(value);
 
 onready var stamina_bar = $SprintingStaminaBar;
 onready var stamina_bar_max_dimensions = $SprintingStaminaBar.rect_size;
@@ -71,17 +70,17 @@ func _process(delta):
 	if showing_death:
 		inventory_ui.hide();
 		death_ui.show();
-		emit_signal("set_game_action_pause_state", true);
+		GameGlobals.pause();
 	else:	
 		death_ui.hide();
 		if !showing_inventory:
 			inventory_ui.hide();
 			inventory_ui.set_process(false);
-			emit_signal("set_game_action_pause_state", false);
+			GameGlobals.resume();
 		else:
 			inventory_ui.show();
 			inventory_ui.set_process(true);
-			emit_signal("set_game_action_pause_state", true);
+			GameGlobals.pause();
 
 func show_inventory():
 	showing_inventory = true;

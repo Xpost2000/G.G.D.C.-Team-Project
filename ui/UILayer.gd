@@ -6,6 +6,7 @@ onready var stamina_bar = $SprintingStaminaBar;
 onready var stamina_bar_max_dimensions = $SprintingStaminaBar.rect_size;
 onready var ui_dimmer = $DimmerRect;
 onready var inventory_ui = $InventoryUI;
+onready var death_ui = $DeathScreenUI;
 onready var party_member_information_holder = $PartyMemberInformation;
 onready var dialogue_ui = $DialogueUI;
 
@@ -45,7 +46,9 @@ var fade_hold_timer = 0.0;
 var fade_hold_timer_max = 0.5;
 
 var showing_inventory = false;
+var showing_death = false;
 
+enum {UI_STATE_INVENTORY, UI_STATE_DEATH};
 func _process(delta):
 	if Input.is_action_just_pressed("game_action_open_inventory"):
 		toggle_inventory();
@@ -65,20 +68,29 @@ func _process(delta):
 			else:
 				fade_hold_timer = 0;
 
-	if !showing_inventory:
+	if showing_death:
 		inventory_ui.hide();
-		inventory_ui.set_process(false);
-	else:
-		inventory_ui.show();
-		inventory_ui.set_process(true);
+		death_ui.show();
+		emit_signal("set_game_action_pause_state", true);
+	else:	
+		death_ui.hide();
+		if !showing_inventory:
+			inventory_ui.hide();
+			inventory_ui.set_process(false);
+			emit_signal("set_game_action_pause_state", false);
+		else:
+			inventory_ui.show();
+			inventory_ui.set_process(true);
+			emit_signal("set_game_action_pause_state", true);
 
 func show_inventory():
 	showing_inventory = true;
-	emit_signal("set_game_action_pause_state", true);
 
 func close_inventory():
 	showing_inventory = false;
-	emit_signal("set_game_action_pause_state", false);
+
+func show_death(val):
+	showing_death = val;
 
 func toggle_inventory():
 	if showing_inventory:

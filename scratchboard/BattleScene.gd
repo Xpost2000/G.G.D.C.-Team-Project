@@ -167,6 +167,9 @@ func advance_actor():
 const ARTIFICIAL_THINKING_TIME_MAX = 1.0;
 var artificial_thinking_time = 0;
 func _process(delta):
+	if Input.is_action_just_pressed("ui_end"):
+		GameGlobals.switch_to_scene(0);
+
 	if !battle_information.decided_action:
 		var active_actor = battle_information.active_actor();
 

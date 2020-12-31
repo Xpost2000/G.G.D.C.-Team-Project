@@ -1,5 +1,4 @@
 extends Node2D
-
 # Signals might be not needed...
 signal notify_ui_of_level_load();
 signal ask_ui_to_open_test_dialogue();
@@ -50,8 +49,15 @@ func _on_UILayer_notify_finished_level_load_related_fading():
 func _on_PlayerCharacter_test_open_conversation():
 	emit_signal("ask_ui_to_open_test_dialogue");
 	print("open test convo");
-	
+
+func _on_PlayerCharacter_request_to_open_battle(left, right):
+	print("starting fight")
+	pass;
+
 func _process(delta):
+	if Input.is_action_just_pressed("ui_end"):
+		GameGlobals.switch_to_scene(2);
+
 	if player_node.all_members_dead():
 		player_node.self_paused = true;
 		# stupid but whatever.

@@ -41,21 +41,25 @@ func decide_new_action():
 
 var thought_action = nothing_action();
 func _process(delta):
-	if think_timer >= TIME_UNTIL_NEXT_THINK:
-		thought_action = decide_new_action();
-		think_timer = 0;
+	if !all_members_dead():
+		if think_timer >= TIME_UNTIL_NEXT_THINK:
+			thought_action = decide_new_action();
+			think_timer = 0;
 
-	think_timer += delta;
+		think_timer += delta;
 
 func _physics_process(delta):
-	match thought_action.type:
-		ACTION_TYPE_NOTHING: pass;
-		ACTION_TYPE_WALK_IN_DIRECTION:
-			var successful_move = handle_movement(false, thought_action.walk_direction, delta);
-			if !successful_move:
-				force_next_think();
+	if !all_members_dead():
+		match thought_action.type:
+			ACTION_TYPE_NOTHING: pass;
+			ACTION_TYPE_WALK_IN_DIRECTION:
+				var successful_move = handle_movement(false, thought_action.walk_direction, delta);
+				if !successful_move:
+					force_next_think();
 
 func _ready():
 	set_walking_speed(100);
-	add_party_member_default("Jesus of Nazerith");
+	add_party_member_default("The Father");
+	add_party_member_default("The Son");
+	add_party_member_default("The Holy Spirit");
 	pass

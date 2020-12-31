@@ -1,4 +1,5 @@
 extends "res://game/GameActor.gd"
+const GameActor = preload("res://game/GameActor.gd");
 
 # our main issue, is that these guys don't represent one.
 # This is a PARTY, not a singular entity. That's the main thing we
@@ -7,6 +8,7 @@ signal transitioning_to_another_level(player, level_transition);
 signal report_sprinting_information(stamina_percent, can_sprint, trying_to_sprint);
 signal report_inventory_contents(player, player_inventory);
 signal report_party_info_to_ui(party_members, amount_of_gold);
+signal request_to_open_battle(left, right);
 signal test_open_conversation;
 
 func _ready():
@@ -61,9 +63,18 @@ const LevelTransitionClass = preload("res://game/LevelTransition.gd");
 # to that, and it would take more time than doing this.
 var just_transitioned_from_other_level = false;
 func _on_InteractableArea_area_entered(area):
-	print("OKA?")
 	if area is LevelTransitionClass:
 		if just_transitioned_from_other_level:
 			just_transitioned_from_other_level = false;
 		else:
 			emit_signal("transitioning_to_another_level", self, area);
+	# I would make another node just to check the type explicitly...
+	# but I'll settle for this since it takes less time.
+	if area.name == "InteractableArea":
+		var parent = area.get_parent();
+		if parent is GameActor:
+			print("Another actor.");
+			print("I humbly request a battle with this one.");
+			emit_signal("request_to_open_battle", self, parent);
+		else:
+			print("Unknown parent");

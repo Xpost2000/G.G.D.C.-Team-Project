@@ -35,6 +35,7 @@ func _on_PlayerCharacter_transitioning_to_another_level(player, level_transition
 	level_transition_load_context_info = level_transition;
 	player_load_context_info = player;
 
+	print("MOV")
 	emit_signal("notify_ui_of_level_load");
 
 
@@ -50,12 +51,13 @@ func _on_PlayerCharacter_test_open_conversation():
 	emit_signal("ask_ui_to_open_test_dialogue");
 	print("open test convo");
 
-func _on_PlayerCharacter_request_to_open_battle(left, right):
+func _open_battle(left, right):
 	print("starting fight")
-	# print(left.party_members);
-	# print(right.party_members);
 	GameGlobals.switch_to_scene(2);
 	GameGlobals.battle_screen.begin_battle(left, right);
+
+func _on_PlayerCharacter_request_to_open_battle(left, right):
+	call_deferred("_open_battle", left, right);
 	pass;
 
 func _process(delta):

@@ -48,6 +48,7 @@ func _physics_process(delta):
 		if Input.is_action_just_pressed("game_interact_action"):
 			print(GameGlobals.paused());
 			handle_interact_key(delta);
+		battle_cooldown += delta;
 			
 	emit_signal("report_inventory_contents",
 				self, inventory);
@@ -64,6 +65,11 @@ const LevelTransitionClass = preload("res://game/LevelTransition.gd");
 # This would be solved by a state machine, but it's too early to marry ourselves
 # to that, and it would take more time than doing this.
 var just_transitioned_from_other_level = false;
+
+
+const BATTLE_COOLDOWN_MAX_TIME = 2.0;
+var battle_cooldown = BATTLE_COOLDOWN_MAX_TIME;
+
 func _on_InteractableArea_area_entered(area):
 	if area is LevelTransitionClass:
 		if just_transitioned_from_other_level:
@@ -74,9 +80,14 @@ func _on_InteractableArea_area_entered(area):
 	# but I'll settle for this since it takes less time.
 	if area.name == "InteractableArea":
 		var parent = area.get_parent();
-		if parent is GameActor:
+		if parent is GameActor && battle_cooldown >= BATTLE_COOLDOWN_MAX_TIME:
 			print("Another actor.");
 			print("I humbly request a battle with this one.");
 			emit_signal("request_to_open_battle", self, parent);
+			battle_cooldown = 0;
 		else:
-			print("Unknown parent");
+			print("Unknown parent or too many battles at once...");
+
+func _on_InteractableArea_area_exited(area):
+	if area.name == "InteractableArea":
+		print("i'm leaving you.")

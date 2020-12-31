@@ -99,47 +99,6 @@ func begin_battle(left, right):
 	battle_information.participants += party_on_the_left.party_members;
 	battle_information.participants += party_on_the_right.party_members;
 
-func _ready():
-	party_on_the_right = [
-		PartyMember.new("Genichiro Ashina", 150, 100),
-		PartyMember.new("Isshin Ashina", 450, 100),
-		];
-
-	party_on_the_left = [
-		PartyMember.new("Sekijo", 150, 100),
-		PartyMember.new("Sekiro", 150, 100)
-		];
-
-	party_on_the_left[1].load_battle_portrait("sekiro_test");
-	party_on_the_left[0].load_battle_portrait("sekijo_test");
-
-	party_on_the_right[0].load_battle_portrait("genichiro_test");
-	party_on_the_right[1].load_battle_portrait("isshin_test");
-
-	party_on_the_left[0].attacks = [PartyMember.PartyMemberAttack.new("Vertical Slash", 67, 1),
-									PartyMember.PartyMemberAttack.new("Thrust", 90, 0.6)];
-	party_on_the_left[0].abilities = [PartyMember.PartyMemberAbility.new("Ashina Cross", "Mushin art", 240, 1.0, 150),
-									  PartyMember.PartyMemberAbility.new("Whirlwind Slash", "Art", 75, 0.95, 25)];
-	party_on_the_left[1].attacks = [PartyMember.PartyMemberAttack.new("Nightjar Slash", 80, 0.8),
-									PartyMember.PartyMemberAttack.new("Shadowfall", 90, 0.75)];
-	party_on_the_left[1].abilities = [PartyMember.PartyMemberAbility.new("Ashina Cross", "Mushin art", 240, 1.0, 150),
-									  PartyMember.PartyMemberAbility.new("Shinobi Axe of the Monkey", "Prosethetic", 90, 0.75, 300)];
-
-	party_on_the_right[0].attacks = [PartyMember.PartyMemberAttack.new("Vertical Slash", 67, 1),
-									 PartyMember.PartyMemberAttack.new("Bow Fire", 120, 0.8)];
-	party_on_the_right[0].abilities = [PartyMember.PartyMemberAbility.new("Lightning of Tomoe", "Mushin art", 999, 0.1, 900),
-									   PartyMember.PartyMemberAbility.new("Spiral Cloud Passage", "Art", 255, 0.95, 25)];
-	party_on_the_right[1].attacks = [PartyMember.PartyMemberAttack.new("Ashina Cross", 240, 0.8),
-									 PartyMember.PartyMemberAttack.new("Dragonflash", 140, 0.95)];
-	party_on_the_right[1].abilities = [PartyMember.PartyMemberAbility.new("Dragonslash", "Mushin art", 440, 1.0, 350),
-									   PartyMember.PartyMemberAbility.new("One Mind", "Death", 600, 1.5, 300)];
-	
-	left_side_info.update_with_party_information(party_on_the_left);
-	right_side_info.update_with_party_information(party_on_the_right);
-
-	battle_information.participants += party_on_the_left;
-	battle_information.participants += party_on_the_right;
-
 # TODO Special message log labels, with their own special lifetime to delete themselves.
 const BATTLE_LOG_MESSAGE_CLEAR_TIME = 0.85;
 var battle_log_timer_to_clear_next_message = 0;
@@ -177,93 +136,89 @@ func advance_actor():
 const ARTIFICIAL_THINKING_TIME_MAX = 1.0;
 var artificial_thinking_time = 0;
 func _process(delta):
-	if Input.is_action_just_pressed("ui_end"):
+	if Input.is_action_just_pressed("ui_home"):
 		GameGlobals.switch_to_scene(0);
-	pass;
-# func _process(delta):
-#	if Input.is_action_just_pressed("ui_down"):
-#		GameGlobals.switch_to_scene(0);
-#	if !battle_information.decided_action:
-#		var active_actor = battle_information.active_actor();
+	if !battle_information.decided_action:
+		var active_actor = battle_information.active_actor();
 
-#		match whose_side_is_active(active_actor):
-#			BATTLE_SIDE_NEITHER: pass;
-#			BATTLE_SIDE_RIGHT:
-#				if artificial_thinking_time >= ARTIFICIAL_THINKING_TIME_MAX:
-#					# battle_information.decided_action = skip_turn(active_actor);
-#					battle_information.decided_action = attack(active_actor,
-#															   party_on_the_left.party_members[0],
-#															   active_actor.random_attack_index());
-#					artificial_thinking_time = 0;
-#					print("beep boop robot thoughts");
-#				else:
-#					artificial_thinking_time += delta;
-#			BATTLE_SIDE_LEFT:
-#				if Input.is_action_just_pressed("ui_end"):
-#					battle_information.decided_action = skip_turn(active_actor);
-#	else:
-#		print("Doing turn action.");
+		match whose_side_is_active(active_actor):
+			BATTLE_SIDE_NEITHER: pass;
+			BATTLE_SIDE_RIGHT:
+				if artificial_thinking_time >= ARTIFICIAL_THINKING_TIME_MAX:
+					# battle_information.decided_action = skip_turn(active_actor);
+					battle_information.decided_action = attack(active_actor,
+															   party_on_the_left.party_members[0],
+															   active_actor.random_attack_index());
+					artificial_thinking_time = 0;
+					print("beep boop robot thoughts");
+				else:
+					artificial_thinking_time += delta;
+			BATTLE_SIDE_LEFT:
+				if Input.is_action_just_pressed("ui_end"):
+					battle_information.decided_action = skip_turn(active_actor);
+	else:
+		print("Doing turn action.");
 
-#		var turn_action	= battle_information.decided_action;
-#		var current_actor = turn_action.actor_self;
-#		var target_actor = turn_action.actor_target;
+		var turn_action	= battle_information.decided_action;
+		var current_actor = turn_action.actor_self;
+		var target_actor = turn_action.actor_target;
 		
-#		match turn_action.type:
-#			BATTLE_TURN_ACTION_SKIP_TURN:
-#				push_message_to_battlelog("Skipping turn...");
-#			BATTLE_TURN_ACTION_USE_ITEM:
-#				push_message_to_battlelog("Using item");
-#				# WHOOPS, THIS DOESN'T WORK BECAUSE I ONLY PASS THE RAW PARTY MEMBER ARRAY.
-#				# I SHOULD PASS THE ENTIRE PARTY INFO (gold and inventory).
-#				# var selected_item = current_actor.get_item
-#			BATTLE_TURN_ACTION_DO_ATTACK:
-#				push_message_to_battlelog("attacking something");
-#				# TODO figure out how I would do animation based on this.
-#				var selected_attack = current_actor.attacks[turn_action.index];
-#				push_message_to_battlelog(current_actor.name + " performs " + selected_attack.name);
-#				# insert plays animation!
-#				# TODO randomized attack hit chance or whatevers.
-#				target_actor.take_damage(selected_attack.magnitude);
-#			BATTLE_TURN_ACTION_DO_ABILITY: 
-#				push_message_to_battlelog("using ability");
-#				# TODO figure out how I would do animation based on this.
-#				var selected_ability = current_actor.abilities[turn_action.index];
-#				push_message_to_battlelog(current_actor.name + " performs " + selected_ability.name);
-#				# insert plays animation!
-#				# TODO randomized ability hit chance or whatevers. (unless it's like a friendly)
-#				target_actor.handle_ability(selected_ability);
-#			BATTLE_TURN_ACTION_FLEE: 
-#				# this would emit a signal...
-#				push_message_to_battlelog("fleeing from fight!");
+		match turn_action.type:
+			BATTLE_TURN_ACTION_SKIP_TURN:
+				push_message_to_battlelog("Skipping turn...");
+			BATTLE_TURN_ACTION_USE_ITEM:
+				push_message_to_battlelog("Using item");
+				# WHOOPS, THIS DOESN'T WORK BECAUSE I ONLY PASS THE RAW PARTY MEMBER ARRAY.
+				# I SHOULD PASS THE ENTIRE PARTY INFO (gold and inventory).
+				# var selected_item = current_actor.get_item
+			BATTLE_TURN_ACTION_DO_ATTACK:
+				push_message_to_battlelog("attacking something");
+				# TODO figure out how I would do animation based on this.
+				var selected_attack = current_actor.attacks[turn_action.index];
+				push_message_to_battlelog(current_actor.name + " performs " + selected_attack.name);
+				# insert plays animation!
+				# TODO randomized attack hit chance or whatevers.
+				target_actor.take_damage(selected_attack.magnitude);
+			BATTLE_TURN_ACTION_DO_ABILITY: 
+				push_message_to_battlelog("using ability");
+				# TODO figure out how I would do animation based on this.
+				var selected_ability = current_actor.abilities[turn_action.index];
+				push_message_to_battlelog(current_actor.name + " performs " + selected_ability.name);
+				# insert plays animation!
+				# TODO randomized ability hit chance or whatevers. (unless it's like a friendly)
+				target_actor.handle_ability(selected_ability);
+			BATTLE_TURN_ACTION_FLEE: 
+				# this would emit a signal...
+				push_message_to_battlelog("fleeing from fight!");
 
-#				var initiator = null;
-#				var opponent = null;
-#				match whose_side_is_active(current_actor):
-#					BATTLE_SIDE_RIGHT:
-#						initiator = party_on_the_right;
-#						opponent = party_on_the_left.party_members;
-#					BATTLE_SIDE_LEFT:
-#						initiator = party_on_the_left;
-#						opponent = party_on_the_right.party_members;
+				var initiator = null;
+				var opponent = null;
+				match whose_side_is_active(current_actor):
+					BATTLE_SIDE_RIGHT:
+						initiator = party_on_the_right;
+						opponent = party_on_the_left.party_members;
+					BATTLE_SIDE_LEFT:
+						initiator = party_on_the_left;
+						opponent = party_on_the_right.party_members;
 
-#				# TODO PartyMembers might want to know that they're part of a party...
-#				emit_signal("combat_finished", combat_finished_flee(initiator, opponent));
+				# TODO PartyMembers might want to know that they're part of a party...
+				emit_signal("combat_finished", combat_finished_flee(initiator, opponent));
 
-#		# Check if the battle can end for any other reasons here...
-#		# mainly, the only other reason is if EVERYONE on a party is dead.
+		# Check if the battle can end for any other reasons here...
+		# mainly, the only other reason is if EVERYONE on a party is dead.
 
-#		# Basically this.
-#		# if party_on_the_right.all_members_dead():
-#		# if party_on_the_left.all_members_dead():
+		# Basically this.
+		# if party_on_the_right.all_members_dead():
+		# if party_on_the_left.all_members_dead():
 
-#		if battle_information.decided_action.done():
-#			advance_actor();
-#		else:
-#			print("not done!");
+		if battle_information.decided_action.done():
+			advance_actor();
+		else:
+			print("not done!");
 			
 				
-#	battle_turn_widget.update_view_of_turns(battle_information);
-#	update_battlelog(delta);
+	battle_turn_widget.update_view_of_turns(battle_information);
+	update_battlelog(delta);
 
 
 # TODO, scuffy

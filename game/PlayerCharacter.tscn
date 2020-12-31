@@ -28,3 +28,4 @@ position = Vector2( -8.39233e-05, 0.000139713 )
 [node name="Radius" type="CollisionShape2D" parent="InteractableArea"]
 shape = SubResource( 2 )
 [connection signal="area_entered" from="InteractableArea" to="." method="_on_InteractableArea_area_entered"]
+[connection signal="area_exited" from="InteractableArea" to="." method="_on_InteractableArea_area_exited"]

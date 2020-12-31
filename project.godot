@@ -17,7 +17,7 @@ _global_script_class_icons={
 
 config/name="G.G.D.C. Team Project"
 config/description="Something happens one day."
-run/main_scene="res://main_scene/MainGameScreen.tscn"
+run/main_scene="res://main_scene/LoaderScene.tscn"
 boot_splash/image="res://boot/bootscreen.png"
 boot_splash/use_filter=false
 config/icon="res://icon.png"

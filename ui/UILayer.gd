@@ -101,7 +101,7 @@ func _on_Inventory_prompt_for_item_usage_selection(party_members, item_name):
 	pass # Replace with function body.
 
 func _on_MainGameScreen_ask_ui_to_open_test_dialogue():
-	emit_signal("set_game_action_pause_state", true);
+	GameGlobals.pause();
 	dialogue_ui.show();
 	dialogue_ui.open_test_dialogue();
 
@@ -111,4 +111,5 @@ func _on_DialogueUI_notify_dialogue_terminated(reason):
 		DIALOGUE_TERMINATION_REASON_DEFAULT: pass;
 
 	dialogue_ui.hide();
-	emit_signal("set_game_action_pause_state", false);
+	GameGlobals.resume();
+	print("terminator");

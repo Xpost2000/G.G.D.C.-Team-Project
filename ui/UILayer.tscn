@@ -123,3 +123,4 @@ custom_styles/focus = SubResource( 11 )
 custom_styles/disabled = SubResource( 12 )
 custom_styles/normal = SubResource( 13 )
 text = "Quit Game"
+[connection signal="notify_dialogue_terminated" from="DialogueUI" to="." method="_on_DialogueUI_notify_dialogue_terminated"]

@@ -44,6 +44,7 @@ func _on_MainGameScreen_notify_ui_of_level_load():
 var fade_hold_timer = 0.0;
 var fade_hold_timer_max = 0.5;
 
+var showing_dialogue = false;
 var showing_inventory = false;
 var showing_death = false;
 
@@ -70,17 +71,23 @@ func _process(delta):
 	if showing_death:
 		inventory_ui.hide();
 		death_ui.show();
+		dialogue_ui.hide();
 		GameGlobals.pause();
 	else:	
 		death_ui.hide();
-		if !showing_inventory:
-			inventory_ui.hide();
-			inventory_ui.set_process(false);
-			GameGlobals.resume();
-		else:
-			inventory_ui.show();
-			inventory_ui.set_process(true);
+		if showing_dialogue:
 			GameGlobals.pause();
+			dialogue_ui.show();
+		else:
+			dialogue_ui.hide();
+			if !showing_inventory:
+				inventory_ui.hide();
+				inventory_ui.set_process(false);
+				GameGlobals.resume();
+			else:
+				inventory_ui.show();
+				inventory_ui.set_process(true);
+				GameGlobals.pause();
 
 func show_inventory():
 	showing_inventory = true;
@@ -101,15 +108,11 @@ func _on_Inventory_prompt_for_item_usage_selection(party_members, item_name):
 	pass # Replace with function body.
 
 func _on_MainGameScreen_ask_ui_to_open_test_dialogue():
-	GameGlobals.pause();
-	dialogue_ui.show();
+	showing_dialogue = true;
 	dialogue_ui.open_test_dialogue();
 
 enum {DIALOGUE_TERMINATION_REASON_DEFAULT}
 func _on_DialogueUI_notify_dialogue_terminated(reason):
 	match reason.type:
 		DIALOGUE_TERMINATION_REASON_DEFAULT: pass;
-
-	dialogue_ui.hide();
-	GameGlobals.resume();
-	print("terminator");
+	showing_dialogue = false;

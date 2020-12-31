@@ -44,7 +44,6 @@ func _physics_process(delta):
 						delta);
 
 		if Input.is_action_just_pressed("game_interact_action"):
-			print("ASOIDPOASDOP");
 			print(GameGlobals.paused());
 			handle_interact_key(delta);
 			

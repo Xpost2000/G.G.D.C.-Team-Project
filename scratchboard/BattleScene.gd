@@ -177,89 +177,93 @@ func advance_actor():
 const ARTIFICIAL_THINKING_TIME_MAX = 1.0;
 var artificial_thinking_time = 0;
 func _process(delta):
-	# if Input.is_action_just_pressed("ui_end"):
-	#	GameGlobals.switch_to_scene(0);
-	if !battle_information.decided_action:
-		var active_actor = battle_information.active_actor();
+	if Input.is_action_just_pressed("ui_end"):
+		GameGlobals.switch_to_scene(0);
+	pass;
+# func _process(delta):
+#	if Input.is_action_just_pressed("ui_down"):
+#		GameGlobals.switch_to_scene(0);
+#	if !battle_information.decided_action:
+#		var active_actor = battle_information.active_actor();
 
-		match whose_side_is_active(active_actor):
-			BATTLE_SIDE_NEITHER: pass;
-			BATTLE_SIDE_RIGHT:
-				if artificial_thinking_time >= ARTIFICIAL_THINKING_TIME_MAX:
-					# battle_information.decided_action = skip_turn(active_actor);
-					battle_information.decided_action = attack(active_actor,
-															   party_on_the_left.party_members[0],
-															   active_actor.random_attack_index());
-					artificial_thinking_time = 0;
-					print("beep boop robot thoughts");
-				else:
-					artificial_thinking_time += delta;
-			BATTLE_SIDE_LEFT:
-				if Input.is_action_just_pressed("ui_end"):
-					battle_information.decided_action = skip_turn(active_actor);
-	else:
-		print("Doing turn action.");
+#		match whose_side_is_active(active_actor):
+#			BATTLE_SIDE_NEITHER: pass;
+#			BATTLE_SIDE_RIGHT:
+#				if artificial_thinking_time >= ARTIFICIAL_THINKING_TIME_MAX:
+#					# battle_information.decided_action = skip_turn(active_actor);
+#					battle_information.decided_action = attack(active_actor,
+#															   party_on_the_left.party_members[0],
+#															   active_actor.random_attack_index());
+#					artificial_thinking_time = 0;
+#					print("beep boop robot thoughts");
+#				else:
+#					artificial_thinking_time += delta;
+#			BATTLE_SIDE_LEFT:
+#				if Input.is_action_just_pressed("ui_end"):
+#					battle_information.decided_action = skip_turn(active_actor);
+#	else:
+#		print("Doing turn action.");
 
-		var turn_action	= battle_information.decided_action;
-		var current_actor = turn_action.actor_self;
-		var target_actor = turn_action.actor_target;
+#		var turn_action	= battle_information.decided_action;
+#		var current_actor = turn_action.actor_self;
+#		var target_actor = turn_action.actor_target;
 		
-		match turn_action.type:
-			BATTLE_TURN_ACTION_SKIP_TURN:
-				push_message_to_battlelog("Skipping turn...");
-			BATTLE_TURN_ACTION_USE_ITEM:
-				push_message_to_battlelog("Using item");
-				# WHOOPS, THIS DOESN'T WORK BECAUSE I ONLY PASS THE RAW PARTY MEMBER ARRAY.
-				# I SHOULD PASS THE ENTIRE PARTY INFO (gold and inventory).
-				# var selected_item = current_actor.get_item
-			BATTLE_TURN_ACTION_DO_ATTACK:
-				push_message_to_battlelog("attacking something");
-				# TODO figure out how I would do animation based on this.
-				var selected_attack = current_actor.attacks[turn_action.index];
-				push_message_to_battlelog(current_actor.name + " performs " + selected_attack.name);
-				# insert plays animation!
-				# TODO randomized attack hit chance or whatevers.
-				target_actor.take_damage(selected_attack.magnitude);
-			BATTLE_TURN_ACTION_DO_ABILITY: 
-				push_message_to_battlelog("using ability");
-				# TODO figure out how I would do animation based on this.
-				var selected_ability = current_actor.abilities[turn_action.index];
-				push_message_to_battlelog(current_actor.name + " performs " + selected_ability.name);
-				# insert plays animation!
-				# TODO randomized ability hit chance or whatevers. (unless it's like a friendly)
-				target_actor.handle_ability(selected_ability);
-			BATTLE_TURN_ACTION_FLEE: 
-				# this would emit a signal...
-				push_message_to_battlelog("fleeing from fight!");
+#		match turn_action.type:
+#			BATTLE_TURN_ACTION_SKIP_TURN:
+#				push_message_to_battlelog("Skipping turn...");
+#			BATTLE_TURN_ACTION_USE_ITEM:
+#				push_message_to_battlelog("Using item");
+#				# WHOOPS, THIS DOESN'T WORK BECAUSE I ONLY PASS THE RAW PARTY MEMBER ARRAY.
+#				# I SHOULD PASS THE ENTIRE PARTY INFO (gold and inventory).
+#				# var selected_item = current_actor.get_item
+#			BATTLE_TURN_ACTION_DO_ATTACK:
+#				push_message_to_battlelog("attacking something");
+#				# TODO figure out how I would do animation based on this.
+#				var selected_attack = current_actor.attacks[turn_action.index];
+#				push_message_to_battlelog(current_actor.name + " performs " + selected_attack.name);
+#				# insert plays animation!
+#				# TODO randomized attack hit chance or whatevers.
+#				target_actor.take_damage(selected_attack.magnitude);
+#			BATTLE_TURN_ACTION_DO_ABILITY: 
+#				push_message_to_battlelog("using ability");
+#				# TODO figure out how I would do animation based on this.
+#				var selected_ability = current_actor.abilities[turn_action.index];
+#				push_message_to_battlelog(current_actor.name + " performs " + selected_ability.name);
+#				# insert plays animation!
+#				# TODO randomized ability hit chance or whatevers. (unless it's like a friendly)
+#				target_actor.handle_ability(selected_ability);
+#			BATTLE_TURN_ACTION_FLEE: 
+#				# this would emit a signal...
+#				push_message_to_battlelog("fleeing from fight!");
 
-				var initiator = null;
-				var opponent = null;
-				match whose_side_is_active(current_actor):
-					BATTLE_SIDE_RIGHT:
-						initiator = party_on_the_right;
-						opponent = party_on_the_left.party_members;
-					BATTLE_SIDE_LEFT:
-						initiator = party_on_the_left;
-						opponent = party_on_the_right.party_members;
+#				var initiator = null;
+#				var opponent = null;
+#				match whose_side_is_active(current_actor):
+#					BATTLE_SIDE_RIGHT:
+#						initiator = party_on_the_right;
+#						opponent = party_on_the_left.party_members;
+#					BATTLE_SIDE_LEFT:
+#						initiator = party_on_the_left;
+#						opponent = party_on_the_right.party_members;
 
-				# TODO PartyMembers might want to know that they're part of a party...
-				emit_signal("combat_finished", combat_finished_flee(initiator, opponent));
+#				# TODO PartyMembers might want to know that they're part of a party...
+#				emit_signal("combat_finished", combat_finished_flee(initiator, opponent));
 
-		# Check if the battle can end for any other reasons here...
-		# mainly, the only other reason is if EVERYONE on a party is dead.
+#		# Check if the battle can end for any other reasons here...
+#		# mainly, the only other reason is if EVERYONE on a party is dead.
 
-		# Basically this.
-		# if party_on_the_right.all_members_dead():
-		# if party_on_the_left.all_members_dead():
+#		# Basically this.
+#		# if party_on_the_right.all_members_dead():
+#		# if party_on_the_left.all_members_dead():
 
-		if battle_information.decided_action.done():
-			advance_actor();
-		else:
-			print("not done!");
+#		if battle_information.decided_action.done():
+#			advance_actor();
+#		else:
+#			print("not done!");
 			
 				
-	battle_turn_widget.update_view_of_turns(battle_information);
-	update_battlelog(delta);
+#	battle_turn_widget.update_view_of_turns(battle_information);
+#	update_battlelog(delta);
 
 
 # TODO, scuffy

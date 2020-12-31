@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://ui/UILayer.tscn" type="PackedScene" id=1]
 [ext_resource path="res://scenes/LevelDemo.tscn" type="PackedScene" id=2]
@@ -7,6 +7,8 @@
 [ext_resource path="res://images/jesus.png" type="Texture" id=5]
 [ext_resource path="res://main_scene/MainGameCamera.gd" type="Script" id=6]
 [ext_resource path="res://game/actors/TestJesusActor.gd" type="Script" id=7]
+[ext_resource path="res://images/portrait_draft.png" type="Texture" id=8]
+[ext_resource path="res://game/actors/TestShadowMe.gd" type="Script" id=9]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 46.8262, 17.5818 )
@@ -70,10 +72,27 @@ shape = SubResource( 1 )
 position = Vector2( -0.943878, -37.755 )
 shape = SubResource( 2 )
 
+[node name="ShadowMe" type="KinematicBody2D" parent="GameLayer/PersistentThings"]
+position = Vector2( 814.012, -274.803 )
+script = ExtResource( 9 )
+
+[node name="CharacterSprite" type="Sprite" parent="GameLayer/PersistentThings/ShadowMe"]
+position = Vector2( -11.2573, -33.9795 )
+scale = Vector2( 0.112819, 0.112819 )
+texture = ExtResource( 8 )
+
+[node name="CollisionShape" type="CollisionShape2D" parent="GameLayer/PersistentThings/ShadowMe"]
+position = Vector2( -1.88776, 15.102 )
+shape = SubResource( 1 )
+
+[node name="InteractableArea" type="Area2D" parent="GameLayer/PersistentThings/ShadowMe"]
+
+[node name="Radius" type="CollisionShape2D" parent="GameLayer/PersistentThings/ShadowMe/InteractableArea"]
+position = Vector2( -0.943878, -37.755 )
+shape = SubResource( 2 )
+
 [node name="UILayer" parent="." instance=ExtResource( 1 )]
 pause_mode = 2
-[connection signal="ask_ui_to_open_test_dialogue" from="." to="UILayer" method="_on_MainGameScreen_ask_ui_to_open_test_dialogue"]
-[connection signal="notify_ui_of_level_load" from="." to="UILayer" method="_on_MainGameScreen_notify_ui_of_level_load"]
 [connection signal="report_inventory_contents" from="GameLayer/PersistentThings/PlayerCharacter" to="UILayer" method="_on_PlayerCharacter_report_inventory_contents"]
 [connection signal="report_party_info_to_ui" from="GameLayer/PersistentThings/PlayerCharacter" to="UILayer" method="_on_PlayerCharacter_report_party_info_to_ui"]
 [connection signal="report_sprinting_information" from="GameLayer/PersistentThings/PlayerCharacter" to="UILayer" method="_on_PlayerCharacter_report_sprinting_information"]

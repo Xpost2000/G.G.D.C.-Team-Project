@@ -59,6 +59,9 @@ func _on_PlayerCharacter_request_to_open_battle(left, right):
 	pass;
 
 func _process(delta):
+	if Input.is_action_just_pressed("ui_end"):
+		GameGlobals.switch_to_scene(2);
+		
 	if player_node.all_members_dead():
 		player_node.self_paused = true;
 		# stupid but whatever.

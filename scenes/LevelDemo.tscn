@@ -72,7 +72,7 @@ points = PoolVector2Array( 64, 64, 0, 64, 0, 0, 64, 0 )
 3/z_index = 0
 
 [sub_resource type="CircleShape2D" id=3]
-radius = 206.842
+radius = 60.3525
 
 [node name="LevelDemo" type="YSort"]
 

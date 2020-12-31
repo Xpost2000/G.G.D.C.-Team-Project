@@ -19,17 +19,15 @@ func _ready():
 func movement_direction_vector():
 	var movement_direction = Vector2.ZERO;
 
-	# consider based off main party member.
-	if !party_members[0].dead():
-		if Input.is_action_pressed("ui_left"):
-			movement_direction.x = -1;
-		elif Input.is_action_pressed("ui_right"):
-			movement_direction.x = 1;
+	if Input.is_action_pressed("ui_left"):
+		movement_direction.x = -1;
+	elif Input.is_action_pressed("ui_right"):
+		movement_direction.x = 1;
 
-		if Input.is_action_pressed("ui_up"):
-			movement_direction.y = -1;
-		elif Input.is_action_pressed("ui_down"):
-			movement_direction.y = 1;
+	if Input.is_action_pressed("ui_up"):
+		movement_direction.y = -1;
+	elif Input.is_action_pressed("ui_down"):
+		movement_direction.y = 1;
 
 	return movement_direction.normalized();
 
@@ -38,7 +36,7 @@ func handle_interact_key(delta):
 
 func _physics_process(delta):
 	var sprinting = Input.is_action_pressed("game_sprinting_action");
-	if !GameGlobals.paused():
+	if !GameGlobals.paused() && !all_members_dead():
 		handle_movement(sprinting,
 						movement_direction_vector(),
 						delta);

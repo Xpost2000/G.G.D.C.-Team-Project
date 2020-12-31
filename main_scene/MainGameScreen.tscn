@@ -1,17 +1,10 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://ui/UILayer.tscn" type="PackedScene" id=1]
 [ext_resource path="res://scenes/LevelDemo.tscn" type="PackedScene" id=2]
-[ext_resource path="res://game/PlayerCharacter.gd" type="Script" id=3]
+[ext_resource path="res://game/PlayerCharacter.tscn" type="PackedScene" id=3]
 [ext_resource path="res://main_scene/MainGameScreen.gd" type="Script" id=4]
-[ext_resource path="res://images/portrait_draft.png" type="Texture" id=5]
 [ext_resource path="res://main_scene/MainGameCamera.gd" type="Script" id=6]
-[ext_resource path="res://game/GameActor.tscn" type="PackedScene" id=7]
-
-[sub_resource type="CircleShape2D" id=2]
-radius = 18.0785
-
-[sub_resource type="RectangleShape2D" id=1]
 
 [node name="MainGameScreen" type="Node2D"]
 pause_mode = 1
@@ -34,27 +27,6 @@ __meta__ = {
 "_editor_description_": "This is stuff that stays beyond level loads. Generally this will probably just be the player."
 }
 
-[node name="PlayerCharacter" parent="GameLayer/PersistentThings" instance=ExtResource( 7 )]
-position = Vector2( 285.174, -13.6516 )
-script = ExtResource( 3 )
-
-[node name="InteractableArea" type="Area2D" parent="GameLayer/PersistentThings/PlayerCharacter"]
-
-[node name="Radius" type="CollisionShape2D" parent="GameLayer/PersistentThings/PlayerCharacter/InteractableArea"]
-shape = SubResource( 2 )
-
-[node name="CameraPuppeteer" type="RemoteTransform2D" parent="GameLayer/PersistentThings/PlayerCharacter"]
-remote_path = NodePath("../../MainGameCamera")
-
-[node name="CollisionShape" type="CollisionShape2D" parent="GameLayer/PersistentThings/PlayerCharacter"]
-position = Vector2( 0.889893, 2.4472 )
-shape = SubResource( 1 )
-
-[node name="CharacterSprite" type="Sprite" parent="GameLayer/PersistentThings/PlayerCharacter"]
-position = Vector2( -0.444946, -13.3484 )
-scale = Vector2( 0.0421626, 0.0421626 )
-texture = ExtResource( 5 )
-
 [node name="MainGameCamera" type="Camera2D" parent="GameLayer/PersistentThings"]
 position = Vector2( 285.174, -13.6516 )
 scale = Vector2( 3, 3 )
@@ -63,14 +35,10 @@ smoothing_enabled = true
 smoothing_speed = 2.5
 script = ExtResource( 6 )
 
+[node name="PlayerCharacter" parent="GameLayer/PersistentThings" instance=ExtResource( 3 )]
+
 [node name="UILayer" parent="." instance=ExtResource( 1 )]
 pause_mode = 2
 [connection signal="ask_ui_to_open_test_dialogue" from="." to="UILayer" method="_on_MainGameScreen_ask_ui_to_open_test_dialogue"]
 [connection signal="notify_ui_of_level_load" from="." to="UILayer" method="_on_MainGameScreen_notify_ui_of_level_load"]
-[connection signal="report_inventory_contents" from="GameLayer/PersistentThings/PlayerCharacter" to="UILayer" method="_on_PlayerCharacter_report_inventory_contents"]
-[connection signal="report_party_info_to_ui" from="GameLayer/PersistentThings/PlayerCharacter" to="UILayer" method="_on_PlayerCharacter_report_party_info_to_ui"]
-[connection signal="report_sprinting_information" from="GameLayer/PersistentThings/PlayerCharacter" to="UILayer" method="_on_PlayerCharacter_report_sprinting_information"]
-[connection signal="test_open_conversation" from="GameLayer/PersistentThings/PlayerCharacter" to="." method="_on_PlayerCharacter_test_open_conversation"]
-[connection signal="transitioning_to_another_level" from="GameLayer/PersistentThings/PlayerCharacter" to="." method="_on_PlayerCharacter_transitioning_to_another_level"]
-[connection signal="area_entered" from="GameLayer/PersistentThings/PlayerCharacter/InteractableArea" to="GameLayer/PersistentThings/PlayerCharacter" method="_on_InteractableArea_area_entered"]
 [connection signal="notify_finished_level_load_related_fading" from="UILayer" to="." method="_on_UILayer_notify_finished_level_load_related_fading"]

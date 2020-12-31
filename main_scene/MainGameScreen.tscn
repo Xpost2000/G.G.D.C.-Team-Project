@@ -36,7 +36,7 @@ __meta__ = {
 }
 
 [node name="MainGameCamera" type="Camera2D" parent="GameLayer/PersistentThings"]
-position = Vector2( 285.174, -13.6516 )
+position = Vector2( 285.174, -13.652 )
 scale = Vector2( 3, 3 )
 current = true
 smoothing_enabled = true
@@ -44,6 +44,9 @@ smoothing_speed = 2.5
 script = ExtResource( 6 )
 
 [node name="PlayerCharacter" parent="GameLayer/PersistentThings" instance=ExtResource( 3 )]
+
+[node name="CameraPuppet" type="RemoteTransform2D" parent="GameLayer/PersistentThings/PlayerCharacter"]
+remote_path = NodePath("../../MainGameCamera")
 
 [node name="JesusTest" type="KinematicBody2D" parent="GameLayer/PersistentThings"]
 position = Vector2( 593.697, -121.76 )

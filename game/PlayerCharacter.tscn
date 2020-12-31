@@ -22,10 +22,6 @@ texture = ExtResource( 2 )
 position = Vector2( 0.889809, 2.44734 )
 shape = SubResource( 1 )
 
-[node name="CameraPuppeteer" type="RemoteTransform2D" parent="."]
-position = Vector2( -8.39233e-05, 0.000139713 )
-remote_path = NodePath("../../MainGameCamera")
-
 [node name="InteractableArea" type="Area2D" parent="."]
 position = Vector2( -8.39233e-05, 0.000139713 )
 

@@ -9,6 +9,9 @@ onready var ui_layer = $UILayer;
 onready var level_information = $GameLayer/LevelInformation;
 onready var player_node = $GameLayer/PersistentThings/PlayerCharacter;
 
+func _ready():
+	randomize();
+
 func load_new_level_scene(name):
 	var loaded_scene = load(name).instance();
 

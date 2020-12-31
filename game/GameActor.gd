@@ -11,6 +11,14 @@ const PartyMember = preload("res://game/PartyMember.gd");
 var SPRINTING_SPEED = 512;
 var WALKING_SPEED = SPRINTING_SPEED/2;
 
+func set_walking_speed(walking_speed):
+	WALKING_SPEED = walking_speed;
+	SPRINTING_SPEED = WALKING_SPEED * 2;
+
+func set_sprinting_speed(sprinting_speed):
+	SPRINTING_SPEED = sprinting_speed;
+	WALKING_SPEED = SPRINTING_SPEED / 2;
+
 var party_members = [];
 var inventory = [];
 
@@ -77,10 +85,11 @@ func handle_sprinting(sprinting, delta):
 
 func handle_movement(sprinting, direction, delta):
 	if !GameGlobals.paused():
+		direction = direction.normalized();
 		var velocity = direction * (SPRINTING_SPEED if sprinting && can_sprint() else WALKING_SPEED);
 		handle_sprinting(sprinting && (direction.length() != 0), delta);
-		velocity = move_and_slide(velocity, Vector2.UP);
+		var slide_velocity = move_and_slide(velocity, Vector2.UP);
 
-		return velocity;
+		return (slide_velocity == velocity);
 	else:
-		return Vector2(0, 0);
+		return true;

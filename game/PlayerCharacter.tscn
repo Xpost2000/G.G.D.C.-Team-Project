@@ -20,17 +20,14 @@ texture = ExtResource( 2 )
 
 [node name="CollisionShape" type="CollisionShape2D" parent="."]
 position = Vector2( 0.889809, 2.44734 )
-scale = Vector2( 1, 1 )
 shape = SubResource( 1 )
 
 [node name="CameraPuppeteer" type="RemoteTransform2D" parent="."]
 position = Vector2( -8.39233e-05, 0.000139713 )
-scale = Vector2( 1, 1 )
 remote_path = NodePath("../../MainGameCamera")
 
 [node name="InteractableArea" type="Area2D" parent="."]
 position = Vector2( -8.39233e-05, 0.000139713 )
-scale = Vector2( 1, 1 )
 
 [node name="Radius" type="CollisionShape2D" parent="InteractableArea"]
 shape = SubResource( 2 )

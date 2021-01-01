@@ -34,6 +34,7 @@ onready var left_side_info = $BattleUILayer/LeftSidePartyInfo;
 onready var right_side_info = $BattleUILayer/RightSidePartyInfo;
 
 onready var battle_turn_widget = $BattleUILayer/TurnMeter;
+onready var battle_turn_widget_head_label = $BattleUILayer/TurnMeter/Head;
 onready var battle_log_widget = $BattleUILayer/Battlelog;
 
 # MAKE THIS OF TYPE P.C.
@@ -147,9 +148,11 @@ func _process(delta):
 
 		if party is GameActor:
 			if party is PlayerCharacter:
+				battle_turn_widget_head_label.text = "YOUR TURN";
 				if Input.is_action_just_pressed("ui_end"):
 					battle_information.decided_action = skip_turn(active_actor);
 			else:
+				battle_turn_widget_head_label.text = "AI THINKING...";
 				if artificial_thinking_time >= ARTIFICIAL_THINKING_TIME_MAX:
 					var attack_index = active_actor.random_attack_index();
 
@@ -165,8 +168,6 @@ func _process(delta):
 				else:
 					artificial_thinking_time += delta;
 	else:
-		print("Doing turn action.");
-
 		var turn_action	= battle_information.decided_action;
 		var current_actor = turn_action.actor_self;
 		var target_actor = turn_action.actor_target;
@@ -175,11 +176,13 @@ func _process(delta):
 			BATTLE_TURN_ACTION_SKIP_TURN:
 				battle_log_widget.push_message("Skipping turn...");
 			BATTLE_TURN_ACTION_USE_ITEM:
+				battle_turn_widget_head_label.text = "USE ITEM!";
 				battle_log_widget.push_message("Using item");
 				# WHOOPS, THIS DOESN'T WORK BECAUSE I ONLY PASS THE RAW PARTY MEMBER ARRAY.
 				# I SHOULD PASS THE ENTIRE PARTY INFO (gold and inventory).
 				# var selected_item = current_actor.get_item
 			BATTLE_TURN_ACTION_DO_ATTACK:
+				battle_turn_widget_head_label.text = "ATTACKING!";
 				battle_log_widget.push_message("attacking something");
 				# TODO figure out how I would do animation based on this.
 				var selected_attack = current_actor.attacks[turn_action.index];
@@ -188,6 +191,7 @@ func _process(delta):
 				# TODO randomized attack hit chance or whatevers.
 				target_actor.take_damage(selected_attack.magnitude);
 			BATTLE_TURN_ACTION_DO_ABILITY: 
+				battle_turn_widget_head_label.text = "ABILITY!";
 				battle_log_widget.push_message("using ability");
 				# TODO figure out how I would do animation based on this.
 				var selected_ability = current_actor.abilities[turn_action.index];
@@ -196,6 +200,7 @@ func _process(delta):
 				# TODO randomized ability hit chance or whatevers. (unless it's like a friendly)
 				target_actor.handle_ability(selected_ability);
 			BATTLE_TURN_ACTION_FLEE: 
+				battle_turn_widget_head_label.text = "COWARD!";
 				# this would emit a signal...
 				battle_log_widget.push_message("fleeing from fight!");
 

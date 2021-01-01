@@ -57,7 +57,7 @@ func reload_scene(type):
 			main_menu_screen = scene_main_menu.instance();
 		BATTLE_SCENE:
 			old_scene = battle_screen;
-			main_game_screen = scene_battle.instance();
+			battle_screen = scene_battle.instance();
 
 	if old_scene:
 		old_scene.queue_free();

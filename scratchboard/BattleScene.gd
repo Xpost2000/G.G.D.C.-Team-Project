@@ -167,14 +167,11 @@ func _process(delta):
 			var parties = get_party_pairs(whose_side_is_active(active_actor));
 
 			if party is GameActor:
+				allow_access_to_dashboard(party is PlayerCharacter);
+
 				if party is PlayerCharacter:
 					battle_turn_widget_head_label.text = "YOUR TURN";
-					allow_access_to_dashboard(true);
-					if Input.is_action_just_pressed("ui_end"):
-						battle_information.decided_action = skip_turn(active_actor);
 				else:
-					for button_child in battle_dashboard_actions_layout.get_children():
-						allow_access_to_dashboard(false);
 					battle_turn_widget_head_label.text = "AI THINKING...";
 					if artificial_thinking_time >= ARTIFICIAL_THINKING_TIME_MAX:
 						var attack_index = active_actor.random_attack_index();
@@ -247,3 +244,7 @@ func _on_BattleDashboard_Flee_pressed():
 	var active_actor = battle_information.active_actor();
 	var parties = get_party_pairs(whose_side_is_active(active_actor));
 	finish_battle(COMBAT_FINISHED_REASON_FLEE, parties[0], parties[1]);
+
+func _on_BattleDashboard_ForfeitTurn_pressed():
+	var active_actor = battle_information.active_actor();
+	battle_information.decided_action = skip_turn(active_actor);

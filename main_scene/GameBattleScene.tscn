@@ -131,4 +131,5 @@ margin_left = 59.6364
 margin_top = -461.72
 margin_right = 99.6364
 margin_bottom = -421.72
+[connection signal="pressed" from="BattleUILayer/BattleDashboard/Actions/Skip" to="." method="_on_BattleDashboard_ForfeitTurn_pressed"]
 [connection signal="pressed" from="BattleUILayer/BattleDashboard/Actions/Flee" to="." method="_on_BattleDashboard_Flee_pressed"]

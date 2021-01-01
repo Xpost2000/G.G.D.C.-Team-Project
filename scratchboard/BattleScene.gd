@@ -119,7 +119,23 @@ func update_battlelog(delta):
 # this...
 # Ideally, I'd start the battle and pass "controller_type" to the sides so that way we can have
 # the player on the left side or something.
+
+# when the hell is neither going to happen?
 enum {BATTLE_SIDE_NEITHER, BATTLE_SIDE_RIGHT, BATTLE_SIDE_LEFT};
+
+const SAME_SIDE_INDEX = 0;
+const OPPOSING_SIDE_INDEX = 1;
+func get_party_pairs(side):
+	match side:
+		BATTLE_SIDE_LEFT: return [party_on_the_left, party_on_the_right];
+		BATTLE_SIDE_RIGHT: return [party_on_the_right, party_on_the_left];
+	return null;
+
+func get_party_from_side(side):
+	match side:
+		BATTLE_SIDE_LEFT: return party_on_the_left;
+		BATTLE_SIDE_RIGHT: return party_on_the_right;
+	return null;
 
 func whose_side_is_active(active_actor):
 	if active_actor in party_on_the_right.party_members:
@@ -135,27 +151,38 @@ func advance_actor():
 	
 const ARTIFICIAL_THINKING_TIME_MAX = 1.0;
 var artificial_thinking_time = 0;
+
+const GameActor = preload("res://game/GameActor.gd");
+const PlayerCharacter = preload("res://game/PlayerCharacter.gd");
+
 func _process(delta):
 	if Input.is_action_just_pressed("ui_home"):
 		GameGlobals.switch_to_scene(0);
 	if !battle_information.decided_action:
 		var active_actor = battle_information.active_actor();
+		var party = get_party_from_side(whose_side_is_active(active_actor));
 
-		match whose_side_is_active(active_actor):
-			BATTLE_SIDE_NEITHER: pass;
-			BATTLE_SIDE_RIGHT:
+		var parties = get_party_pairs(whose_side_is_active(active_actor));
+
+		if party is GameActor:
+			if party is PlayerCharacter:
+				if Input.is_action_just_pressed("ui_end"):
+					battle_information.decided_action = skip_turn(active_actor);
+			else:
 				if artificial_thinking_time >= ARTIFICIAL_THINKING_TIME_MAX:
-					# battle_information.decided_action = skip_turn(active_actor);
-					battle_information.decided_action = attack(active_actor,
-															   party_on_the_left.party_members[0],
-															   active_actor.random_attack_index());
+					var attack_index = active_actor.random_attack_index();
+
+					if attack_index != -1:
+						battle_information.decided_action = attack(active_actor,
+																   parties[OPPOSING_SIDE_INDEX].index_of_first_alive_party_member(),
+																   attack_index);
+					else:
+						battle_information.decided_action = skip_turn(active_actor);
+						
 					artificial_thinking_time = 0;
 					print("beep boop robot thoughts");
 				else:
 					artificial_thinking_time += delta;
-			BATTLE_SIDE_LEFT:
-				if Input.is_action_just_pressed("ui_end"):
-					battle_information.decided_action = skip_turn(active_actor);
 	else:
 		print("Doing turn action.");
 
@@ -219,15 +246,3 @@ func _process(delta):
 				
 	battle_turn_widget.update_view_of_turns(battle_information);
 	update_battlelog(delta);
-
-
-# TODO, scuffy
-var on_opponent = false;
-func _on_Area2D_input_event(viewport, event, shape_index):
-	if on_opponent:
-		if event is InputEventMouseButton:
-			print("open menu! Or close");
-
-func _on_Area2D_mouse_entered():
-	print("touchy!");
-	on_opponent = true;

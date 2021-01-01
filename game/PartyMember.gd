@@ -80,7 +80,10 @@ func load_party_icon(name):
 	self.party_icon = load("res://images/party-icons/" + name + "_icon.png");
 
 func random_attack_index():
-	return randi() % len(attacks);
+	if len(attacks) > 0:
+		return randi() % len(attacks);
+	else:
+		return -1;
 
 func dead():
 	return health <= 0;

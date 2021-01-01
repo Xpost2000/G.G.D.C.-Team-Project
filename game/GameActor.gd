@@ -73,6 +73,13 @@ func get_party_member(index):
 	# later I'll do checking.
 	return party_members[index];
 
+func index_of_first_alive_party_member(): 
+	for index in len(party_members):
+		var party_member = party_members[index];
+		if !party_members.dead():
+			return index;
+	return -1;
+
 func handle_sprinting(sprinting, delta):
 	if sprinting && can_sprint():
 		sprinting_stamina -= delta * 55.0;

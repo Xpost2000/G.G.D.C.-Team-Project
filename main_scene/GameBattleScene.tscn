@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=2]
+[gd_scene load_steps=13 format=2]
 
 [ext_resource path="res://images/battle/bkgrnds/dumpy_battle_cave_a.png" type="Texture" id=1]
 [ext_resource path="res://icon.png" type="Texture" id=2]
@@ -10,18 +10,15 @@
 [ext_resource path="res://images/battle/portraits/sekijo_test_turn_portrait.png" type="Texture" id=8]
 [ext_resource path="res://images/battle/portraits/isshin_test_turn_portrait.png" type="Texture" id=9]
 
-[sub_resource type="RectangleShape2D" id=1]
-extents = Vector2( 25.0576, 26.881 )
-
-[sub_resource type="DynamicFont" id=2]
+[sub_resource type="DynamicFont" id=1]
 size = 27
 font_data = ExtResource( 3 )
 
-[sub_resource type="DynamicFont" id=3]
+[sub_resource type="DynamicFont" id=2]
 font_data = ExtResource( 3 )
 
-[sub_resource type="Theme" id=4]
-default_font = SubResource( 3 )
+[sub_resource type="Theme" id=3]
+default_font = SubResource( 2 )
 
 [node name="BattleScene" type="Node2D"]
 script = ExtResource( 5 )
@@ -50,11 +47,6 @@ __meta__ = {
 [node name="Sprite" type="Sprite" parent="BattleLayer/RightSideParticipants"]
 texture = ExtResource( 2 )
 
-[node name="Area2D" type="Area2D" parent="BattleLayer/RightSideParticipants/Sprite"]
-
-[node name="InteractArea" type="CollisionShape2D" parent="BattleLayer/RightSideParticipants/Sprite/Area2D"]
-shape = SubResource( 1 )
-
 [node name="BattleUILayer" type="CanvasLayer" parent="."]
 
 [node name="LeftSidePartyInfo" parent="BattleUILayer" instance=ExtResource( 6 )]
@@ -81,7 +73,7 @@ margin_left = 10.0
 margin_top = -0.5
 margin_right = 296.0
 margin_bottom = 42.5
-custom_fonts/font = SubResource( 2 )
+custom_fonts/font = SubResource( 1 )
 text = "BATTLE ORDER (L to R)"
 align = 1
 valign = 1
@@ -163,9 +155,7 @@ margin_left = 515.0
 margin_top = 113.0
 margin_right = 829.0
 margin_bottom = 240.0
-theme = SubResource( 4 )
+theme = SubResource( 3 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
-[connection signal="input_event" from="BattleLayer/RightSideParticipants/Sprite/Area2D" to="." method="_on_Area2D_input_event"]
-[connection signal="mouse_entered" from="BattleLayer/RightSideParticipants/Sprite/Area2D" to="." method="_on_Area2D_mouse_entered"]

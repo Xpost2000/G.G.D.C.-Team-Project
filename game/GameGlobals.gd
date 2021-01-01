@@ -21,13 +21,15 @@ onready var scene_main_game = preload("res://main_scene/MainGameScreen.tscn");
 onready var scene_main_menu = preload("res://main_scene/MainMenuScene.tscn");
 onready var scene_battle = preload("res://main_scene/GameBattleScene.tscn");
 
+# This could, and probably should be an array.
 var main_game_screen;
 var main_menu_screen;
 var battle_screen;
 
 enum{ MAIN_GAME_SCENE,
 	  MAIN_MENU_SCENE,
-	  BATTLE_SCENE }
+	  BATTLE_SCENE,
+	  GAME_SCENE_TYPE_COUNT}
 	
 # I'm not deferring this cause I don't delete the
 # scenes... Ever...
@@ -43,8 +45,25 @@ func switch_to_scene(scene):
 	root.remove_child(last_child);
 	root.add_child(scene_object);
 
+func reload_scene(type):
+	var old_scene = null;
+
+	match type:
+		MAIN_GAME_SCENE:
+			old_scene = main_game_screen;
+			main_game_screen = scene_main_game.instance();
+		MAIN_MENU_SCENE:
+			old_scene = main_menu_screen;
+			main_menu_screen = scene_main_menu.instance();
+		BATTLE_SCENE:
+			old_scene = battle_screen;
+			main_game_screen = scene_battle.instance();
+
+	if old_scene:
+		old_scene.queue_free();
+
 func _ready():
 	print("preloading all scenes at least once.");
-	main_game_screen = scene_main_game.instance();
-	main_menu_screen = scene_main_menu.instance();
-	battle_screen = scene_battle.instance();
+	# I'm going to skip preloading the game. There's no point?
+	for screen_type in range(MAIN_GAME_SCENE+1, GAME_SCENE_TYPE_COUNT):
+		reload_scene(screen_type);

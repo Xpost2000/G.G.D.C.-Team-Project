@@ -9,6 +9,7 @@ func _ready():
 
 # maybe do a fancy fade out.
 func _on_StartGameButton_pressed():
+	GameGlobals.reload_scene(0);
 	GameGlobals.switch_to_scene(0);
 
 func _on_LoadGameButton_pressed():

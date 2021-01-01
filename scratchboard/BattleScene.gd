@@ -136,8 +136,8 @@ func advance_actor():
 const ARTIFICIAL_THINKING_TIME_MAX = 1.0;
 var artificial_thinking_time = 0;
 
-const GameActor = preload("res://game/GameActor.gd");
-const PlayerCharacter = preload("res://game/PlayerCharacter.gd");
+const GameActor = preload("res://game/actors/GameActor.gd");
+const PlayerCharacter = preload("res://game/actors/PlayerCharacter.gd");
 
 func allow_access_to_dashboard(val):
 	for child in battle_dashboard_actions_layout.get_children():

@@ -1,4 +1,4 @@
-extends "res://game/GameActor.gd"
+extends "res://game/actors/GameActor.gd"
 
 const TIME_UNTIL_NEXT_THINK = 6.0;
 var think_timer = TIME_UNTIL_NEXT_THINK;

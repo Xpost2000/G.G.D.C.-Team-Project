@@ -1,5 +1,5 @@
-extends "res://game/GameActor.gd"
-const GameActor = preload("res://game/GameActor.gd");
+extends "res://game/actors/GameActor.gd"
+const GameActor = preload("res://game/actors/GameActor.gd");
 
 # our main issue, is that these guys don't represent one.
 # This is a PARTY, not a singular entity. That's the main thing we

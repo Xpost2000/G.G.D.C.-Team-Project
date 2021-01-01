@@ -12,14 +12,14 @@ class CombatFinishReasonData:
 		self.losing_party = loser;
 		
 	var type: int;
-	var winning_party: Array;
-	var losing_party: Array;
+	var winning_party: Reference;
+	var losing_party: Reference;
 
 func combat_finished_flee(initiator, opponent):
 	return CombatFinishReasonData.new(COMBAT_FINISHED_REASON_FLEE, opponent, initiator);
 func combat_finished_defeated(initiator, opponent):
 	return CombatFinishReasonData.new(COMBAT_FINISHED_REASON_DEFEAT_OF, initiator, opponent);
-func combat_finished_force(initiator, opponent):
+func combat_finished_force():
 	return CombatFinishReasonData.new(COMBAT_FINISHED_REASON_FORCED, null, null);
 
 signal combat_finished(combat_finished_information);
@@ -144,6 +144,18 @@ func allow_access_to_dashboard(val):
 		if child is Button:
 			child.disabled = !val;
 
+# a stupid helper function
+func finish_battle(reason, winner, loser):
+	GameGlobals.switch_to_scene(0);
+
+	var data = null;
+	match reason:
+		COMBAT_FINISHED_REASON_FLEE: data = combat_finished_flee(winner, loser);
+		COMBAT_FINISHED_REASON_DEFEAT_OF: data = combat_finished_defeated(winner, loser);
+		COMBAT_FINISHED_REASON_FORCED: data = combat_finished_force();
+		
+	emit_signal("combat_finished", data);
+
 func _process(delta):
 	if Input.is_action_just_pressed("ui_home"):
 		GameGlobals.switch_to_scene(0);
@@ -215,25 +227,13 @@ func _process(delta):
 					# this would emit a signal...
 					battle_log_widget.push_message("fleeing from fight!");
 
-					var initiator = null;
-					var opponent = null;
-					match whose_side_is_active(current_actor):
-						BATTLE_SIDE_RIGHT:
-							initiator = party_on_the_right;
-							opponent = party_on_the_left.party_members;
-						BATTLE_SIDE_LEFT:
-							initiator = party_on_the_left;
-							opponent = party_on_the_right.party_members;
+					var parties = get_party_pairs(whose_side_is_active(current_actor));
+					finish_battle(COMBAT_FINISHED_REASON_FLEE, parties[0], parties[1]);
 
-					# TODO PartyMembers might want to know that they're part of a party...
-					emit_signal("combat_finished", combat_finished_flee(initiator, opponent));
-
-			# Check if the battle can end for any other reasons here...
-			# mainly, the only other reason is if EVERYONE on a party is dead.
-
-			# Basically this.
-			# if party_on_the_right.all_members_dead():
-			# if party_on_the_left.all_members_dead():
+			if party_on_the_right.all_members_dead():
+				finish_battle(COMBAT_FINISHED_REASON_DEFEAT_OF, party_on_the_left, party_on_the_right);
+			elif party_on_the_left.all_members_dead():
+				finish_battle(COMBAT_FINISHED_REASON_DEFEAT_OF, party_on_the_right, party_on_the_left);
 
 			if battle_information.decided_action.done():
 				advance_actor();
@@ -242,3 +242,8 @@ func _process(delta):
 
 
 		battle_turn_widget.update_view_of_turns(battle_information);
+
+func _on_BattleDashboard_Flee_pressed():
+	var active_actor = battle_information.active_actor();
+	var parties = get_party_pairs(whose_side_is_active(active_actor));
+	finish_battle(COMBAT_FINISHED_REASON_FLEE, parties[0], parties[1]);

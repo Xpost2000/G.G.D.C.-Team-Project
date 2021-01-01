@@ -1,0 +1,104 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://fonts/Alkhemikal.ttf" type="DynamicFontData" id=1]
+[ext_resource path="res://ui/TurnMeterWidget.gd" type="Script" id=2]
+[ext_resource path="res://images/ui/battle_ui_current_cursor.png" type="Texture" id=3]
+[ext_resource path="res://images/battle/portraits/sekijo_test_turn_portrait.png" type="Texture" id=4]
+[ext_resource path="res://images/battle/portraits/isshin_test_turn_portrait.png" type="Texture" id=5]
+
+[sub_resource type="DynamicFont" id=1]
+size = 27
+font_data = ExtResource( 1 )
+
+[node name="TurnMeter" type="ColorRect"]
+margin_left = 513.0
+margin_top = 1.0
+margin_right = 828.0
+margin_bottom = 107.0
+color = Color( 0, 0, 0, 1 )
+script = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Head" type="Label" parent="."]
+margin_left = 10.0
+margin_top = -0.5
+margin_right = 296.0
+margin_bottom = 42.5
+custom_fonts/font = SubResource( 1 )
+text = "BATTLE ORDER (L to R)"
+align = 1
+valign = 1
+autowrap = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TurnStack" type="HBoxContainer" parent="."]
+margin_left = 3.0
+margin_top = 41.0
+margin_right = 286.0
+margin_bottom = 98.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Current" type="TextureRect" parent="TurnStack"]
+margin_right = 37.0
+margin_bottom = 57.0
+rect_min_size = Vector2( 37, 50 )
+texture = ExtResource( 5 )
+expand = true
+stretch_mode = 1
+
+[node name="Next" type="TextureRect" parent="TurnStack"]
+margin_left = 41.0
+margin_right = 78.0
+margin_bottom = 57.0
+rect_min_size = Vector2( 37, 50 )
+texture = ExtResource( 4 )
+expand = true
+stretch_mode = 1
+
+[node name="ColorRect3" type="ColorRect" parent="TurnStack"]
+margin_left = 82.0
+margin_right = 119.0
+margin_bottom = 57.0
+rect_min_size = Vector2( 37, 50 )
+
+[node name="ColorRect4" type="ColorRect" parent="TurnStack"]
+margin_left = 123.0
+margin_right = 160.0
+margin_bottom = 57.0
+rect_min_size = Vector2( 37, 50 )
+
+[node name="ColorRect5" type="ColorRect" parent="TurnStack"]
+margin_left = 164.0
+margin_right = 201.0
+margin_bottom = 57.0
+rect_min_size = Vector2( 37, 50 )
+
+[node name="ColorRect6" type="ColorRect" parent="TurnStack"]
+margin_left = 205.0
+margin_right = 242.0
+margin_bottom = 57.0
+rect_min_size = Vector2( 37, 50 )
+
+[node name="ColorRect7" type="ColorRect" parent="TurnStack"]
+margin_left = 246.0
+margin_right = 283.0
+margin_bottom = 57.0
+rect_min_size = Vector2( 37, 50 )
+
+[node name="TextureRect" type="TextureRect" parent="."]
+margin_left = 2.11359
+margin_top = 99.6833
+margin_right = 42.1136
+margin_bottom = 110.683
+texture = ExtResource( 3 )
+expand = true
+stretch_mode = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}

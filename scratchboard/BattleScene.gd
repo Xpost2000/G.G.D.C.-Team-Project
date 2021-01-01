@@ -248,3 +248,12 @@ func _on_BattleDashboard_Flee_pressed():
 func _on_BattleDashboard_ForfeitTurn_pressed():
 	var active_actor = battle_information.active_actor();
 	battle_information.decided_action = skip_turn(active_actor);
+
+func _on_BattleDashboard_UseAbility_pressed():
+	battle_log_widget.push_message("UI Requests to use an ability.");
+
+func _on_BattleDashboard_Attack_pressed():
+	battle_log_widget.push_message("UI Requests to do an attack");
+
+func _on_BattleDashboard_UseItem_pressed():
+	battle_log_widget.push_message("UI Requests to use an item");

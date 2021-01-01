@@ -1,3 +1,106 @@
-[gd_scene format=2]
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://fonts/Alkhemikal.ttf" type="DynamicFontData" id=1]
+[ext_resource path="res://main_scene/TitleLabel.gd" type="Script" id=2]
+[ext_resource path="res://images/ui/main_menu_background.png" type="Texture" id=3]
+
+[sub_resource type="DynamicFont" id=1]
+size = 219
+outline_size = 7
+outline_color = Color( 0, 0, 0, 1 )
+use_mipmaps = true
+use_filter = true
+font_data = ExtResource( 1 )
+
+[sub_resource type="DynamicFont" id=2]
+size = 36
+font_data = ExtResource( 1 )
+
+[sub_resource type="Theme" id=3]
+default_font = SubResource( 2 )
 
 [node name="MainMenuScene" type="Node2D"]
+
+[node name="Background" type="TextureRect" parent="."]
+margin_left = -34.7058
+margin_top = -9.34387
+margin_right = 1338.29
+margin_bottom = 762.656
+texture = ExtResource( 3 )
+expand = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TitleLabel" type="Label" parent="."]
+margin_right = 1263.0
+margin_bottom = 256.0
+custom_fonts/font = SubResource( 1 )
+text = "SNAKE-EYED"
+align = 1
+script = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ContainerBackground" type="ColorRect" parent="."]
+margin_left = 68.0
+margin_top = 236.0
+margin_right = 342.0
+margin_bottom = 744.0
+color = Color( 0.0745098, 0.0745098, 0.0745098, 1 )
+__meta__ = {
+"_edit_group_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="ButtonsContainer" type="VBoxContainer" parent="ContainerBackground"]
+margin_left = 55.0
+margin_top = 9.0
+margin_right = 220.0
+margin_bottom = 292.0
+theme = SubResource( 3 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="StartGameButton" type="Button" parent="ContainerBackground/ButtonsContainer"]
+margin_right = 165.0
+margin_bottom = 42.0
+text = "Start Game"
+
+[node name="LoadGameButton" type="Button" parent="ContainerBackground/ButtonsContainer"]
+margin_top = 46.0
+margin_right = 165.0
+margin_bottom = 88.0
+text = "Load Game"
+
+[node name="HSeparator" type="HSeparator" parent="ContainerBackground/ButtonsContainer"]
+margin_top = 92.0
+margin_right = 165.0
+margin_bottom = 96.0
+
+[node name="OptionsButton" type="Button" parent="ContainerBackground/ButtonsContainer"]
+margin_top = 100.0
+margin_right = 165.0
+margin_bottom = 142.0
+text = "Options"
+
+[node name="AboutGameButton" type="Button" parent="ContainerBackground/ButtonsContainer"]
+margin_top = 146.0
+margin_right = 165.0
+margin_bottom = 188.0
+text = "About?"
+
+[node name="InvisibleSpacer" type="ColorRect" parent="ContainerBackground/ButtonsContainer"]
+margin_top = 192.0
+margin_right = 165.0
+margin_bottom = 392.0
+rect_min_size = Vector2( 0, 200 )
+color = Color( 1, 1, 1, 0 )
+
+[node name="QuitGame" type="Button" parent="ContainerBackground/ButtonsContainer"]
+margin_top = 396.0
+margin_right = 165.0
+margin_bottom = 438.0
+text = "Quit"

@@ -1,5 +1,7 @@
 extends Control
 
+signal notify_just_closed;
+
 onready var inventory_widget = $Inventory;
 onready var party_member_selection_widget = $PartyMemberSelection;
 
@@ -15,3 +17,4 @@ func _on_Inventory_prompt_for_item_usage_selection(party_members, item_to_be_usi
 
 func _on_PartyMemberSelection_ask_to_close_prompt():
 	party_member_selection_widget.hide();
+	emit_signal("notify_just_closed");

@@ -81,11 +81,6 @@ func attack(actor_self, actor_target, which_attack):
 
 	return attack_action;
 
-func push_message_to_battlelog(message):
-	var new_label = Label.new();
-	new_label.text = message;
-	battle_log_widget.add_child(new_label);
-
 var battle_information = BattleTurnStatus.new();
 
 func begin_battle(left, right):
@@ -98,20 +93,6 @@ func begin_battle(left, right):
 	battle_information.participants = [];
 	battle_information.participants += party_on_the_left.party_members;
 	battle_information.participants += party_on_the_right.party_members;
-
-# TODO Special message log labels, with their own special lifetime to delete themselves.
-const BATTLE_LOG_MESSAGE_CLEAR_TIME = 0.85;
-var battle_log_timer_to_clear_next_message = 0;
-func update_battlelog(delta):
-	var messages_in_log = len(battle_log_widget.get_children());
-	if messages_in_log > 0:
-		if battle_log_timer_to_clear_next_message >= BATTLE_LOG_MESSAGE_CLEAR_TIME:
-			var last = battle_log_widget.get_children()[messages_in_log-1];
-			battle_log_widget.remove_child(last);
-			battle_log_timer_to_clear_next_message = 0;
-			battle_log_timer_to_clear_next_message += delta;
-	else:
-		battle_log_timer_to_clear_next_message = 0;
 
 # Technically... This doesn't matter to me... What I really care about
 # is the "brain" controller.
@@ -147,7 +128,7 @@ func whose_side_is_active(active_actor):
 
 func advance_actor():
 	battle_information.advance_actor();
-	push_message_to_battlelog("The turn goes to " + battle_information.active_actor().name);
+	battle_log_widget.push_message("The turn goes to " + battle_information.active_actor().name);
 	
 const ARTIFICIAL_THINKING_TIME_MAX = 1.0;
 var artificial_thinking_time = 0;
@@ -192,31 +173,31 @@ func _process(delta):
 		
 		match turn_action.type:
 			BATTLE_TURN_ACTION_SKIP_TURN:
-				push_message_to_battlelog("Skipping turn...");
+				battle_log_widget.push_message("Skipping turn...");
 			BATTLE_TURN_ACTION_USE_ITEM:
-				push_message_to_battlelog("Using item");
+				battle_log_widget.push_message("Using item");
 				# WHOOPS, THIS DOESN'T WORK BECAUSE I ONLY PASS THE RAW PARTY MEMBER ARRAY.
 				# I SHOULD PASS THE ENTIRE PARTY INFO (gold and inventory).
 				# var selected_item = current_actor.get_item
 			BATTLE_TURN_ACTION_DO_ATTACK:
-				push_message_to_battlelog("attacking something");
+				battle_log_widget.push_message("attacking something");
 				# TODO figure out how I would do animation based on this.
 				var selected_attack = current_actor.attacks[turn_action.index];
-				push_message_to_battlelog(current_actor.name + " performs " + selected_attack.name);
+				battle_log_widget.push_message(current_actor.name + " performs " + selected_attack.name);
 				# insert plays animation!
 				# TODO randomized attack hit chance or whatevers.
 				target_actor.take_damage(selected_attack.magnitude);
 			BATTLE_TURN_ACTION_DO_ABILITY: 
-				push_message_to_battlelog("using ability");
+				battle_log_widget.push_message("using ability");
 				# TODO figure out how I would do animation based on this.
 				var selected_ability = current_actor.abilities[turn_action.index];
-				push_message_to_battlelog(current_actor.name + " performs " + selected_ability.name);
+				battle_log_widget.push_message(current_actor.name + " performs " + selected_ability.name);
 				# insert plays animation!
 				# TODO randomized ability hit chance or whatevers. (unless it's like a friendly)
 				target_actor.handle_ability(selected_ability);
 			BATTLE_TURN_ACTION_FLEE: 
 				# this would emit a signal...
-				push_message_to_battlelog("fleeing from fight!");
+				battle_log_widget.push_message("fleeing from fight!");
 
 				var initiator = null;
 				var opponent = null;
@@ -245,4 +226,3 @@ func _process(delta):
 			
 				
 	battle_turn_widget.update_view_of_turns(battle_information);
-	update_battlelog(delta);

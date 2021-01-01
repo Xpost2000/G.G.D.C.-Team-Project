@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=2]
+[gd_scene load_steps=14 format=2]
 
 [ext_resource path="res://images/battle/bkgrnds/dumpy_battle_cave_a.png" type="Texture" id=1]
 [ext_resource path="res://icon.png" type="Texture" id=2]
@@ -9,6 +9,7 @@
 [ext_resource path="res://ui/TurnMeterWidget.gd" type="Script" id=7]
 [ext_resource path="res://images/battle/portraits/sekijo_test_turn_portrait.png" type="Texture" id=8]
 [ext_resource path="res://images/battle/portraits/isshin_test_turn_portrait.png" type="Texture" id=9]
+[ext_resource path="res://ui/Battlelog.gd" type="Script" id=10]
 
 [sub_resource type="DynamicFont" id=1]
 size = 27
@@ -156,6 +157,7 @@ margin_top = 113.0
 margin_right = 829.0
 margin_bottom = 240.0
 theme = SubResource( 3 )
+script = ExtResource( 10 )
 __meta__ = {
 "_edit_use_anchors_": false
 }

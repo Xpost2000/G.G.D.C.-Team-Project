@@ -4,4 +4,4 @@ func _ready():
 	pass;
 
 func _process(delta):
-	GameGlobals.switch_to_scene(0);
+	GameGlobals.switch_to_scene(1);

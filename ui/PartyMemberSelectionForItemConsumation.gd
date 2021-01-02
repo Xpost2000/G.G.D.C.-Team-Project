@@ -1,5 +1,5 @@
 # I meant ITEM_CONSUMPTION... Oh well it's kind of funny I guess.
-extends ColorRect
+extends NinePatchRect;
 # I don't know why I would need the index but I guess it's insurance?
 signal picked_party_member(object, index);
 signal cancel_selection;

@@ -1,7 +1,9 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://ui/PartyMemberSelectionForItemConsumation.gd" type="Script" id=1]
 [ext_resource path="res://fonts/Alkhemikal.ttf" type="DynamicFontData" id=2]
+[ext_resource path="res://ui_themes/buttons_for_paperbg.tres" type="Theme" id=3]
+[ext_resource path="res://images/ui/ui_paper.png" type="Texture" id=4]
 
 [sub_resource type="DynamicFont" id=1]
 size = 48
@@ -15,22 +17,27 @@ font_data = ExtResource( 2 )
 size = 32
 font_data = ExtResource( 2 )
 
-[node name="PartyMemberSelection" type="ColorRect"]
+[node name="PartyMemberSelection" type="NinePatchRect"]
 margin_left = 339.0
-margin_top = 148.0
+margin_top = 127.0
 margin_right = 686.0
 margin_bottom = 465.0
-color = Color( 0.207843, 0.207843, 0.207843, 1 )
+theme = ExtResource( 3 )
+texture = ExtResource( 4 )
+patch_margin_left = 32
+patch_margin_top = 32
+patch_margin_right = 32
+patch_margin_bottom = 32
 script = ExtResource( 1 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="Heading" type="Label" parent="."]
-margin_left = 4.0
-margin_top = -1.0
-margin_right = 347.0
-margin_bottom = 47.0
+margin_left = 1.87866
+margin_top = 8.17159
+margin_right = 344.879
+margin_bottom = 56.1716
 custom_fonts/font = SubResource( 1 )
 text = "Who?"
 align = 1
@@ -40,20 +47,20 @@ __meta__ = {
 }
 
 [node name="Selections" type="ItemList" parent="."]
-margin_left = 10.7401
-margin_top = 46.2202
-margin_right = 335.74
-margin_bottom = 267.22
+margin_left = 32.0
+margin_top = 52.0
+margin_right = 327.0
+margin_bottom = 290.0
 custom_fonts/font = SubResource( 2 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="CancelUsage" type="Button" parent="."]
-margin_left = 126.661
-margin_top = 277.74
-margin_right = 230.661
-margin_bottom = 315.74
+margin_left = 116.054
+margin_top = 287.639
+margin_right = 220.054
+margin_bottom = 325.639
 custom_fonts/font = SubResource( 3 )
 text = "Cancel"
 __meta__ = {

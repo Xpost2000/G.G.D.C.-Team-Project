@@ -1,4 +1,4 @@
-extends ColorRect
+extends NinePatchRect;
 
 onready var item_preview_name = $ItemName;
 onready var item_preview_sprite = $ItemPreviewSprite;

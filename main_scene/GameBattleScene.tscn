@@ -26,7 +26,15 @@ font_data = ExtResource( 3 )
 [node name="BattleScene" type="Node2D"]
 script = ExtResource( 5 )
 
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2( 638, 359 )
+current = true
+smoothing_enabled = true
+
 [node name="BattleLayer" type="Node2D" parent="."]
+__meta__ = {
+"_edit_lock_": true
+}
 
 [node name="BattleBackground" type="Sprite" parent="BattleLayer"]
 position = Vector2( 643.722, 360.56 )

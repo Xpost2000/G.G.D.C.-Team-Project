@@ -1,4 +1,4 @@
-extends ColorRect
+extends NinePatchRect;
 
 signal prompt_for_item_usage_selection(party_members, item_name);
 

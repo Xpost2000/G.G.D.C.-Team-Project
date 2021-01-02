@@ -167,6 +167,23 @@ func report_inventory_of_active_party():
 	var active_party = get_party_pairs(whose_side_is_active(active_actor))[0];
 	inventory_ui.update_based_on_entity(active_party, active_party.inventory);
 
+var camera_shake_timer_length = 0;
+var camera_shake_timer = 0;
+var camera_shake_strength = 0;
+
+func begin_camera_shake(length, magnitude):
+	camera_shake_timer_length = length;
+	camera_shake_timer = 0;
+	camera_shake_strength = magnitude;
+
+func handle_camera_shake(delta):
+	if camera_shake_timer <= camera_shake_timer_length:
+		$Camera2D.offset = Vector2(rand_range(-camera_shake_strength, camera_shake_strength),
+								   rand_range(-camera_shake_strength, camera_shake_strength));
+		camera_shake_timer += delta;
+	else:
+		$Camera2D.offset = Vector2.ZERO;
+	
 func _process(delta):
 	if party_on_the_left and party_on_the_right:
 		if !battle_information.decided_action:
@@ -223,6 +240,7 @@ func _process(delta):
 					# insert plays animation!
 					# TODO randomized attack hit chance or whatevers.
 					target_actor.take_damage(selected_attack.magnitude);
+					begin_camera_shake(0.45, 25);
 				BATTLE_TURN_ACTION_DO_ABILITY: 
 					battle_turn_widget_head_label.text = "ABILITY!";
 					battle_log_widget.push_message("using ability");
@@ -250,6 +268,7 @@ func _process(delta):
 				print("not done!");
 
 
+		handle_camera_shake(delta);
 		battle_turn_widget.update_view_of_turns(battle_information);
 
 func _on_BattleDashboard_Flee_pressed():

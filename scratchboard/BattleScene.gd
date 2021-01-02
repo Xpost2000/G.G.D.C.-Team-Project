@@ -264,6 +264,17 @@ func _on_BattleDashboard_UseItem_pressed():
 	battle_log_widget.push_message("UI Requests to use an item");
 	inventory_ui.show();
 
-# TODO I need to distinguish (cancel) vs (used item)
-func _on_InventoryUI_notify_just_closed():
+enum {CLOSE_REASON_CANCEL, CLOSE_REASON_USED}
+func _on_InventoryUI_close(reason):
+	var active_actor = battle_information.active_actor();
+	var parties = get_party_pairs(whose_side_is_active(active_actor));
+
+	var item_entry = reason[1];
+	var item_entry_index = parties[0].inventory.find(item_entry);
+
+	match reason[0]:
+		CLOSE_REASON_CANCEL: pass;
+		CLOSE_REASON_USED:
+			battle_information.decided_action = use_item(active_actor, active_actor, item_entry_index);
+
 	inventory_ui.hide();

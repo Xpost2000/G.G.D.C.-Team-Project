@@ -1,5 +1,6 @@
 extends CanvasLayer
 signal notify_finished_level_load_related_fading();
+# signal request_to_use_item(item_index); Might end up using? For now no.
 
 onready var stamina_bar = $SprintingStaminaBar;
 onready var stamina_bar_max_dimensions = $SprintingStaminaBar.rect_size;
@@ -104,9 +105,6 @@ func toggle_inventory():
 	else:
 		show_inventory();
 
-func _on_Inventory_prompt_for_item_usage_selection(party_members, item_name):
-	pass # Replace with function body.
-
 func _on_MainGameScreen_ask_ui_to_open_test_dialogue():
 	showing_dialogue = true;
 	dialogue_ui.open_test_dialogue();
@@ -116,3 +114,12 @@ func _on_DialogueUI_notify_dialogue_terminated(reason):
 	match reason.type:
 		DIALOGUE_TERMINATION_REASON_DEFAULT: pass;
 	showing_dialogue = false;
+
+enum {CLOSE_REASON_CANCEL, CLOSE_REASON_USED}
+func _on_InventoryUI_close(reason):
+	match reason[0]:
+		CLOSE_REASON_CANCEL: pass;
+		CLOSE_REASON_USED:
+			var targetting = inventory_ui.inventory_owner().get_party_member(reason[1]);
+			reason[2][1] -= 1;
+			ItemDatabase.apply_item_to(targetting, reason[2][0]);

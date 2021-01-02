@@ -137,4 +137,4 @@ margin_bottom = 57.28
 [connection signal="pressed" from="BattleUILayer/BattleDashboard/Actions/UseItem" to="." method="_on_BattleDashBoard_UseItem_pressed"]
 [connection signal="pressed" from="BattleUILayer/BattleDashboard/Actions/Skip" to="." method="_on_BattleDashboard_ForfeitTurn_pressed"]
 [connection signal="pressed" from="BattleUILayer/BattleDashboard/Actions/Flee" to="." method="_on_BattleDashboard_Flee_pressed"]
-[connection signal="notify_just_closed" from="BattleUILayer/InventoryUI" to="." method="_on_InventoryUI_notify_just_closed"]
+[connection signal="close" from="BattleUILayer/InventoryUI" to="." method="_on_InventoryUI_close"]

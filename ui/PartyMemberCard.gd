@@ -1,4 +1,4 @@
-extends ColorRect
+extends NinePatchRect;
 
 onready var member_portrait = $CardLayout/Portrait;
 onready var member_name = $CardLayout/MemberInfo/MemberName;

@@ -4,6 +4,7 @@ enum {CLOSE_REASON_CANCEL, CLOSE_REASON_USED}
 signal close(reason);
 
 onready var inventory_widget = $Inventory;
+onready var inventory_widget_item_list = $Inventory/InventoryItemList;
 onready var party_member_selection_widget = $PartyMemberSelection;
 
 var item_use_inventory_entry = null;
@@ -21,12 +22,17 @@ func _on_Inventory_prompt_for_item_usage_selection(party_members, item_entry_inf
 	item_use_inventory_entry = item_entry_information;
 	party_member_selection_widget.show();
 	party_member_selection_widget.open_prompt(party_members, "Use on who?");
-	# disable inventory...
+	inventory_widget.modulate = Color(0.5, 0.5, 0.5);
+	$Inventory/StupidBlocker.show();
 
 func _on_PartyMemberSelection_picked_party_member(party_member_object, index_of_party_member):
 	party_member_selection_widget.hide();
 	emit_signal("close", [CLOSE_REASON_USED, index_of_party_member, item_use_inventory_entry]);
+	inventory_widget.modulate = Color(1, 1, 1);
+	$Inventory/StupidBlocker.hide();
 
 func _on_PartyMemberSelection_cancel_selection():
 	party_member_selection_widget.hide();
 	emit_signal("close", [CLOSE_REASON_CANCEL]);
+	inventory_widget.modulate = Color(1, 1, 1);
+	$Inventory/StupidBlocker.hide();

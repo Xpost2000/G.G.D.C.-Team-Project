@@ -45,7 +45,12 @@ patch_margin_left = 32
 patch_margin_top = 32
 patch_margin_right = 32
 patch_margin_bottom = 32
+axis_stretch_horizontal = 1
+axis_stretch_vertical = 1
 script = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="InventoryItemList" type="ItemList" parent="Inventory"]
 margin_left = 20.0
@@ -82,6 +87,8 @@ patch_margin_left = 32
 patch_margin_top = 32
 patch_margin_right = 32
 patch_margin_bottom = 32
+axis_stretch_horizontal = 1
+axis_stretch_vertical = 1
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -131,7 +138,18 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="StupidBlocker" type="ColorRect" parent="Inventory"]
+visible = false
+margin_right = 1147.0
+margin_bottom = 659.0
+color = Color( 1, 1, 1, 0 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="PartyMemberSelection" parent="." instance=ExtResource( 1 )]
+axis_stretch_horizontal = 1
+axis_stretch_vertical = 1
 [connection signal="prompt_for_item_usage_selection" from="Inventory" to="." method="_on_Inventory_prompt_for_item_usage_selection"]
 [connection signal="item_activated" from="Inventory/InventoryItemList" to="Inventory" method="_on_InventoryItemList_item_activated"]
 [connection signal="item_selected" from="Inventory/InventoryItemList" to="Inventory" method="_on_InventoryItemList_item_selected"]

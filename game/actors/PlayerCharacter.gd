@@ -14,8 +14,10 @@ signal test_open_conversation;
 func _ready():
 	var protag = add_party_member_default("Mr. Protagonist");
 	protag.load_battle_portrait("sekijo_test");
+	protag.attacks.push_back(PartyMember.PartyMemberAttack.new("Quick Slash", 45, 1.0));
 	var deutag = add_party_member_default("Mr. Deuteragonist");
-	protag.load_battle_portrait("sekiro_test");
+	deutag.attacks.push_back(PartyMember.PartyMemberAttack.new("Watergun!", 56, 1.0));
+	deutag.load_battle_portrait("sekiro_test");
 	inventory = [["healing_grass", 15],
 				 ["healing_pod", 5]];
 	pass;
@@ -80,13 +82,13 @@ func _on_InteractableArea_area_entered(area):
 	# but I'll settle for this since it takes less time.
 	if area.name == "InteractableArea":
 		var parent = area.get_parent();
-		if parent is GameActor && battle_cooldown >= BATTLE_COOLDOWN_MAX_TIME:
+		if parent is GameActor && battle_cooldown >= BATTLE_COOLDOWN_MAX_TIME && !parent.all_members_dead():
 			print("Another actor.");
 			print("I humbly request a battle with this one.");
 			emit_signal("request_to_open_battle", self, parent);
 			battle_cooldown = 0;
 		else:
-			print("Unknown parent or too many battles at once...");
+			print("Unknown parent or too many battles at once... Or they're a corpse.");
 
 func _on_InteractableArea_area_exited(area):
 	if area.name == "InteractableArea":

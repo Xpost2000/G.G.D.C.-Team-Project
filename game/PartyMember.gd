@@ -11,6 +11,11 @@ class PartyMemberAttack:
 	# 0 - 1.0
 	var accuracy: float;
 
+	func get_icon_texture():
+		return null;
+	func get_item_list_string():
+		return self.name;
+
 enum {ABILITY_TYPE_NONE}
 # TODO metadata for AI usage.
 class PartyMemberAbility:
@@ -28,6 +33,11 @@ class PartyMemberAbility:
 	var magnitude: int;
 	# 0 - 1.0
 	var accuracy: float;
+
+	func get_icon_texture():
+		return null;
+	func get_item_list_string():
+		return self.name + " :: " + self.description;
 
 const PartyMemberStatBlock = preload("res://game/PartyMemberStatBlock.gd");
 

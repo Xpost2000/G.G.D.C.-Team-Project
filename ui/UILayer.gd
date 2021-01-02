@@ -123,3 +123,14 @@ func _on_InventoryUI_close(reason):
 			var targetting = inventory_ui.inventory_owner().get_party_member(reason[1]);
 			reason[2][1] -= 1;
 			ItemDatabase.apply_item_to(targetting, reason[2][0]);
+
+# Referring to death screen if anyone asks.
+func _on_Restart_pressed():	
+	GameGlobals.reload_scene(0);
+	GameGlobals.switch_to_scene(0);
+
+func _on_Menu_pressed():
+	GameGlobals.switch_to_scene(1);
+
+func _on_Quit_pressed():
+	get_tree().quit();

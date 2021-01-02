@@ -80,6 +80,9 @@ func index_of_first_alive_party_member():
 			return index;
 	return -1;
 
+func first_alive_party_member():
+	return get_party_member(index_of_first_alive_party_member());
+
 func handle_sprinting(sprinting, delta):
 	if sprinting && can_sprint():
 		sprinting_stamina -= delta * 55.0;
@@ -103,3 +106,6 @@ func handle_movement(sprinting, direction, delta):
 		return (slide_velocity == velocity);
 	else:
 		return true;
+
+func _process(delta):
+	pass;

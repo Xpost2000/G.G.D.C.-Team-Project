@@ -4,7 +4,7 @@
 [ext_resource path="res://fonts/Alkhemikal.ttf" type="DynamicFontData" id=2]
 
 [sub_resource type="DynamicFont" id=1]
-size = 72
+size = 48
 font_data = ExtResource( 2 )
 
 [sub_resource type="DynamicFont" id=2]
@@ -18,9 +18,9 @@ font_data = ExtResource( 2 )
 [node name="PartyMemberSelection" type="ColorRect"]
 margin_left = 339.0
 margin_top = 148.0
-margin_right = 725.0
+margin_right = 686.0
 margin_bottom = 465.0
-color = Color( 0, 0, 0, 1 )
+color = Color( 0.207843, 0.207843, 0.207843, 1 )
 script = ExtResource( 1 )
 __meta__ = {
 "_edit_use_anchors_": false
@@ -29,28 +29,31 @@ __meta__ = {
 [node name="Heading" type="Label" parent="."]
 margin_left = 4.0
 margin_top = -1.0
-margin_right = 387.0
-margin_bottom = 91.0
+margin_right = 347.0
+margin_bottom = 47.0
 custom_fonts/font = SubResource( 1 )
 text = "Who?"
 align = 1
 valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="Selections" type="ItemList" parent="."]
-margin_left = 27.0
-margin_top = 88.0
-margin_right = 352.0
-margin_bottom = 271.0
+margin_left = 10.7401
+margin_top = 46.2202
+margin_right = 335.74
+margin_bottom = 267.22
 custom_fonts/font = SubResource( 2 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="CancelUsage" type="Button" parent="."]
-margin_left = 139.26
-margin_top = 276.48
-margin_right = 243.26
-margin_bottom = 314.48
+margin_left = 126.661
+margin_top = 277.74
+margin_right = 230.661
+margin_bottom = 315.74
 custom_fonts/font = SubResource( 3 )
 text = "Cancel"
 __meta__ = {

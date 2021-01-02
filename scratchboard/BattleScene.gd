@@ -1,4 +1,6 @@
 extends Node2D
+# also welcome to monster file.
+# TODO: AOE attacks?
 
 enum {
 	COMBAT_FINISHED_REASON_FLEE, # The winning party is the one that didn't flee.
@@ -37,6 +39,9 @@ onready var battle_turn_widget = $BattleUILayer/TurnMeter;
 onready var battle_turn_widget_head_label = $BattleUILayer/TurnMeter/Head;
 onready var battle_log_widget = $BattleUILayer/Battlelog;
 onready var inventory_ui = $BattleUILayer/InventoryUI;
+
+onready var party_member_select_for_action = $BattleUILayer/PartyMemberSelectionForAction;
+onready var action_selection_prompt = $BattleUILayer/ActionSelectionPrompt;
 
 onready var battle_dashboard_actions_layout = $BattleUILayer/BattleDashboard/Actions;
 
@@ -183,7 +188,7 @@ func _process(delta):
 
 						if attack_index != -1:
 							battle_information.decided_action = attack(active_actor,
-																	   parties[OPPOSING_SIDE_INDEX].index_of_first_alive_party_member(),
+																	   parties[OPPOSING_SIDE_INDEX].first_alive_party_member(),
 																	   attack_index);
 						else:
 							battle_information.decided_action = skip_turn(active_actor);
@@ -256,11 +261,52 @@ func _on_BattleDashboard_ForfeitTurn_pressed():
 	var active_actor = battle_information.active_actor();
 	battle_information.decided_action = skip_turn(active_actor);
 
+enum{ ACTION_PROMPT_MODE_ATTACK, ACTION_PROMPT_MODE_ABILITY };
+var action_prompt_mode = 0;
+
 func _on_BattleDashboard_UseAbility_pressed():
 	battle_log_widget.push_message("UI Requests to use an ability.");
+	action_prompt_mode = ACTION_PROMPT_MODE_ABILITY;
+	var active_actor = battle_information.active_actor();
+	action_selection_prompt.show();
+	action_selection_prompt.open_prompt(active_actor.abilities, "Select Ability");
 
 func _on_BattleDashboard_Attack_pressed():
 	battle_log_widget.push_message("UI Requests to do an attack");
+	action_prompt_mode = ACTION_PROMPT_MODE_ATTACK;
+	var active_actor = battle_information.active_actor();
+	action_selection_prompt.show();
+	action_selection_prompt.open_prompt(active_actor.attacks, "Select Attack");
+
+var picking_item_index = -1;
+func _on_ActionSelectionPrompt_picked(index):
+	# I'd check the ability for target allowance...
+	# TODO, highlight who is picked on the battle view.
+	var active_actor = battle_information.active_actor();
+	var parties = get_party_pairs(whose_side_is_active(active_actor));
+	
+	match action_prompt_mode:
+		ACTION_PROMPT_MODE_ATTACK:
+			party_member_select_for_action.open_prompt(parties[1].party_members);
+		ACTION_PROMPT_MODE_ABILITY:
+			party_member_select_for_action.open_prompt(party_on_the_left.party_members + party_on_the_right.party_members);
+	action_selection_prompt.hide();
+	picking_item_index = index;
+	party_member_select_for_action.show();
+
+func _on_PartyMemberSelectionForAction_cancel_selection():
+	party_member_select_for_action.hide();
+
+func _on_PartyMemberSelectionForAction_picked_party_member(party_member_object, party_member_index):
+	var active_actor = battle_information.active_actor();
+	var parties = get_party_pairs(whose_side_is_active(active_actor));
+
+	match action_prompt_mode:
+		ACTION_PROMPT_MODE_ATTACK:
+			battle_information.decided_action = attack(active_actor, party_member_object, picking_item_index);
+		ACTION_PROMPT_MODE_ABILITY:
+			battle_information.decided_action = ability(active_actor, party_member_object, picking_item_index);
+	party_member_select_for_action.hide();
 
 func _on_BattleDashboard_UseItem_pressed():
 	battle_log_widget.push_message("UI Requests to use an item");
@@ -272,17 +318,13 @@ func _on_InventoryUI_close(reason):
 	var parties = get_party_pairs(whose_side_is_active(active_actor));
 
 	var reason_type = reason[0];
-	var target_actor_index = reason[1];
-	var item_entry = reason[2];
-	var item_entry_index = parties[0].inventory.find(item_entry);
-
-	print("???");
-	print("reason: ", reason);
-	print("entry: ", item_entry, " index", item_entry_index);
-
+	
 	match reason_type:
 		CLOSE_REASON_CANCEL: pass;
 		CLOSE_REASON_USED:
+			var target_actor_index = reason[1];
+			var item_entry = reason[2];
+			var item_entry_index = parties[0].inventory.find(item_entry);
 			battle_information.decided_action = use_item(active_actor,
 														 parties[0].get_party_member(target_actor_index),
 														 item_entry_index);

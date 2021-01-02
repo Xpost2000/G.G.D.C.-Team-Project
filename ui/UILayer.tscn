@@ -79,7 +79,6 @@ visible = false
 visible = false
 
 [node name="DeathScreenUI" type="Control" parent="."]
-visible = false
 margin_right = 40.0
 margin_bottom = 40.0
 __meta__ = {
@@ -121,10 +120,21 @@ custom_styles/disabled = SubResource( 7 )
 custom_styles/normal = SubResource( 8 )
 text = "Restart Game"
 
-[node name="Quit" type="Button" parent="DeathScreenUI/Selections"]
+[node name="Menu" type="Button" parent="DeathScreenUI/Selections"]
 margin_top = 36.0
 margin_right = 472.0
 margin_bottom = 68.0
+custom_styles/hover = SubResource( 4 )
+custom_styles/pressed = SubResource( 5 )
+custom_styles/focus = SubResource( 6 )
+custom_styles/disabled = SubResource( 7 )
+custom_styles/normal = SubResource( 8 )
+text = "Return to Main Menu"
+
+[node name="Quit" type="Button" parent="DeathScreenUI/Selections"]
+margin_top = 72.0
+margin_right = 472.0
+margin_bottom = 104.0
 custom_styles/hover = SubResource( 9 )
 custom_styles/pressed = SubResource( 10 )
 custom_styles/focus = SubResource( 11 )
@@ -199,3 +209,6 @@ custom_colors/font_color = Color( 1, 1, 1, 1 )
 text = "Quit"
 [connection signal="close" from="InventoryUI" to="." method="_on_InventoryUI_close"]
 [connection signal="notify_dialogue_terminated" from="DialogueUI" to="." method="_on_DialogueUI_notify_dialogue_terminated"]
+[connection signal="pressed" from="DeathScreenUI/Selections/Restart" to="." method="_on_Restart_pressed"]
+[connection signal="pressed" from="DeathScreenUI/Selections/Menu" to="." method="_on_Menu_pressed"]
+[connection signal="pressed" from="DeathScreenUI/Selections/Quit" to="." method="_on_Quit_pressed"]

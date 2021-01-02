@@ -127,6 +127,7 @@ func _on_InventoryUI_close(reason):
 # Referring to death screen if anyone asks.
 func _on_Restart_pressed():	
 	GameGlobals.reload_scene(0);
+	GameGlobals.reload_scene(1);
 	GameGlobals.switch_to_scene(0);
 
 func _on_Menu_pressed():

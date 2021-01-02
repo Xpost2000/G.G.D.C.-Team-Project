@@ -125,9 +125,13 @@ func _on_InventoryUI_close(reason):
 			ItemDatabase.apply_item_to(targetting, reason[2][0]);
 
 # Referring to death screen if anyone asks.
+enum{ MAIN_GAME_SCENE,
+	  MAIN_MENU_SCENE,
+	  BATTLE_SCENE,
+	  GAME_SCENE_TYPE_COUNT}
 func _on_Restart_pressed():	
-	GameGlobals.reload_scene(0);
-	GameGlobals.reload_scene(2);
+	GameGlobals.reload_scene(MAIN_GAME_SCENE);
+	GameGlobals.reload_scene(BATTLE_SCENE);
 	GameGlobals.switch_to_scene(0);
 
 func _on_Menu_pressed():

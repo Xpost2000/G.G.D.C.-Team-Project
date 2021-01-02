@@ -8,9 +8,15 @@ func _ready():
 	pass
 
 # maybe do a fancy fade out.
+
+enum{ MAIN_GAME_SCENE,
+	  MAIN_MENU_SCENE,
+	  BATTLE_SCENE,
+	  GAME_SCENE_TYPE_COUNT}
+
 func _on_StartGameButton_pressed():
-	GameGlobals.reload_scene(2);
-	GameGlobals.reload_scene(1);
+	GameGlobals.reload_scene(MAIN_GAME_SCENE);
+	GameGlobals.reload_scene(BATTLE_SCENE);
 	GameGlobals.switch_to_scene(0);
 
 func _on_LoadGameButton_pressed():

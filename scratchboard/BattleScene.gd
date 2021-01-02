@@ -183,8 +183,8 @@ func _process(delta):
 
 						if attack_index != -1:
 							battle_information.decided_action = attack(active_actor,
-																	parties[OPPOSING_SIDE_INDEX].index_of_first_alive_party_member(),
-																	attack_index);
+																	   parties[OPPOSING_SIDE_INDEX].index_of_first_alive_party_member(),
+																	   attack_index);
 						else:
 							battle_information.decided_action = skip_turn(active_actor);
 
@@ -197,15 +197,18 @@ func _process(delta):
 			var current_actor = turn_action.actor_self;
 			var target_actor = turn_action.actor_target;
 
+			var parties = get_party_pairs(whose_side_is_active(current_actor));
+
 			match turn_action.type:
 				BATTLE_TURN_ACTION_SKIP_TURN:
 					battle_log_widget.push_message("Skipping turn...");
 				BATTLE_TURN_ACTION_USE_ITEM:
 					battle_turn_widget_head_label.text = "USE ITEM!";
 					battle_log_widget.push_message("Using item");
-					# WHOOPS, THIS DOESN'T WORK BECAUSE I ONLY PASS THE RAW PARTY MEMBER ARRAY.
-					# I SHOULD PASS THE ENTIRE PARTY INFO (gold and inventory).
-					# var selected_item = current_actor.get_item
+
+					var item_to_use = parties[0].inventory[turn_action.index];
+					item_to_use[1] -= 1;
+					ItemDatabase.apply_item_to(turn_action.actor_target, item_to_use[0]);
 				BATTLE_TURN_ACTION_DO_ATTACK:
 					battle_turn_widget_head_label.text = "ATTACKING!";
 					battle_log_widget.push_message("attacking something");
@@ -229,7 +232,6 @@ func _process(delta):
 					# this would emit a signal...
 					battle_log_widget.push_message("fleeing from fight!");
 
-					var parties = get_party_pairs(whose_side_is_active(current_actor));
 					finish_battle(COMBAT_FINISHED_REASON_FLEE, parties[0], parties[1]);
 
 			if party_on_the_right.all_members_dead():
@@ -269,12 +271,20 @@ func _on_InventoryUI_close(reason):
 	var active_actor = battle_information.active_actor();
 	var parties = get_party_pairs(whose_side_is_active(active_actor));
 
-	var item_entry = reason[1];
+	var reason_type = reason[0];
+	var target_actor_index = reason[1];
+	var item_entry = reason[2];
 	var item_entry_index = parties[0].inventory.find(item_entry);
 
-	match reason[0]:
+	print("???");
+	print("reason: ", reason);
+	print("entry: ", item_entry, " index", item_entry_index);
+
+	match reason_type:
 		CLOSE_REASON_CANCEL: pass;
 		CLOSE_REASON_USED:
-			battle_information.decided_action = use_item(active_actor, active_actor, item_entry_index);
+			battle_information.decided_action = use_item(active_actor,
+														 parties[0].get_party_member(target_actor_index),
+														 item_entry_index);
 
 	inventory_ui.hide();

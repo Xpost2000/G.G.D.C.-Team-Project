@@ -76,7 +76,7 @@ func get_party_member(index):
 func index_of_first_alive_party_member(): 
 	for index in len(party_members):
 		var party_member = party_members[index];
-		if !party_members.dead():
+		if !party_member.dead():
 			return index;
 	return -1;
 

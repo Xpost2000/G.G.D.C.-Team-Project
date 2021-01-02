@@ -125,15 +125,16 @@ margin_bottom = 204.0
 custom_colors/font_color = Color( 1, 1, 1, 1 )
 text = "Escape!"
 
-[node name="InventoryUI" parent="BattleUILayer/BattleDashboard" instance=ExtResource( 9 )]
+[node name="InventoryUI" parent="BattleUILayer" instance=ExtResource( 9 )]
 visible = false
 margin_left = 59.6364
-margin_top = -461.72
+margin_top = 17.28
 margin_right = 99.6364
-margin_bottom = -421.72
+margin_bottom = 57.28
 [connection signal="pressed" from="BattleUILayer/BattleDashboard/Actions/Attack" to="." method="_on_BattleDashboard_Attack_pressed"]
 [connection signal="pressed" from="BattleUILayer/BattleDashboard/Actions/UseAbility" to="." method="_on_BattleDashboard_UseAbility_pressed"]
 [connection signal="pressed" from="BattleUILayer/BattleDashboard/Actions/UseItem" to="." method="_on_BattleDashboard_UseItem_pressed"]
 [connection signal="pressed" from="BattleUILayer/BattleDashboard/Actions/UseItem" to="." method="_on_BattleDashBoard_UseItem_pressed"]
 [connection signal="pressed" from="BattleUILayer/BattleDashboard/Actions/Skip" to="." method="_on_BattleDashboard_ForfeitTurn_pressed"]
 [connection signal="pressed" from="BattleUILayer/BattleDashboard/Actions/Flee" to="." method="_on_BattleDashboard_Flee_pressed"]
+[connection signal="notify_just_closed" from="BattleUILayer/InventoryUI" to="." method="_on_InventoryUI_notify_just_closed"]

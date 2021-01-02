@@ -36,6 +36,7 @@ onready var right_side_info = $BattleUILayer/RightSidePartyInfo;
 onready var battle_turn_widget = $BattleUILayer/TurnMeter;
 onready var battle_turn_widget_head_label = $BattleUILayer/TurnMeter/Head;
 onready var battle_log_widget = $BattleUILayer/Battlelog;
+onready var inventory_ui = $BattleUILayer/InventoryUI;
 
 onready var battle_dashboard_actions_layout = $BattleUILayer/BattleDashboard/Actions;
 
@@ -156,15 +157,19 @@ func finish_battle(reason, winner, loser):
 		
 	emit_signal("combat_finished", data);
 
+func report_inventory_of_active_party():
+	var active_actor = battle_information.active_actor();
+	var active_party = get_party_pairs(whose_side_is_active(active_actor))[0];
+	inventory_ui.update_based_on_entity(active_party, active_party.inventory);
+
 func _process(delta):
-	if Input.is_action_just_pressed("ui_home"):
-		GameGlobals.switch_to_scene(0);
 	if party_on_the_left and party_on_the_right:
 		if !battle_information.decided_action:
 			var active_actor = battle_information.active_actor();
 			var party = get_party_from_side(whose_side_is_active(active_actor));
 
 			var parties = get_party_pairs(whose_side_is_active(active_actor));
+			report_inventory_of_active_party();
 
 			if party is GameActor:
 				allow_access_to_dashboard(party is PlayerCharacter);
@@ -257,3 +262,8 @@ func _on_BattleDashboard_Attack_pressed():
 
 func _on_BattleDashboard_UseItem_pressed():
 	battle_log_widget.push_message("UI Requests to use an item");
+	inventory_ui.show();
+
+# TODO I need to distinguish (cancel) vs (used item)
+func _on_InventoryUI_notify_just_closed():
+	inventory_ui.hide();

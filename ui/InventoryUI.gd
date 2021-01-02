@@ -15,6 +15,7 @@ func _on_Inventory_prompt_for_item_usage_selection(party_members, item_to_be_usi
 	party_member_selection_widget.show();
 	party_member_selection_widget.open_prompt(party_members, item_to_be_using);
 
+# TODO rename to selected item
 func _on_PartyMemberSelection_ask_to_close_prompt():
 	party_member_selection_widget.hide();
 	emit_signal("notify_just_closed");

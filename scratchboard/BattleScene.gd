@@ -2,6 +2,10 @@ extends Node2D
 # also welcome to monster file.
 # TODO: AOE attacks?
 
+# TODO when I'm back on emacs, when the hell did I decide party_on_the_* was a good idea?
+# I guess when I was just testing stuff out but I'm probably not changing things too much since it's
+# not really necessary.
+
 enum {
 	COMBAT_FINISHED_REASON_FLEE, # The winning party is the one that didn't flee.
 	COMBAT_FINISHED_REASON_DEFEAT_OF, # The winning party is the last one standing.

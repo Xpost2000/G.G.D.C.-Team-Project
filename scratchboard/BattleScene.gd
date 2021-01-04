@@ -158,7 +158,8 @@ func whose_side_is_active(active_actor):
 func advance_actor():
 	battle_information.advance_actor();
 	battle_log_widget.push_message("The turn goes to " + battle_information.active_actor().name);
-	
+
+# This shouldn't be here.
 const ARTIFICIAL_THINKING_TIME_MAX = 1.0;
 var artificial_thinking_time = 0;
 

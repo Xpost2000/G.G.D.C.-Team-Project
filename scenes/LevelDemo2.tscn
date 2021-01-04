@@ -1,6 +1,7 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://images/test_tiles.png" type="Texture" id=1]
+[ext_resource path="res://scenes/DoorA.gd" type="Script" id=2]
 [ext_resource path="res://game/LevelTransition.tscn" type="PackedScene" id=3]
 
 [sub_resource type="ConvexPolygonShape2D" id=1]
@@ -71,6 +72,9 @@ points = PoolVector2Array( 64, 64, 0, 64, 0, 0, 64, 0 )
 3/shapes = [  ]
 3/z_index = 0
 
+[sub_resource type="RectangleShape2D" id=4]
+extents = Vector2( 23.1089, 27.7395 )
+
 [sub_resource type="CircleShape2D" id=3]
 radius = 82.4217
 
@@ -95,6 +99,31 @@ Basically anything with a script that affects gameplay. (animating sprites or so
 "
 }
 
+[node name="DoorA" type="Sprite" parent="Entities"]
+position = Vector2( 759.173, -72.6223 )
+scale = Vector2( 0.114289, 0.777024 )
+texture = ExtResource( 1 )
+script = ExtResource( 2 )
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="Collider" type="StaticBody2D" parent="Entities/DoorA"]
+position = Vector2( -10.4053, 1.53047 )
+scale = Vector2( 8.74978, 1.28696 )
+
+[node name="Shape" type="CollisionShape2D" parent="Entities/DoorA/Collider"]
+position = Vector2( 0.594604, 0 )
+shape = SubResource( 4 )
+
+[node name="InteractRegion" type="Area2D" parent="Entities/DoorA"]
+position = Vector2( -6642.6, 93.4621 )
+scale = Vector2( 8.74978, 1.28696 )
+
+[node name="Shape" type="CollisionShape2D" parent="Entities/DoorA/InteractRegion"]
+position = Vector2( 758.579, -71.433 )
+shape = SubResource( 4 )
+
 [node name="ExitToDemo1" parent="Entities" instance=ExtResource( 3 )]
 position = Vector2( 288.508, 6.91772 )
 scene_to_transition_to = "LevelDemo"
@@ -109,3 +138,4 @@ __meta__ = {
 
 Sprites or otherwise non \"physics\" objects exist here."
 }
+[connection signal="area_entered" from="Entities/DoorA/InteractRegion" to="Entities/DoorA" method="_on_InteractRegion_area_entered"]

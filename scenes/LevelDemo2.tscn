@@ -1,8 +1,9 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://images/test_tiles.png" type="Texture" id=1]
 [ext_resource path="res://scenes/DoorA.gd" type="Script" id=2]
 [ext_resource path="res://game/LevelTransition.tscn" type="PackedScene" id=3]
+[ext_resource path="res://game/actors/JesusTest.tscn" type="PackedScene" id=4]
 
 [sub_resource type="ConvexPolygonShape2D" id=1]
 points = PoolVector2Array( 64, 64, 0, 64, 0, 0, 64, 0 )
@@ -131,6 +132,15 @@ landmark_node = "EntranceToDemo2"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Entities/ExitToDemo1"]
 shape = SubResource( 3 )
+
+[node name="JesusTest" parent="Entities" instance=ExtResource( 4 )]
+position = Vector2( 1124.67, -25.5429 )
+
+[node name="JesusTest2" parent="Entities" instance=ExtResource( 4 )]
+position = Vector2( 922.44, -244.746 )
+
+[node name="JesusTest3" parent="Entities" instance=ExtResource( 4 )]
+position = Vector2( 993.151, 390.236 )
 
 [node name="Props" type="Node2D" parent="."]
 __meta__ = {

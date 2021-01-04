@@ -1,6 +1,7 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://images/test_tiles.png" type="Texture" id=1]
+[ext_resource path="res://game/actors/ShadowMe.tscn" type="PackedScene" id=2]
 [ext_resource path="res://game/LevelTransition.tscn" type="PackedScene" id=3]
 
 [sub_resource type="ConvexPolygonShape2D" id=1]
@@ -102,6 +103,9 @@ landmark_node = "ExitToDemo1"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Entities/EntranceToDemo2"]
 shape = SubResource( 3 )
+
+[node name="ShadowMe" parent="Entities" instance=ExtResource( 2 )]
+position = Vector2( 824.703, -296.185 )
 
 [node name="Props" type="Node2D" parent="."]
 __meta__ = {

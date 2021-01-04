@@ -96,6 +96,18 @@ func attack(actor_self, actor_target, which_attack):
 
 var battle_information = BattleTurnStatus.new();
 
+func populate_participants_with_sprites(side, party_members):
+	for child in side.get_children():
+		side.remove_child(child);
+
+	var y_cursor = 0;
+	for party_member in party_members:
+		var new_sprite = load("res://scratchboard/sprites/ProtagonistBattleSprite.tscn").instance();
+		new_sprite.position.y = y_cursor;
+
+		y_cursor += new_sprite.frames.get_frame("idle", 0).get_size().y * 1.56;
+		side.add_child(new_sprite);
+
 func begin_battle(left, right):
 	party_on_the_left = left;
 	party_on_the_right = right;
@@ -106,6 +118,10 @@ func begin_battle(left, right):
 	battle_information.participants = [];
 	battle_information.participants += party_on_the_left.party_members;
 	battle_information.participants += party_on_the_right.party_members;
+
+	populate_participants_with_sprites(left_side_participants, party_on_the_left.party_members);
+	populate_participants_with_sprites(right_side_participants, party_on_the_right.party_members);
+
 
 # Technically... This doesn't matter to me... What I really care about
 # is the "brain" controller.

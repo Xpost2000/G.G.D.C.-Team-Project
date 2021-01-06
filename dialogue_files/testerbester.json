@@ -1,11 +1,17 @@
 {
     "start": {
-        "speaker" : "PlayerCharacter",
+        "speaker": {
+            "type" : "NodeSpeaker",
+            "speaker" : "PlayerCharacter"
+        },
         "text": "This is a linear scene. This is referring to the fact we only go one direction... As in continue...",
         "next": "next"
     },
     "next": {
-        "speaker": "PlayerCharacter",
+        "speaker": {
+            "type" : "NodeSpeaker",
+            "speaker" : "PlayerCharacter"
+        },
         "text": "This one has choices",
         "choices": [
             {
@@ -23,31 +29,47 @@
         ]
     },
     "meaningless": {
-        "speaker": "PlayerCharacter",
+        "speaker": {
+            "type" : "NodeSpeaker",
+            "speaker" : "PlayerCharacter"
+        },
         "text": "In the end... It was meaningless. Free will is an illusion",
         "next": "differ"
     },
     "differ": {
-        "speaker_name": "???",
-        "speaker_portrait": "testerbester",
+        "speaker": {
+            "type" : "ManuallySpecified",
+            "speaker" : "???",
+            "portrait": "testerbester"
+        },
         "mood": "happy",
         "text": "Really? I don't quite think so.",
         "next": "optimistic"
     },
     "optimistic": {
-        "speaker_name": "???",
-        "speaker_portrait": "testerbester",
+        "speaker": {
+            "type" : "ManuallySpecified",
+            "speaker" : "???",
+            "portrait": "testerbester"
+        },
         "text": "You have to be more optimistic sometimes.",
         "next": "sorry"
     },
     "sorry": {
-        "speaker": "PlayerCharacter",
+        "speaker": {
+            "type" : "ManuallySpecified",
+            "speaker" : "???",
+            "portrait": "testerbester"
+        },
         "text": "Dude just shut up. Let me act emo and edgy",
         "next": "dick"
     },
     "dick": {
-        "speaker_name": "???",
-        "speaker_portrait": "testerbester",
+        "speaker": {
+            "type" : "ManuallySpecified",
+            "speaker" : "???",
+            "portrait": "testerbester"
+        },
         "text": "You don't have to be such a dick about it...",
         "mood": "angry"
     }

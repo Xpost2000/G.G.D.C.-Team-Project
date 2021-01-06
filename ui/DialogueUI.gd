@@ -93,43 +93,59 @@ func is_linear():
 # but they don't really hurt to add, and it's a fast fix.
 var initial_opening = false;
 
-# always assume in dialogue_files/
-func load_dialogue_from_file(filename):
-	pass;
-	# var file_contents = Utilities.read_entire_file_as_string("dialogue_files/" + file_name);
-	# print("TODO TODO TODO");
-	# .error_out_please();
+func parse_scene_speaker(speaker_data):
+	if speaker_data["type"] == "NodeSpeaker":
+		return make_node_speaker(speaker_data["speaker"]);
+	else:
+		return make_manual_speaker(speaker_data["speaker"], speaker_data["portrait"]);
+
+func parse_scene_choices(choices_data):
+	if choices_data:
+		var new_choices = [];
+
+		for choice in choices_data:
+			var choice_text = choice["text"];
+			var choice_next_branch = choice["next"];
+
+			var new_choice = DialogueChoice.new(choice_text, choice_next_branch);
+
+			new_choices.push_back(new_choice);
+
+		return new_choices;
+	else:
+		return null;
+
+func dictionary_get_optional(dictionary, key):
+	return dictionary[key] if dictionary.has(key) else null;
+
+func load_dialogue_from_file(file_name):
+	# always assume in dialogue_files/
+	var json_results = JSON.parse(Utilities.read_entire_file_as_string("dialogue_files/" + file_name)).get_result();
+
+	var new_scenes = {};
+	for scene in json_results:
+		var current_scene_dictionary = json_results[scene];
+
+		var scene_speaker = parse_scene_speaker(current_scene_dictionary["speaker"]);
+		var scene_text = current_scene_dictionary["text"];
+
+		var scene_next = dictionary_get_optional(current_scene_dictionary, "next");
+		var scene_choices = parse_scene_choices(dictionary_get_optional(current_scene_dictionary, "choices"));
+
+		var new_scene_to_push = null;
+
+		if scene_choices:
+			new_scene_to_push = make_scene_branching(scene_speaker, scene_text, scene_choices);
+		else:
+			new_scene_to_push = make_scene_linear(scene_speaker, scene_text, scene_next);
+
+		new_scenes[scene] = new_scene_to_push;
+	return new_scenes;	
 
 func open_test_dialogue():
 	print("okay");
-	scenes["start"] = make_scene_linear(make_node_speaker("PlayerCharacter"),
-										"This is a linear scene. This is referring to the fact we only go one direction... As in continue...",
-										"next");
-	scenes["next"] = make_scene_branching(make_node_speaker("PlayerCharacter"),
-												   "This one has choices",
-												   [DialogueChoice.new("Yep, for reals!", "meaningless"),
-													DialogueChoice.new("Yay", "meaningless"),
-													DialogueChoice.new("AISODOISADIOSADIOASD", "meaningless")]);
-	scenes["meaningless"] = make_scene_linear(make_node_speaker("PlayerCharacter"),
-											  "In the end... It was meaningless. Free will is an illusion.",
-											  "differ");
+	scenes = load_dialogue_from_file("testerbester.json");
 
-	scenes["differ"] = make_scene_linear(make_manual_speaker("???", "testerbester"),
-										 "Really? I don't quite think so.",
-										 "optimistic",
-										 "happy");
-
-	scenes["optimistic"] = make_scene_linear(make_manual_speaker("???", "testerbester"),
-										 "You have to be more optimistic sometimes.",
-										 "sorry");
-
-	scenes["sorry"] = make_scene_linear(make_node_speaker("PlayerCharacter"),
-										"Dude just shut up. Let me act emo and edgy.",
-										"dick");
-
-	scenes["dick"] = make_scene_linear(make_manual_speaker("???", "testerbester"),
-									   "You don't have to be such a dick about it.",
-									   null, "angry");
 	goto_scene("start");
 	initial_opening = true;
 

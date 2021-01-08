@@ -102,7 +102,7 @@ func populate_participants_with_sprites(side, party_members):
 
 	var y_cursor = 0;
 	for party_member in party_members:
-		var new_sprite = load("res://scratchboard/sprites/ProtagonistBattleSprite.tscn").instance();
+		var new_sprite = party_member.battle_sprite_scene.instance();
 		new_sprite.position.y = y_cursor;
 
 		y_cursor += new_sprite.frames.get_frame("idle", 0).get_size().y * 1.56;

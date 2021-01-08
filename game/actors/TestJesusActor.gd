@@ -61,8 +61,11 @@ func _ready():
 	set_walking_speed(100);
 	var father = add_party_member_default("The Father");
 	father.load_battle_portrait("isshin_test");
+	father.load_battle_sprite("res://scratchboard/sprites/TheFatherBattleSprite.tscn"); 
 	var son = add_party_member_default("The Son");
+	son.load_battle_sprite("res://scratchboard/sprites/TheSonBattleSprite.tscn");
 	son.load_battle_portrait("sekijo_test");
 	var spirit = add_party_member_default("The Holy Spirit");
+	spirit.load_battle_sprite("res://scratchboard/sprites/TheHolySpiritBattleSprite.tscn");
 	spirit.load_battle_portrait("genichiro_test");
 	pass

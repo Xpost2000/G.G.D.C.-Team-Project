@@ -23,6 +23,7 @@ var party_members = [];
 var inventory = [];
 
 var gold = 0;
+var experience_value = 1;
 
 func all_members_dead():
 	for party_member in party_members:
@@ -79,6 +80,10 @@ func index_of_first_alive_party_member():
 		if !party_member.dead():
 			return index;
 	return -1;
+
+func award_experience(amount):
+	for party_member in party_members:
+		party_member.award_experience(amount);
 
 func first_alive_party_member():
 	return get_party_member(index_of_first_alive_party_member());

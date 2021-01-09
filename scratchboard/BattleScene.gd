@@ -11,23 +11,6 @@ enum {
 	COMBAT_FINISHED_REASON_DEFEAT_OF, # The winning party is the last one standing.
 	COMBAT_FINISHED_REASON_FORCED # There are no winners or losers.
 	}
-class CombatFinishReasonData:
-	func _init(type, winner, loser):
-		self.type = type;
-		self.winning_party = winner;
-		self.losing_party = loser;
-		
-	var type: int;
-	var winning_party: Reference;
-	var losing_party: Reference;
-
-func combat_finished_flee(initiator, opponent):
-	return CombatFinishReasonData.new(COMBAT_FINISHED_REASON_FLEE, opponent, initiator);
-func combat_finished_defeated(initiator, opponent):
-	return CombatFinishReasonData.new(COMBAT_FINISHED_REASON_DEFEAT_OF, initiator, opponent);
-func combat_finished_force():
-	return CombatFinishReasonData.new(COMBAT_FINISHED_REASON_FORCED, null, null);
-
 signal combat_finished(combat_finished_information);
 
 onready var battle_layer = $BattleLayer;
@@ -173,15 +156,8 @@ func allow_access_to_dashboard(val):
 
 # a stupid helper function
 func finish_battle(reason, winner, loser):
+	emit_signal("combat_finished", reason, winner, loser);
 	GameGlobals.switch_to_scene(0);
-
-	var data = null;
-	match reason:
-		COMBAT_FINISHED_REASON_FLEE: data = combat_finished_flee(winner, loser);
-		COMBAT_FINISHED_REASON_DEFEAT_OF: data = combat_finished_defeated(winner, loser);
-		COMBAT_FINISHED_REASON_FORCED: data = combat_finished_force();
-		
-	emit_signal("combat_finished", data);
 
 func report_inventory_of_active_party():
 	var active_actor = battle_information.active_actor();

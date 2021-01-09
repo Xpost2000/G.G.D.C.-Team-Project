@@ -101,6 +101,24 @@ func random_attack_index():
 	else:
 		return -1;
 
+func award_experience(amount):
+	self.experience += amount;
+	
+	var done_leveling = false;
+	var levels_gained = 0;
+	while !done_leveling:
+		if self.experience >= self.experience_to_next:
+			print("expecting level up!");
+			var remainder = self.experience - self.experience_to_next;
+			self.experience = remainder;
+			levels_gained += 1;
+
+			self.experience_to_next *= 1.55;
+		else:
+			done_leveling = true;
+			print("gained ", levels_gained, " levels");
+	self.level += levels_gained;
+
 func dead():
 	return health <= 0;
 
@@ -109,12 +127,3 @@ func take_damage(amount):
 
 func handle_ability(ability):
 	print("TOIDOASOIDIOSDIOSADIOASDIOSADOISAOID");
-
-func award_experience(amount):
-	experience += amount;
-
-	#TODO this should be a loop
-	if experience >= experience_to_next:
-		var remainder = experience_to_next - experience;
-		level += 1;
-		experience = remainder;

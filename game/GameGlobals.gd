@@ -62,6 +62,21 @@ func reload_scene(type):
 	if old_scene:
 		old_scene.queue_free();
 
+func get_scene(type):
+	match type:
+		MAIN_GAME_SCENE:
+			if main_game_screen == null:
+				reload_scene(type);
+			return main_game_screen;
+		MAIN_MENU_SCENE:
+			if main_menu_screen == null:
+				reload_scene(type);
+			return main_menu_screen;
+		BATTLE_SCENE:
+			if battle_screen == null:
+				reload_scene(type);
+			return battle_screen;
+
 func _ready():
 	print("preloading all scenes at least once.");
 	# I'm going to skip preloading the game. There's no point?

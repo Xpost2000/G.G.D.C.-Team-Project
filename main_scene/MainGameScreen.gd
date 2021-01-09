@@ -8,7 +8,32 @@ onready var ui_layer = $UILayer;
 onready var level_information = $GameLayer/LevelInformation;
 onready var player_node = $GameLayer/PersistentThings/PlayerCharacter;
 
+enum {
+	COMBAT_FINISHED_REASON_FLEE, # The winning party is the one that didn't flee.
+	COMBAT_FINISHED_REASON_DEFEAT_OF, # The winning party is the last one standing.
+	COMBAT_FINISHED_REASON_FORCED # There are no winners or losers.
+	}
+func _on_BattleScreen_finished(type, a, b):
+	match type:
+		COMBAT_FINISHED_REASON_FLEE:
+			print("cowardly flee");
+			pass;
+		COMBAT_FINISHED_REASON_DEFEAT_OF:
+			print("someone died");
+			if a == player_node:
+				print("yay we won! Show a neat widget");
+				player_node.award_experience(b.experience_value);
+			else:
+				print("We lost");
+			pass;
+		COMBAT_FINISHED_REASON_FORCED:
+			# b, a
+			print("forceful ejection");
+			pass;
+
 func _ready():
+	var battle_screen = GameGlobals.get_scene(2);
+	battle_screen.connect("combat_finished", self, "_on_BattleScreen_finished");
 	randomize();
 
 func load_new_level_scene(name):

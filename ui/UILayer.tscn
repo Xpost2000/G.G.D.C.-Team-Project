@@ -1,4 +1,4 @@
-[gd_scene load_steps=22 format=2]
+[gd_scene load_steps=23 format=2]
 
 [ext_resource path="res://ui/InventoryUI.tscn" type="PackedScene" id=1]
 [ext_resource path="res://ui/PartyMemberInformationLayoutUI.tscn" type="PackedScene" id=2]
@@ -7,6 +7,7 @@
 [ext_resource path="res://ui/DialogueUI.tscn" type="PackedScene" id=5]
 [ext_resource path="res://fonts/Alkhemikal.ttf" type="DynamicFontData" id=6]
 [ext_resource path="res://ui_themes/buttons_for_paperbg.tres" type="Theme" id=7]
+[ext_resource path="res://ui/FullPartyMemberStatInfo.tscn" type="PackedScene" id=8]
 
 [sub_resource type="DynamicFont" id=1]
 size = 64
@@ -79,6 +80,7 @@ visible = false
 visible = false
 
 [node name="DeathScreenUI" type="Control" parent="."]
+visible = false
 margin_right = 40.0
 margin_bottom = 40.0
 __meta__ = {
@@ -207,6 +209,21 @@ margin_bottom = 156.0
 theme = ExtResource( 7 )
 custom_colors/font_color = Color( 1, 1, 1, 1 )
 text = "Quit"
+
+[node name="LevelUpResults" type="HBoxContainer" parent="."]
+margin_left = 319.0
+margin_top = 76.0
+margin_right = 923.0
+margin_bottom = 629.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Before" parent="LevelUpResults" instance=ExtResource( 8 )]
+
+[node name="After" parent="LevelUpResults" instance=ExtResource( 8 )]
+margin_left = 304.0
+margin_right = 604.0
 [connection signal="close" from="InventoryUI" to="." method="_on_InventoryUI_close"]
 [connection signal="notify_dialogue_terminated" from="DialogueUI" to="." method="_on_DialogueUI_notify_dialogue_terminated"]
 [connection signal="pressed" from="DeathScreenUI/Selections/Restart" to="." method="_on_Restart_pressed"]

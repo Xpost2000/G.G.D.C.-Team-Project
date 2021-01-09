@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <style>
+      h2 {
+          color: yellow;
+      }
+      body {
+          background-color: black;
+          color: white;
+          font-family: Arial;
+      }
+      button {
+          background-color: black;
+          color: white;
+          border-radius: 5px;
+          font-size: 1.25em;
+      }
+      #application-header {
+          font-size: 3.5em;
+          text-align: center;
+          padding: 0;
+          margin: 0;
+      }
+      .aligned-table label {
+          display: inline-block;
+          float: left;
+          clear: left;
+          width: 16em;
+          font-weight: bold;
+      }
+      textarea {
+          background-color: black;
+          color: white;
+          font-family: Verdana;
+          width: 40%;
+          height: 35%;
+          resize: none;
+          box-sizing: border-box;
+          border: 2px solid blue;
+      }
+      input[type=name] {
+          background-color: black;
+          color: white;
+          border-radius: 5px;
+          width: 20%;
+          box-sizing: border-box;
+          font-size: 1em;
+          display: block;
+      }
+      h2 {text-decoration: underline; margin-top: 0.25em;}
+      .aligned-table input {
+          display: inline-block;
+          float: left;
+      }
+      .toolbar button {
+          margin-left: 3em;
+          margin-right: 3em;
+      }
+      .toolbar {
+          background-color: navy;
+          display: block;
+          text-align: center;
+          padding-top: 0.5em;
+          padding-bottom: 0.5em;
+      }
+      .dialogue-option {
+          padding: 9em;
+          padding-left: 2em;
+          padding-bottom: 0;
+      }
+      .dialogue-option, .dialogue-scene-choice {
+          border: 3px solid white;
+          margin: 1em;
+          padding-top: 0;
+      }
+      .hide-input-file-stuff {
+          width: 0.1px;
+          height: 0.1px;
+          opacity: 0;
+          overflow: hidden;
+      }
+
+      .hide-input-file-stuff + label {
+          cursor: pointer;
+
+          background-color: black;
+          color: white;
+          border: 2px groove white;
+          border-radius: 5px;
+          padding: 0.075em;
+          font-size: 1.25em;
+      }
+    </style>
+    <script src="script.js">
+    </script>
+  </head>
+  <body>
+    <h1 id="application-header">GGDC Dialogue tool</h1>
+    <p style="text-align: center;">I heavily advise naming the scenes manually! The <b>gensym functionality only works per session.</b></p>
+    <span class="toolbar">
+      <input class="hide-input-file-stuff" type="file" id="dialogue-file-selector" onchange="handle_load_file(this)">
+      <label for="dialogue-file-selector">Edit Existing Dialogue</label>
+      <button onclick="build_dialogue_scene_dom_tree()">Add New Scene</button>
+      <button onclick="attempt_to_save_dom_as_json()">Export To File</button>
+    </span>
+    <!-- My decision is to be building the json off of the DOM tree. -->
+    <!-- Also yes I know this is ugly as hell, and I don't feel like learning webframeworks -->
+    <div id="dialogue-scenes">
+    </div>
+  </body>
+</html>

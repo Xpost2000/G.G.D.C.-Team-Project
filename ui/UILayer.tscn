@@ -230,3 +230,6 @@ margin_right = 604.0
 [connection signal="pressed" from="DeathScreenUI/Selections/Restart" to="." method="_on_Restart_pressed"]
 [connection signal="pressed" from="DeathScreenUI/Selections/Menu" to="." method="_on_Menu_pressed"]
 [connection signal="pressed" from="DeathScreenUI/Selections/Quit" to="." method="_on_Quit_pressed"]
+[connection signal="pressed" from="PauseScreenUI/VBoxContainer/Resume" to="." method="_on_PauseUI_Resume_pressed"]
+[connection signal="pressed" from="PauseScreenUI/VBoxContainer/ReturnToTitle" to="." method="_on_PauseUI_ReturnToTitle_pressed"]
+[connection signal="pressed" from="PauseScreenUI/VBoxContainer/Quit" to="." method="_on_PauseUI_Quit_pressed"]

@@ -41,6 +41,15 @@ func _on_MainGameScreen_notify_ui_of_level_load():
 	dimmer_fade_reason = DIMMER_FADE_REASON_LEVEL_LOADING;
 	pass # Replace with function body.
 
+func _on_PauseUI_Resume_pressed():
+	set_state(UI_STATE_GAME);
+
+func _on_PauseUI_ReturnToTitle_pressed():
+	GameGlobals.switch_to_scene(1);
+
+func _on_PauseUI_Quit_pressed():
+	get_tree().quit();
+
 # Dirty, dirty, dirty
 # But I'm only using this like once so whatever.
 var fade_hold_timer = 0.0;

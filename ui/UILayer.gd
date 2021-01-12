@@ -7,6 +7,7 @@ onready var stamina_bar_max_dimensions = $SprintingStaminaBar.rect_size;
 onready var ui_dimmer = $DimmerRect;
 onready var inventory_ui = $InventoryUI;
 onready var death_ui = $DeathScreenUI;
+onready var pause_ui = $PauseScreenUI;
 onready var party_member_information_holder = $PartyMemberInformation;
 onready var dialogue_ui = $DialogueUI;
 
@@ -45,78 +46,113 @@ func _on_MainGameScreen_notify_ui_of_level_load():
 var fade_hold_timer = 0.0;
 var fade_hold_timer_max = 0.5;
 
-var showing_dialogue = false;
-var showing_inventory = false;
-var showing_death = false;
+enum {UI_STATE_GAME, UI_STATE_INVENTORY, UI_STATE_DEATH, UI_STATE_PAUSE, UI_STATE_DIALOGUE};
+var current_state = UI_STATE_GAME;
 
-enum {UI_STATE_INVENTORY, UI_STATE_DEATH};
 func _process(delta):
-	if Input.is_action_just_pressed("game_action_open_inventory"):
-		toggle_inventory();
+	if Input.is_action_just_pressed("game_action_ui_pause"):
+		if current_state != UI_STATE_PAUSE:
+			set_state(UI_STATE_PAUSE);
+		else:
+			set_state(UI_STATE_GAME);
 
-	match dimmer_fade_reason:
-		DIMMER_NOT_FADING: 
-			if ui_dimmer.finished_fade():
-				ui_dimmer.disabled = true;
-		DIMMER_FADE_REASON_LEVEL_LOADING:
-			ui_dimmer.disabled = false;
-			if ui_dimmer.finished_fade():
-				if fade_hold_timer >= fade_hold_timer_max:
-					emit_signal("notify_finished_level_load_related_fading");
-					dimmer_fade_reason = DIMMER_NOT_FADING;
-					ui_dimmer.begin_fade_out();
-				fade_hold_timer += delta;
-			else:
-				fade_hold_timer = 0;
+	if current_state != UI_STATE_PAUSE:
+		if Input.is_action_just_pressed("game_action_open_inventory"):
+			toggle_inventory();
 
-	if showing_death:
-		inventory_ui.hide();
-		death_ui.show();
-		dialogue_ui.hide();
-		GameGlobals.pause();
-	else:	
-		death_ui.hide();
-		if showing_dialogue:
+		# TODO USE BETTER FADE FROM LIKE TWEEN
+		match dimmer_fade_reason:
+			DIMMER_NOT_FADING: 
+				if ui_dimmer.finished_fade():
+					ui_dimmer.disabled = true;
+			DIMMER_FADE_REASON_LEVEL_LOADING:
+				ui_dimmer.disabled = false;
+				if ui_dimmer.finished_fade():
+					if fade_hold_timer >= fade_hold_timer_max:
+						emit_signal("notify_finished_level_load_related_fading");
+						dimmer_fade_reason = DIMMER_NOT_FADING;
+						ui_dimmer.begin_fade_out();
+					fade_hold_timer += delta;
+				else:
+					fade_hold_timer = 0;
+
+func set_state(state):
+	var previous_state = current_state;
+	leave_state(previous_state);
+	enter_state(state);
+	current_state = state;
+
+func enter_state(state):
+	match state:
+		UI_STATE_GAME:
+			GameGlobals.resume();
+			pass;
+		UI_STATE_INVENTORY:
+			inventory_ui.show();
+			print("SHOW ME HISTY");
+			pass;
+		UI_STATE_DEATH:
+			GameGlobals.pause();
+			death_ui.show();
+			pass;
+		UI_STATE_PAUSE:
+			GameGlobals.pause();
+			pause_ui.show();
+			pass;
+		UI_STATE_DIALOGUE:
 			GameGlobals.pause();
 			dialogue_ui.show();
-		else:
+			pass;
+
+func leave_state(state):
+	match state:
+		UI_STATE_GAME:
+			pass;
+		UI_STATE_INVENTORY:
+			inventory_ui.hide();
+			print("CLOSE ME");
+			pass;
+		UI_STATE_DEATH:
+			GameGlobals.resume();
+			death_ui.hide();
+			pass;
+		UI_STATE_PAUSE:
+			GameGlobals.resume();
+			pause_ui.hide();
+			pass;
+		UI_STATE_DIALOGUE:
+			GameGlobals.resume();
 			dialogue_ui.hide();
-			if !showing_inventory:
-				inventory_ui.hide();
-				inventory_ui.set_process(false);
-				GameGlobals.resume();
-			else:
-				inventory_ui.show();
-				inventory_ui.set_process(true);
-				GameGlobals.pause();
-
-func show_inventory():
-	showing_inventory = true;
-
-func close_inventory():
-	showing_inventory = false;
+			pass;
 
 func show_death(val):
-	showing_death = val;
+	if val:
+		set_state(UI_STATE_DEATH);
+
+func show_inventory():
+	set_state(UI_STATE_INVENTORY);
+
+func close_inventory():
+	set_state(UI_STATE_GAME);
+
 
 func toggle_inventory():
-	if showing_inventory:
+	if current_state == UI_STATE_INVENTORY:
+		print("CLOSE");
 		close_inventory();
 	else:
+		print("SHOW");
 		show_inventory();
 
 func _on_MainGameScreen_ask_ui_to_open_dialogue(filepath):
-	showing_dialogue = true; 
+	set_state(UI_STATE_DIALOGUE);
 	dialogue_ui.open_dialogue(filepath);
-func _on_MainGameScreen_ask_ui_to_open_test_dialogue():
-	showing_dialogue = true;
-	dialogue_ui.open_test_dialogue();
 
 enum {DIALOGUE_TERMINATION_REASON_DEFAULT}
 func _on_DialogueUI_notify_dialogue_terminated(reason):
 	match reason.type:
 		DIALOGUE_TERMINATION_REASON_DEFAULT: pass;
-	showing_dialogue = false;
+	set_state(UI_STATE_GAME);
 
 enum {CLOSE_REASON_CANCEL, CLOSE_REASON_USED}
 func _on_InventoryUI_close(reason):

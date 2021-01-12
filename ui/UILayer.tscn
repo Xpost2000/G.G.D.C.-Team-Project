@@ -211,6 +211,7 @@ custom_colors/font_color = Color( 1, 1, 1, 1 )
 text = "Quit"
 
 [node name="LevelUpResults" type="HBoxContainer" parent="."]
+visible = false
 margin_left = 319.0
 margin_top = 76.0
 margin_right = 923.0

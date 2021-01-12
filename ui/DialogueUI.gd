@@ -142,12 +142,14 @@ func load_dialogue_from_file(file_name):
 		new_scenes[scene] = new_scene_to_push;
 	return new_scenes;	
 
-func open_test_dialogue():
-	print("okay");
-	scenes = load_dialogue_from_file("testerbester.json");
+func open_dialogue(path):
+	scenes = load_dialogue_from_file(path);
 
 	goto_scene("start");
 	initial_opening = true;
+
+func open_test_dialogue():
+	open_dialogue("testerbester.json")
 
 func _ready():
 	hide();

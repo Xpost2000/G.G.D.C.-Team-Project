@@ -1,7 +1,7 @@
 extends Node2D
 # Signals might be not needed...
 signal notify_ui_of_level_load();
-signal ask_ui_to_open_test_dialogue();
+signal ask_ui_to_open_dialogue(filepath);
 
 onready var game_layer = $GameLayer;
 onready var ui_layer = $UILayer;
@@ -73,7 +73,7 @@ func _on_UILayer_notify_finished_level_load_related_fading():
 	setup_new_level_scene(player, level_transition, loaded_scene);
 
 func _on_PlayerCharacter_test_open_conversation():
-	emit_signal("ask_ui_to_open_test_dialogue");
+	emit_signal("ask_ui_to_open_dialogue", "testerbester.json");
 	print("open test convo");
 
 func _open_battle(left, right):

@@ -105,6 +105,9 @@ func toggle_inventory():
 	else:
 		show_inventory();
 
+func _on_MainGameScreen_ask_ui_to_open_dialogue(filepath):
+	showing_dialogue = true; 
+	dialogue_ui.open_dialogue(filepath);
 func _on_MainGameScreen_ask_ui_to_open_test_dialogue():
 	showing_dialogue = true;
 	dialogue_ui.open_test_dialogue();

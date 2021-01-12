@@ -10,13 +10,25 @@ onready var death_ui = $DeathScreenUI;
 onready var pause_ui = $PauseScreenUI;
 onready var party_member_information_holder = $PartyMemberInformation;
 onready var dialogue_ui = $DialogueUI;
+onready var levelup_ui = $LevelUpResults;
 
 var reference_to_game_scene = null;
+
+enum {UI_STATE_GAME, UI_STATE_INVENTORY, UI_STATE_DEATH, UI_STATE_PAUSE, UI_STATE_DIALOGUE, UI_STATE_LEVELUPS};
+var current_state = UI_STATE_GAME;
 
 func _ready():
 	inventory_ui.get_node("Inventory/InventoryItemList").fixed_icon_size = Vector2(32,32);
 	reference_to_game_scene = get_parent().get_node("GameLayer");
 	dialogue_ui.reference_to_game_scene = reference_to_game_scene;
+
+func _on_LevelUpResults_notify_finished():
+	set_state(UI_STATE_GAME);
+
+func _on_PlayerCharacter_handle_party_member_level_ups(party_members):
+	set_state(UI_STATE_LEVELUPS);
+	levelup_ui.open_with(party_members);
+	pass;
 
 func _on_PlayerCharacter_report_party_info_to_ui(party_members, amount_of_gold):
 	party_member_information_holder.update_with_party_information(party_members, amount_of_gold);
@@ -55,15 +67,14 @@ func _on_PauseUI_Quit_pressed():
 var fade_hold_timer = 0.0;
 var fade_hold_timer_max = 0.5;
 
-enum {UI_STATE_GAME, UI_STATE_INVENTORY, UI_STATE_DEATH, UI_STATE_PAUSE, UI_STATE_DIALOGUE};
-var current_state = UI_STATE_GAME;
-
 func _process(delta):
+	# Still hardcoding certain transitions which I'm not proud of.
 	if Input.is_action_just_pressed("game_action_ui_pause"):
-		if current_state != UI_STATE_PAUSE:
-			set_state(UI_STATE_PAUSE);
-		else:
-			set_state(UI_STATE_GAME);
+		if current_state != UI_STATE_LEVELUPS:
+			if current_state != UI_STATE_PAUSE:
+				set_state(UI_STATE_PAUSE);
+			else:
+				set_state(UI_STATE_GAME);
 
 	if current_state != UI_STATE_PAUSE:
 		if Input.is_action_just_pressed("game_action_open_inventory"):
@@ -112,6 +123,10 @@ func enter_state(state):
 			GameGlobals.pause();
 			dialogue_ui.show();
 			pass;
+		UI_STATE_LEVELUPS:
+			GameGlobals.pause();
+			levelup_ui.show();
+			pass;
 
 func leave_state(state):
 	match state:
@@ -132,6 +147,10 @@ func leave_state(state):
 		UI_STATE_DIALOGUE:
 			GameGlobals.resume();
 			dialogue_ui.hide();
+			pass;
+		UI_STATE_LEVELUPS:
+			GameGlobals.resume();
+			levelup_ui.hide();
 			pass;
 
 func show_death(val):

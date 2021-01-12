@@ -44,6 +44,7 @@ remote_path = NodePath("../../MainGameCamera")
 pause_mode = 2
 [connection signal="ask_ui_to_open_dialogue" from="." to="UILayer" method="_on_MainGameScreen_ask_ui_to_open_dialogue"]
 [connection signal="notify_ui_of_level_load" from="." to="UILayer" method="_on_MainGameScreen_notify_ui_of_level_load"]
+[connection signal="handle_party_member_level_ups" from="GameLayer/PersistentThings/PlayerCharacter" to="UILayer" method="_on_PlayerCharacter_handle_party_member_level_ups"]
 [connection signal="report_inventory_contents" from="GameLayer/PersistentThings/PlayerCharacter" to="UILayer" method="_on_PlayerCharacter_report_inventory_contents"]
 [connection signal="report_party_info_to_ui" from="GameLayer/PersistentThings/PlayerCharacter" to="UILayer" method="_on_PlayerCharacter_report_party_info_to_ui"]
 [connection signal="report_sprinting_information" from="GameLayer/PersistentThings/PlayerCharacter" to="UILayer" method="_on_PlayerCharacter_report_sprinting_information"]

@@ -1,4 +1,5 @@
 extends KinematicBody2D
+signal handle_party_member_level_ups(members);
 
 const SPRINTING_STAMINA_MAX = 75;
 const STAMINA_REGENERATION_COOLDOWN_TIME = 1.66; # seconds
@@ -82,8 +83,14 @@ func index_of_first_alive_party_member():
 	return -1;
 
 func award_experience(amount):
+	var leveled_up_party_members = [];
 	for party_member in party_members:
-		party_member.award_experience(amount);
+		var stat_diff = party_member.award_experience(amount);
+		if stat_diff:
+			leveled_up_party_members.push_back(stat_diff);
+
+	if len(leveled_up_party_members) > 0:
+		emit_signal("handle_party_member_level_ups", leveled_up_party_members);
 
 func first_alive_party_member():
 	return get_party_member(index_of_first_alive_party_member());

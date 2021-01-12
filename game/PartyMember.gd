@@ -128,8 +128,14 @@ func award_experience(amount):
 			done_leveling = true;
 			print("gained ", levels_gained, " levels");
 
+	var original_stat_block_and_level = [level, stats.duplicate()];
 	for level in range(levels_gained):
 		do_levelup();
+
+	if levels_gained > 0:
+		return [self, original_stat_block_and_level];
+	else:
+		return null;
 
 func dead():
 	return health <= 0;

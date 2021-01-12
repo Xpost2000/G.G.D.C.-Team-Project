@@ -10,10 +10,13 @@ onready var experience_to_next_label = $StatContainer/ExperienceToNext;
 onready var stat_container = $StatContainer/StatContainer;
 
 const PartyMemberStatBlock = preload("res://game/PartyMemberStatBlock.gd");
-func build_based_on_player(player):
-	print("TODO");
-	pass;
-func build_stat_container_view(stats):
+# TODO fill in more
+func build_based_on_party_member(member):
+	name_label.text = member.name;
+	build_stat_container_view(member.level, member.stats);
+
+func build_stat_container_view(level, stats):
+	level_label.text = "Level: " + str(level);
 	for child in stat_container.get_children():
 		stat_container.remove_child(child);
 
@@ -22,5 +25,5 @@ func build_stat_container_view(stats):
 
 func _ready():
 	var test_stats = PartyMemberStatBlock.new();
-	build_stat_container_view(test_stats);
+	build_stat_container_view(0, test_stats);
 	pass

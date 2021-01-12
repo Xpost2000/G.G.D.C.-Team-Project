@@ -10,7 +10,9 @@ onready var death_ui = $DeathScreenUI;
 onready var pause_ui = $PauseScreenUI;
 onready var party_member_information_holder = $PartyMemberInformation;
 onready var dialogue_ui = $DialogueUI;
-onready var levelup_ui = $LevelUpResults;
+
+onready var levelup_ui_container = $LevelUpUI;
+onready var levelup_ui = $LevelUpUI/LevelUpLayoutContainer/LevelUpResults;
 
 var reference_to_game_scene = null;
 
@@ -125,7 +127,7 @@ func enter_state(state):
 			pass;
 		UI_STATE_LEVELUPS:
 			GameGlobals.pause();
-			levelup_ui.show();
+			levelup_ui_container.show();
 			pass;
 
 func leave_state(state):
@@ -150,7 +152,7 @@ func leave_state(state):
 			pass;
 		UI_STATE_LEVELUPS:
 			GameGlobals.resume();
-			levelup_ui.hide();
+			levelup_ui_container.hide();
 			pass;
 
 func show_death(val):

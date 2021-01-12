@@ -1,4 +1,4 @@
-[gd_scene load_steps=24 format=2]
+[gd_scene load_steps=25 format=2]
 
 [ext_resource path="res://ui/InventoryUI.tscn" type="PackedScene" id=1]
 [ext_resource path="res://ui/PartyMemberInformationLayoutUI.tscn" type="PackedScene" id=2]
@@ -46,6 +46,10 @@ bg_color = Color( 0, 0, 0, 1 )
 
 [sub_resource type="DynamicFont" id=14]
 size = 96
+font_data = ExtResource( 6 )
+
+[sub_resource type="DynamicFont" id=15]
+size = 64
 font_data = ExtResource( 6 )
 
 [node name="UILayer" type="CanvasLayer"]
@@ -211,22 +215,46 @@ theme = ExtResource( 7 )
 custom_colors/font_color = Color( 1, 1, 1, 1 )
 text = "Quit"
 
-[node name="LevelUpResults" type="HBoxContainer" parent="."]
+[node name="LevelUpUI" type="ColorRect" parent="."]
 visible = false
-margin_left = 319.0
-margin_top = 76.0
-margin_right = 923.0
-margin_bottom = 629.0
+margin_right = 1286.0
+margin_bottom = 729.0
+color = Color( 0.0823529, 0.0235294, 0.0235294, 1 )
+
+[node name="LevelUpLayoutContainer" type="VBoxContainer" parent="LevelUpUI"]
+margin_left = 327.834
+margin_top = 33.2548
+margin_right = 931.834
+margin_bottom = 651.255
+__meta__ = {
+"_edit_group_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="LevelUpLabel" type="Label" parent="LevelUpUI/LevelUpLayoutContainer"]
+margin_right = 604.0
+margin_bottom = 64.0
+custom_fonts/font = SubResource( 15 )
+text = "LEVEL UP!!!"
+align = 1
+
+[node name="LevelUpResults" type="HBoxContainer" parent="LevelUpUI/LevelUpLayoutContainer"]
+margin_top = 68.0
+margin_right = 604.0
+margin_bottom = 618.0
 script = ExtResource( 9 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Before" parent="LevelUpResults" instance=ExtResource( 8 )]
+[node name="Before" parent="LevelUpUI/LevelUpLayoutContainer/LevelUpResults" instance=ExtResource( 8 )]
+margin_bottom = 550.0
 
-[node name="After" parent="LevelUpResults" instance=ExtResource( 8 )]
+[node name="After" parent="LevelUpUI/LevelUpLayoutContainer/LevelUpResults" instance=ExtResource( 8 )]
 margin_left = 304.0
 margin_right = 604.0
+margin_bottom = 550.0
+rect_min_size = Vector2( 300, 550 )
 [connection signal="close" from="InventoryUI" to="." method="_on_InventoryUI_close"]
 [connection signal="notify_dialogue_terminated" from="DialogueUI" to="." method="_on_DialogueUI_notify_dialogue_terminated"]
 [connection signal="pressed" from="DeathScreenUI/Selections/Restart" to="." method="_on_Restart_pressed"]
@@ -235,4 +263,4 @@ margin_right = 604.0
 [connection signal="pressed" from="PauseScreenUI/VBoxContainer/Resume" to="." method="_on_PauseUI_Resume_pressed"]
 [connection signal="pressed" from="PauseScreenUI/VBoxContainer/ReturnToTitle" to="." method="_on_PauseUI_ReturnToTitle_pressed"]
 [connection signal="pressed" from="PauseScreenUI/VBoxContainer/Quit" to="." method="_on_PauseUI_Quit_pressed"]
-[connection signal="notify_finished" from="LevelUpResults" to="." method="_on_LevelUpResults_notify_finished"]
+[connection signal="notify_finished" from="LevelUpUI/LevelUpLayoutContainer/LevelUpResults" to="." method="_on_LevelUpResults_notify_finished"]

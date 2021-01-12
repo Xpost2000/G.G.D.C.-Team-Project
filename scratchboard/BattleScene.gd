@@ -295,6 +295,13 @@ func _on_BattleDashboard_Attack_pressed():
 	action_selection_prompt.open_prompt(active_actor.attacks, "Select Attack");
 
 var picking_item_index = -1;
+# I miss FP
+func filter_for_non_dead(party_members):
+	var result = [];
+	for party_member in party_members:
+		if !party_member.dead():
+			result.push_back(party_member);
+	return result;
 func _on_ActionSelectionPrompt_picked(index):
 	# I'd check the ability for target allowance...
 	# TODO, highlight who is picked on the battle view.
@@ -303,9 +310,9 @@ func _on_ActionSelectionPrompt_picked(index):
 	
 	match action_prompt_mode:
 		ACTION_PROMPT_MODE_ATTACK:
-			party_member_select_for_action.open_prompt(parties[1].party_members);
+			party_member_select_for_action.open_prompt(filter_for_non_dead(parties[1].party_members));
 		ACTION_PROMPT_MODE_ABILITY:
-			party_member_select_for_action.open_prompt(party_on_the_left.party_members + party_on_the_right.party_members);
+			party_member_select_for_action.open_prompt(parties[0].party_members + filter_for_non_dead(parties[1].party_members));
 	action_selection_prompt.hide();
 	picking_item_index = index;
 	party_member_select_for_action.show();

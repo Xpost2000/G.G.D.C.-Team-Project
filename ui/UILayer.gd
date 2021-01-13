@@ -90,12 +90,17 @@ func _on_PauseUI_Quit_pressed():
 var fade_hold_timer = 0.0;
 var fade_hold_timer_max = 0.5;
 
-func any_popups_open():
+func _any_popups_open():
 	var popups = $Popups.get_children();
 	var result = false;
 	for popup in popups:
 		result = result or popup.active;
 	return result and len(popups);
+
+# this is a stupid way to "defer" the results to the next frame
+var any_open_popups = false;
+func any_popups_open():
+	return any_open_popups;
 
 const PopupTemplate = preload("res://ui/PopupTemplate.tscn");
 func _real_add_popup(text):
@@ -109,6 +114,7 @@ func add_popup(text):
 func _process(delta):
 	# Still hardcoding certain transitions which I'm not proud of.
 	# set_process_of_all_states(!any_popups_open());
+	any_open_popups = _any_popups_open();
 	if !any_popups_open():
 		if Input.is_action_just_pressed("game_action_ui_pause"):
 			if current_state != UI_STATE_LEVELUPS:
@@ -138,7 +144,7 @@ func _process(delta):
 		# also yes this is weird, this calls for a refactor later.
 		GameGlobals.pause();
 		$Popups.get_children()[-1].handle_inputs(delta);
-		if !any_popups_open():
+		if !_any_popups_open():
 			GameGlobals.resume();
 			
 func set_state(state):

@@ -30,6 +30,6 @@ func show_next_party_member():
 
 func _process(delta):
 	# dirty
-	if Input.is_action_just_pressed("ui_cancel"):
+	if Input.is_action_just_pressed("ui_cancel") && !get_parent().get_parent().get_parent().get_parent().any_popups_open():
 		if !show_next_party_member():
 			emit_signal("notify_finished");

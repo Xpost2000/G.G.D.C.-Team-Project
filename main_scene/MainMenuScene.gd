@@ -23,6 +23,7 @@ func _on_StartGameButton_pressed():
 	GameGlobals.reload_scene(MAIN_GAME_SCENE);
 	GameGlobals.reload_scene(BATTLE_SCENE);
 	GameGlobals.switch_to_scene(0);
+	AudioGlobal.pause_music();
 
 func _on_LoadGameButton_pressed():
 	thing = "copyrighted-test-content/snd/013.ogg";

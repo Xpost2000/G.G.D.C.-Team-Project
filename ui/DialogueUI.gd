@@ -148,6 +148,8 @@ func open_dialogue(path):
 	goto_scene("start");
 	initial_opening = true;
 
+	AudioGlobal.play_music("copyrighted-test-content/snd/bg2tobeas.ogg");
+
 func open_test_dialogue():
 	open_dialogue("testerbester.json")
 

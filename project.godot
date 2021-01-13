@@ -27,6 +27,7 @@ config/icon="res://icon.png"
 ItemDatabase="*res://game/ItemDatabase.gd"
 Utilities="*res://game/Utilities.gd"
 GameGlobals="*res://game/GameGlobals.gd"
+AudioGlobal="*res://game/AudioGlobal.gd"
 
 [display]
 

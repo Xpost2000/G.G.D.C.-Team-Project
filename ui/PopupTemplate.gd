@@ -11,7 +11,6 @@ func popup(text):
 	active = true;
 
 func handle_inputs(delta):
-	# if Input.is_action_just_pressed("ui_cancel"):
 	if Input.is_action_just_pressed("game_action_ui_pause"):
 		close();
 

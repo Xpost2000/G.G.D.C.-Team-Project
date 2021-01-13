@@ -20,6 +20,9 @@ func update_based_on_entity(thing, inventory):
 		inventory_item_list.add_item(item_info.name + " x" + str(inventory_item_entry[1]),
 									 item_info.inventory_icon);
 
+func update_based_on_inventory(inventory):
+	update_based_on_entity(null, inventory);
+
 func _ready():
 	pass
 

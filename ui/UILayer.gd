@@ -155,6 +155,7 @@ func enter_state(state):
 			GameGlobals.resume();
 			pass;
 		UI_STATE_INVENTORY:
+			GameGlobals.pause();
 			inventory_ui.show();
 			pass;
 		UI_STATE_DEATH:
@@ -180,6 +181,7 @@ func leave_state(state):
 		UI_STATE_GAME:
 			pass;
 		UI_STATE_INVENTORY:
+			GameGlobals.resume();
 			inventory_ui.hide();
 			pass;
 		UI_STATE_DEATH:

@@ -29,6 +29,11 @@ func _ready():
 	$States/PauseScreenUI/VBoxContainer/ReturnToTitle.connect("pressed", self, "_on_PauseUI_ReturnToTitle_pressed");
 	$States/PauseScreenUI/VBoxContainer/Quit.connect("pressed", self, "_on_PauseUI_Quit_pressed");
 
+	$States/DeathScreenUI/Selections/Restart.connect("pressed", self, "_on_Restart_pressed");
+	$States/DeathScreenUI/Selections/Menu.connect("pressed", self, "_on_Menu_pressed");
+	$States/DeathScreenUI/Selections/Quit.connect("pressed", self, "_on_Quit_pressed");
+
+
 	# add_popup("Hi");
 	# add_popup("My Name");
 	# add_popup("Is");
@@ -138,10 +143,11 @@ func _process(delta):
 			GameGlobals.resume();
 			
 func set_state(state):
-	var previous_state = current_state;
-	leave_state(previous_state);
-	enter_state(state);
-	current_state = state;
+	if current_state != state:
+		var previous_state = current_state;
+		leave_state(previous_state);
+		enter_state(state);
+		current_state = state;
 
 func enter_state(state):
 	match state:
@@ -245,6 +251,7 @@ enum{ MAIN_GAME_SCENE,
 	  MAIN_MENU_SCENE,
 	  BATTLE_SCENE,
 	  GAME_SCENE_TYPE_COUNT}
+
 func _on_Restart_pressed():	
 	GameGlobals.reload_scene(MAIN_GAME_SCENE);
 	GameGlobals.reload_scene(BATTLE_SCENE);

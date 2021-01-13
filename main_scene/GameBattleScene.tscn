@@ -3,7 +3,7 @@
 [ext_resource path="res://images/battle/bkgrnds/dumpy_battle_cave_a.png" type="Texture" id=1]
 [ext_resource path="res://fonts/Alkhemikal.ttf" type="DynamicFontData" id=3]
 [ext_resource path="res://ui/BattleTurnMeter.tscn" type="PackedScene" id=4]
-[ext_resource path="res://scratchboard/BattleScene.gd" type="Script" id=5]
+[ext_resource path="res://main_scene/BattleScene.gd" type="Script" id=5]
 [ext_resource path="res://ui/PartyMemberInformationLayoutUI.tscn" type="PackedScene" id=6]
 [ext_resource path="res://ui_themes/buttons_for_paperbg.tres" type="Theme" id=7]
 [ext_resource path="res://main_scene/BattleUILayer.gd" type="Script" id=8]
@@ -12,6 +12,7 @@
 [ext_resource path="res://ui/ActionSelectionPrompt.gd" type="Script" id=11]
 [ext_resource path="res://ui/PartyMemberSelectionWidget.tscn" type="PackedScene" id=12]
 [ext_resource path="res://images/ui/ui_cobble.png" type="Texture" id=13]
+
 
 [sub_resource type="DynamicFont" id=1]
 font_data = ExtResource( 3 )

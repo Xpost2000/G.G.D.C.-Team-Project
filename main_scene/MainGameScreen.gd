@@ -36,12 +36,20 @@ func _ready():
 	battle_screen.connect("combat_finished", self, "_on_BattleScreen_finished");
 	randomize();
 
+var loaded_levels = {};
 func load_new_level_scene(name):
-	var loaded_scene = load(name).instance();
+	var loaded_scene = null;
+
+	if name in loaded_levels:
+		loaded_scene = loaded_levels[name];
+	else:
+		loaded_scene = load(name).instance();
+		loaded_levels[name] = loaded_scene;
 
 	for child in level_information.get_children():
 		level_information.remove_child(child);
 	level_information.add_child(loaded_scene);
+
 	return loaded_scene;
 	
 const LevelTransitionClass = preload("res://game/LevelTransition.gd");

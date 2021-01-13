@@ -17,39 +17,43 @@ func update_based_on_entity(thing, inventory):
 
 	for inventory_item_entry in inventory:
 		var item_info = ItemDatabase.get_item(inventory_item_entry[0]);
-		inventory_item_list.add_item(item_info.name + " x" + str(inventory_item_entry[1]),
-									 item_info.inventory_icon);
+		if len(inventory_item_entry) == 2:
+			inventory_item_list.add_item(item_info.name + " x" + str(inventory_item_entry[1]),
+										 item_info.inventory_icon);
+		else:
+			# special cased for shops which hold INFINITE items
+			inventory_item_list.add_item(item_info.name + " - " + str(item_info.sell_value) + " gp", item_info.inventory_icon);
 
 func update_based_on_inventory(inventory):
 	update_based_on_entity(null, inventory);
 
 func _ready():
+	update_based_on_inventory([["healing_grass"],
+							   ["healing_pod"]]);
 	pass
 
 func _process(delta):
 	# This is probably not safe to do. 
 	if currently_observing_thing && currently_observing_inventory:
 		for inventory_item_entry_information in currently_observing_inventory:
-			if inventory_item_entry_information[1] <= 0:
+			if len(inventory_item_entry_information) == 2 and inventory_item_entry_information[1] <= 0:
 				currently_observing_inventory.erase(inventory_item_entry_information);
 
 func _on_InventoryItemList_item_activated(index):
 	var inventory_item_entry_information = currently_observing_inventory[index];
 
-	# TODO change to use new functions defined.
-	if inventory_item_entry_information[1] >= 0:
-		if currently_observing_thing:
-			if (len(currently_observing_thing.party_members) == 1):
+	if currently_observing_thing:
+		if (len(currently_observing_thing.party_members) == 1):
+			if len(inventory_item_entry_information) == 2:
 				inventory_item_entry_information[1] -= 1;
-				ItemDatabase.apply_item_to(currently_observing_thing.get_party_member(0),
+			ItemDatabase.apply_item_to(currently_observing_thing.get_party_member(0),
 										inventory_item_entry_information[0]);
-			else:
-				emit_signal("prompt_for_item_usage_selection",
-							currently_observing_thing.party_members,
-							inventory_item_entry_information);
 		else:
-			emit_signal("prompt_for_item_usage", inventory_item_entry_information);
-			
+			emit_signal("prompt_for_item_usage_selection",
+						currently_observing_thing.party_members,
+						inventory_item_entry_information);
+	else:
+		emit_signal("prompt_for_item_usage", inventory_item_entry_information);
 
 
 func _on_InventoryItemList_nothing_selected():

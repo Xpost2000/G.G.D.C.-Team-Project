@@ -1,0 +1,46 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://ui/InventoryWidget.tscn" type="PackedScene" id=1]
+[ext_resource path="res://fonts/Alkhemikal.ttf" type="DynamicFontData" id=2]
+[ext_resource path="res://ui/InventoryShoppingUI.gd" type="Script" id=3]
+
+[sub_resource type="DynamicFont" id=1]
+size = 32
+font_data = ExtResource( 2 )
+
+[node name="InventoryShoppingUI" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 3 )
+__meta__ = {
+"_edit_use_anchors_": false,
+"_editor_description_": "TODO make confirmation log"
+}
+
+[node name="Inventory" parent="." instance=ExtResource( 1 )]
+margin_left = 76.0858
+margin_top = 37.3755
+margin_right = 1224.09
+margin_bottom = 694.375
+
+[node name="GoldCounterContainer" type="ColorRect" parent="."]
+margin_left = 1071.68
+margin_top = 659.411
+margin_right = 1253.68
+margin_bottom = 707.411
+color = Color( 0.196078, 0.137255, 0.137255, 1 )
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="GoldCount" type="Label" parent="GoldCounterContainer"]
+margin_right = 184.0
+margin_bottom = 45.0
+custom_fonts/font = SubResource( 1 )
+text = "50000000gp"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+[connection signal="prompt_for_item_usage" from="Inventory" to="." method="_on_Inventory_prompt_for_item_usage"]

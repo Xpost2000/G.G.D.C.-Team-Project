@@ -7,6 +7,7 @@ onready var stamina_bar = $SprintingStaminaBar;
 onready var stamina_bar_max_dimensions = $SprintingStaminaBar.rect_size;
 onready var ui_dimmer = $DimmerRect;
 onready var inventory_ui = $States/InventoryUI;
+onready var shopping_ui = $States/InventoryShoppingUI;
 onready var death_ui = $States/DeathScreenUI;
 onready var pause_ui = $States/PauseScreenUI;
 onready var party_member_information_holder = $PartyMemberInformation;
@@ -15,9 +16,17 @@ onready var dialogue_ui = $States/DialogueUI;
 onready var levelup_ui_container = $States/LevelUpUI;
 onready var levelup_ui = $States/LevelUpUI/LevelUpLayoutContainer/LevelUpResults;
 
+# god this is stupid
+var player_reference = null;
 var reference_to_game_scene = null;
 
-enum {UI_STATE_GAME, UI_STATE_INVENTORY, UI_STATE_DEATH, UI_STATE_PAUSE, UI_STATE_DIALOGUE, UI_STATE_LEVELUPS};
+enum {UI_STATE_GAME,
+	  UI_STATE_INVENTORY,
+	  UI_STATE_SHOPPING,
+	  UI_STATE_DEATH,
+	  UI_STATE_PAUSE,
+	  UI_STATE_DIALOGUE,
+	  UI_STATE_LEVELUPS};
 var current_state = UI_STATE_GAME;
 
 func _ready():
@@ -33,12 +42,6 @@ func _ready():
 	$States/DeathScreenUI/Selections/Menu.connect("pressed", self, "_on_Menu_pressed");
 	$States/DeathScreenUI/Selections/Quit.connect("pressed", self, "_on_Quit_pressed");
 
-
-	# add_popup("Hi");
-	# add_popup("My Name");
-	# add_popup("Is");
-	# add_popup("Eminem");
-
 func _on_LevelUpResults_notify_finished():
 	if current_state == UI_STATE_LEVELUPS:
 		set_state(UI_STATE_GAME);
@@ -52,6 +55,8 @@ func _on_PlayerCharacter_report_party_info_to_ui(party_members, amount_of_gold):
 	party_member_information_holder.update_with_party_information(party_members, amount_of_gold);
 
 func _on_PlayerCharacter_report_inventory_contents(player, player_inventory):
+	shopping_ui.gold_counter.text = str(player.gold) + " gp";
+	player_reference = player;
 	inventory_ui.update_based_on_entity(player, player_inventory);
 
 func _on_PlayerCharacter_report_sprinting_information(stamina_percent, can_sprint, _trying_to_sprint):
@@ -111,6 +116,10 @@ func _process(delta):
 	# set_process_of_all_states(!any_popups_open());
 	any_open_popups = _any_popups_open();
 	if !any_popups_open():
+		if Input.is_action_just_pressed("ui_page_down"):
+			# shopping_ui.open_from_inventory();
+			toggle_shop();
+
 		if Input.is_action_just_pressed("game_action_ui_pause"):
 			if current_state != UI_STATE_LEVELUPS:
 				toggle_pause();
@@ -158,6 +167,10 @@ func enter_state(state):
 			GameGlobals.pause();
 			inventory_ui.show();
 			pass;
+		UI_STATE_SHOPPING:
+			GameGlobals.pause();
+			shopping_ui.show();
+			pass;
 		UI_STATE_DEATH:
 			GameGlobals.pause();
 			death_ui.show();
@@ -183,6 +196,10 @@ func leave_state(state):
 		UI_STATE_INVENTORY:
 			GameGlobals.resume();
 			inventory_ui.hide();
+			pass;
+		UI_STATE_SHOPPING:
+			GameGlobals.resume();
+			shopping_ui.hide();
 			pass;
 		UI_STATE_DEATH:
 			GameGlobals.resume();
@@ -212,7 +229,6 @@ func show_inventory():
 func close_inventory():
 	set_state(UI_STATE_GAME);
 
-
 func toggle_pause():
 	if current_state == UI_STATE_PAUSE:
 		print("close");
@@ -220,6 +236,12 @@ func toggle_pause():
 	else:
 		print("open");
 		set_state(UI_STATE_PAUSE);
+
+func toggle_shop():
+	if current_state == UI_STATE_SHOPPING:
+		set_state(UI_STATE_GAME);
+	else:
+		set_state(UI_STATE_SHOPPING);
 
 func toggle_inventory():
 	if current_state == UI_STATE_INVENTORY:
@@ -247,6 +269,15 @@ func _on_InventoryUI_close(reason):
 			var targetting = inventory_ui.inventory_owner().get_party_member(reason[1]);
 			reason[2][1] -= 1;
 			ItemDatabase.apply_item_to(targetting, reason[2][0]);
+
+func _on_InventoryShoppingUI_try_to_purchase_item(item):
+	var item_info = ItemDatabase.get_item(item[0]);
+	if item_info.sell_value > player_reference.gold:
+		add_popup("This item is too expensive!");
+	else:
+		add_popup("Purchased!");
+		player_reference.gold -= item_info.sell_value;
+		player_reference.add_item(item[0]);
 
 # Referring to death screen if anyone asks.
 enum{ MAIN_GAME_SCENE,

@@ -20,7 +20,7 @@ func _ready():
 	deutag.load_battle_portrait("sekiro_test");
 	inventory = [["healing_grass", 15],
 				 ["healing_pod", 5]];
-	pass;
+	gold = 350;
 
 func movement_direction_vector():
 	var movement_direction = Vector2.ZERO;

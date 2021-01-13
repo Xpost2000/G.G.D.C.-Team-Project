@@ -20,16 +20,6 @@ var reference_to_game_scene = null;
 enum {UI_STATE_GAME, UI_STATE_INVENTORY, UI_STATE_DEATH, UI_STATE_PAUSE, UI_STATE_DIALOGUE, UI_STATE_LEVELUPS};
 var current_state = UI_STATE_GAME;
 
-# really only needed for popups...
-# func set_process_of_all_states(val):
-#	# $States.set_process(val);
-#	# for state in $States.get_children():
-#	#	state.set_process(val);
-#	#	state.set_process_input(val);
-#	#	state.set_process_internal(val);
-#	#	state.set_process_unhandled_input(val);
-#	pass;
-
 func _ready():
 	inventory_ui.get_node("Inventory/InventoryItemList").fixed_icon_size = Vector2(32,32);
 	reference_to_game_scene = get_parent().get_node("GameLayer");

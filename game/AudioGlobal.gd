@@ -1,4 +1,5 @@
 extends Node;
+# Okay, it looks like I need to make audio effects not loop...
 
 var music_resources = {};
 var sound_effect_resources = {};

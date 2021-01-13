@@ -141,15 +141,11 @@ func _process(delta):
 		if !any_popups_open():
 			GameGlobals.resume();
 			
-func _real_set_state(state):
+func set_state(state):
 	var previous_state = current_state;
 	leave_state(previous_state);
 	enter_state(state);
 	current_state = state;
-
-func set_state(state):
-	_real_set_state(state);
-	# call_deferred("_real_set_state", state);
 
 func enter_state(state):
 	match state:

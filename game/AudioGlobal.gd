@@ -71,6 +71,8 @@ func play_music(filepath, volume=DEFAULT_MAX_VOLUME_DB):
 	print(music_channel.playing);
 	print(music_channel.stream_paused);
 	
+var currently_playing_music = null;
 func looped_play_music(filepath, volume=DEFAULT_MAX_VOLUME_DB):
-	if !is_music_playing():
+	if !is_music_playing() or currently_playing_music != filepath:
+		currently_playing_music = filepath;
 		play_music(filepath, volume);

@@ -7,8 +7,10 @@ onready var notifier_title = $NotifierBackground/Title;
 func _ready():
 	pass
 
+var thing = "copyrighted-test-content/snd/012.ogg";
+
 func _process(delta):
-	AudioGlobal.looped_play_music("copyrighted-test-content/snd/012.ogg");
+	AudioGlobal.looped_play_music(thing);
 
 # maybe do a fancy fade out.
 
@@ -23,6 +25,7 @@ func _on_StartGameButton_pressed():
 	GameGlobals.switch_to_scene(0);
 
 func _on_LoadGameButton_pressed():
+	thing = "copyrighted-test-content/snd/013.ogg";
 	print("load game?");
 	open_notification("Load Game Not Done!",
 					  """
@@ -33,6 +36,7 @@ func _on_LoadGameButton_pressed():
 					  """);
 
 func _on_OptionsButton_pressed():
+	thing = "copyrighted-test-content/snd/012.ogg";
 	print("options?");
 	open_notification("Options Are Not Done!",
 					  """
@@ -41,6 +45,7 @@ func _on_OptionsButton_pressed():
 					  """);
 
 func _on_AboutGameButton_pressed():
+	thing = "copyrighted-test-content/snd/012.ogg";
 	print("team credits!");
 	open_notification("Game Credits",
 					  """

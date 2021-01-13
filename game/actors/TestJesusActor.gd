@@ -71,4 +71,8 @@ func _ready():
 	spirit.load_battle_sprite("res://scratchboard/sprites/TheHolySpiritBattleSprite.tscn");
 	spirit.load_battle_portrait("genichiro_test");
 	experience_value = 200;
+
+	# Optimally we'd be dealing with data from a loot list or something
+	add_item("test_item");
+	add_item("healing_grass", 99);
 	pass

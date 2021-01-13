@@ -5,9 +5,9 @@
 [ext_resource path="res://ui/UILayer.gd" type="Script" id=3]
 [ext_resource path="res://ui/DimmerRect.gd" type="Script" id=4]
 [ext_resource path="res://ui/DialogueUI.tscn" type="PackedScene" id=5]
-[ext_resource path="res://ui/DeathScreenUI.tscn" type="PackedScene" id=6]
 [ext_resource path="res://ui/PauseScreenUI.tscn" type="PackedScene" id=7]
 [ext_resource path="res://ui/LevelUpUI.tscn" type="PackedScene" id=8]
+[ext_resource path="res://ui/DeathScreenUI.tscn" type="PackedScene" id=9]
 
 [node name="UILayer" type="CanvasLayer"]
 layer = 0
@@ -41,10 +41,17 @@ visible = false
 [node name="DialogueUI" parent="." instance=ExtResource( 5 )]
 visible = false
 
-[node name="DeathScreenUI" parent="." instance=ExtResource( 6 )]
+[node name="DeathScreenUI" parent="." instance=ExtResource( 9 )]
 
 [node name="PauseScreenUI" parent="." instance=ExtResource( 7 )]
 
 [node name="LevelUpUI" parent="." instance=ExtResource( 8 )]
+
+[node name="Popups" type="Control" parent="."]
+margin_right = 40.0
+margin_bottom = 40.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
 [connection signal="close" from="InventoryUI" to="." method="_on_InventoryUI_close"]
 [connection signal="notify_dialogue_terminated" from="DialogueUI" to="." method="_on_DialogueUI_notify_dialogue_terminated"]

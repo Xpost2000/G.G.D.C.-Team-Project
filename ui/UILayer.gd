@@ -24,6 +24,11 @@ func _ready():
 	reference_to_game_scene = get_parent().get_node("GameLayer");
 	dialogue_ui.reference_to_game_scene = reference_to_game_scene;
 
+	# add_popup("Hi");
+	# add_popup("My Name");
+	# add_popup("Is");
+	# add_popup("Eminem");
+
 func _on_LevelUpResults_notify_finished():
 	set_state(UI_STATE_GAME);
 
@@ -69,34 +74,51 @@ func _on_PauseUI_Quit_pressed():
 var fade_hold_timer = 0.0;
 var fade_hold_timer_max = 0.5;
 
+func any_popups_open():
+	var popups = $Popups.get_children();
+	var result = false;
+	for popup in popups:
+		result = result or popup.active;
+	return result and len(popups);
+
+const PopupTemplate = preload("res://ui/PopupTemplate.tscn");
+func add_popup(text):
+	var popup = PopupTemplate.instance();
+	$Popups.add_child(popup);
+	$Popups.get_children()[-1].popup(text);
+
 func _process(delta):
 	# Still hardcoding certain transitions which I'm not proud of.
-	if Input.is_action_just_pressed("game_action_ui_pause"):
-		if current_state != UI_STATE_LEVELUPS:
-			if current_state != UI_STATE_PAUSE:
-				set_state(UI_STATE_PAUSE);
-			else:
-				set_state(UI_STATE_GAME);
-
-	if current_state != UI_STATE_PAUSE:
-		if Input.is_action_just_pressed("game_action_open_inventory"):
-			toggle_inventory();
-
-		# TODO USE BETTER FADE FROM LIKE TWEEN
-		match dimmer_fade_reason:
-			DIMMER_NOT_FADING: 
-				if ui_dimmer.finished_fade():
-					ui_dimmer.disabled = true;
-			DIMMER_FADE_REASON_LEVEL_LOADING:
-				ui_dimmer.disabled = false;
-				if ui_dimmer.finished_fade():
-					if fade_hold_timer >= fade_hold_timer_max:
-						emit_signal("notify_finished_level_load_related_fading");
-						dimmer_fade_reason = DIMMER_NOT_FADING;
-						ui_dimmer.begin_fade_out();
-					fade_hold_timer += delta;
+	if !any_popups_open():
+		if Input.is_action_just_pressed("game_action_ui_pause"):
+			if current_state != UI_STATE_LEVELUPS:
+				if current_state != UI_STATE_PAUSE:
+					set_state(UI_STATE_PAUSE);
 				else:
-					fade_hold_timer = 0;
+					set_state(UI_STATE_GAME);
+
+		if current_state != UI_STATE_PAUSE:
+			if Input.is_action_just_pressed("game_action_open_inventory"):
+				toggle_inventory();
+
+			# TODO USE BETTER FADE FROM LIKE TWEEN
+			match dimmer_fade_reason:
+				DIMMER_NOT_FADING: 
+					if ui_dimmer.finished_fade():
+						ui_dimmer.disabled = true;
+				DIMMER_FADE_REASON_LEVEL_LOADING:
+					ui_dimmer.disabled = false;
+					if ui_dimmer.finished_fade():
+						if fade_hold_timer >= fade_hold_timer_max:
+							emit_signal("notify_finished_level_load_related_fading");
+							dimmer_fade_reason = DIMMER_NOT_FADING;
+							ui_dimmer.begin_fade_out();
+						fade_hold_timer += delta;
+					else:
+						fade_hold_timer = 0;
+	else:
+		# handle last popup only
+		$Popups.get_children()[-1].handle_inputs(delta);
 
 func set_state(state):
 	var previous_state = current_state;

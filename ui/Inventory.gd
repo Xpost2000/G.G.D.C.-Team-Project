@@ -1,6 +1,7 @@
 extends NinePatchRect;
 
 signal prompt_for_item_usage_selection(party_members, item_name);
+signal prompt_for_item_usage(item_name);
 
 onready var inventory_item_list = $InventoryItemList;
 onready var item_preview_widget = $ItemPreview;
@@ -34,14 +35,18 @@ func _on_InventoryItemList_item_activated(index):
 
 	# TODO change to use new functions defined.
 	if inventory_item_entry_information[1] >= 0:
-		if (len(currently_observing_thing.party_members) == 1):
-			inventory_item_entry_information[1] -= 1;
-			ItemDatabase.apply_item_to(currently_observing_thing.get_party_member(0),
-									   inventory_item_entry_information[0]);
+		if currently_observing_thing:
+			if (len(currently_observing_thing.party_members) == 1):
+				inventory_item_entry_information[1] -= 1;
+				ItemDatabase.apply_item_to(currently_observing_thing.get_party_member(0),
+										inventory_item_entry_information[0]);
+			else:
+				emit_signal("prompt_for_item_usage_selection",
+							currently_observing_thing.party_members,
+							inventory_item_entry_information);
 		else:
-			emit_signal("prompt_for_item_usage_selection",
-						currently_observing_thing.party_members,
-						inventory_item_entry_information);
+			emit_signal("prompt_for_item_usage", inventory_item_entry_information);
+			
 
 
 func _on_InventoryItemList_nothing_selected():

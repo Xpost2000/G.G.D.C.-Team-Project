@@ -1,30 +1,8 @@
-[gd_scene load_steps=14 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://ui/PartyMemberSelectionWidget.tscn" type="PackedScene" id=1]
-[ext_resource path="res://ui/Inventory.gd" type="Script" id=2]
-[ext_resource path="res://fonts/Alkhemikal.ttf" type="DynamicFontData" id=3]
-[ext_resource path="res://images/light_blob.png" type="Texture" id=4]
-[ext_resource path="res://ui/ItemPreview.gd" type="Script" id=5]
+[ext_resource path="res://ui/InventoryWidget.tscn" type="PackedScene" id=2]
 [ext_resource path="res://ui/InventoryUI.gd" type="Script" id=6]
-[ext_resource path="res://images/ui/ui_amber.png" type="Texture" id=7]
-[ext_resource path="res://images/ui/ui_paper.png" type="Texture" id=8]
-[ext_resource path="res://ui_themes/buttons_for_paperbg.tres" type="Theme" id=9]
-
-[sub_resource type="DynamicFont" id=1]
-size = 30
-use_mipmaps = true
-font_data = ExtResource( 3 )
-
-[sub_resource type="Theme" id=2]
-default_font = SubResource( 1 )
-
-[sub_resource type="DynamicFont" id=3]
-size = 24
-font_data = ExtResource( 3 )
-
-[sub_resource type="DynamicFont" id=4]
-size = 49
-font_data = ExtResource( 3 )
 
 [node name="InventoryUI" type="Control"]
 margin_left = 63.0
@@ -36,123 +14,11 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Inventory" type="NinePatchRect" parent="."]
-margin_right = 1148.0
-margin_bottom = 657.0
-theme = ExtResource( 9 )
-texture = ExtResource( 8 )
-patch_margin_left = 32
-patch_margin_top = 32
-patch_margin_right = 32
-patch_margin_bottom = 32
-axis_stretch_horizontal = 1
-axis_stretch_vertical = 1
-script = ExtResource( 2 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="InventoryItemList" type="ItemList" parent="Inventory"]
-margin_left = 20.0
-margin_top = 21.0
-margin_right = 681.0
-margin_bottom = 632.0
-theme = SubResource( 2 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="ItemPreview" type="NinePatchRect" parent="Inventory"]
-margin_left = 719.005
-margin_top = 7.66974
-margin_right = 1132.0
-margin_bottom = 641.67
-texture = ExtResource( 7 )
-patch_margin_left = 8
-patch_margin_top = 8
-patch_margin_right = 8
-patch_margin_bottom = 8
-script = ExtResource( 5 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="DescriptionContainer" type="NinePatchRect" parent="Inventory/ItemPreview"]
-margin_left = 2.0
-margin_top = 326.0
-margin_right = 411.0
-margin_bottom = 628.0
-texture = ExtResource( 8 )
-patch_margin_left = 32
-patch_margin_top = 32
-patch_margin_right = 32
-patch_margin_bottom = 32
-axis_stretch_horizontal = 1
-axis_stretch_vertical = 1
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="ItemDescription" type="RichTextLabel" parent="Inventory/ItemPreview"]
-margin_left = 17.0
-margin_top = 341.0
-margin_right = 397.0
-margin_bottom = 624.0
-custom_fonts/normal_font = SubResource( 3 )
-custom_colors/default_color = Color( 0.286275, 0.196078, 0.196078, 1 )
-bbcode_enabled = true
-bbcode_text = "This is an item of great renown, or something. Pretty sure I found this in a dumpster, but I guess no one actually has to know that right?
-
-Right????
-
-[color=red]
-Sell Value: $???
-Type: ???
-[/color]"
-text = "This is an item of great renown, or something. Pretty sure I found this in a dumpster, but I guess no one actually has to know that right?
-
-Right????
-
-
-Sell Value: $???
-Type: ???
-"
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="ItemPreviewSprite" type="Sprite" parent="Inventory/ItemPreview"]
-position = Vector2( 206.66, 188.295 )
-texture = ExtResource( 4 )
-
-[node name="ItemName" type="Label" parent="Inventory/ItemPreview"]
-margin_left = 16.991
-margin_top = 1.66284
-margin_right = 387.991
-margin_bottom = 68.6628
-custom_fonts/font = SubResource( 4 )
-custom_colors/font_color = Color( 0.780392, 0.780392, 0.780392, 1 )
-text = "Dingleberry"
-align = 1
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="StupidBlocker" type="ColorRect" parent="Inventory"]
-visible = false
-margin_right = 1147.0
-margin_bottom = 659.0
-color = Color( 1, 1, 1, 0 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
+[node name="Inventory" parent="." instance=ExtResource( 2 )]
 
 [node name="PartyMemberSelection" parent="." instance=ExtResource( 1 )]
 axis_stretch_horizontal = 1
 axis_stretch_vertical = 1
 [connection signal="prompt_for_item_usage_selection" from="Inventory" to="." method="_on_Inventory_prompt_for_item_usage_selection"]
-[connection signal="item_activated" from="Inventory/InventoryItemList" to="Inventory" method="_on_InventoryItemList_item_activated"]
-[connection signal="item_selected" from="Inventory/InventoryItemList" to="Inventory" method="_on_InventoryItemList_item_selected"]
-[connection signal="nothing_selected" from="Inventory/InventoryItemList" to="Inventory" method="_on_InventoryItemList_nothing_selected"]
 [connection signal="cancel_selection" from="PartyMemberSelection" to="." method="_on_PartyMemberSelection_cancel_selection"]
 [connection signal="picked_party_member" from="PartyMemberSelection" to="." method="_on_PartyMemberSelection_picked_party_member"]

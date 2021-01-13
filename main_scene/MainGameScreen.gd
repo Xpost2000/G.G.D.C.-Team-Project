@@ -17,12 +17,14 @@ func _on_BattleScreen_finished(type, a, b):
 	match type:
 		COMBAT_FINISHED_REASON_FLEE:
 			print("cowardly flee");
+			ui_layer.add_popup("You ran like a coward");
 			pass;
 		COMBAT_FINISHED_REASON_DEFEAT_OF:
 			print("someone died");
 			if a == player_node:
 				print("yay we won! Show a neat widget");
 				player_node.award_experience(b.experience_value);
+				ui_layer.add_popup("You gain " + str(b.experience_value) + " XP!");
 			else:
 				print("We lost");
 			pass;

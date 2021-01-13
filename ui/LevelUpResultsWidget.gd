@@ -29,6 +29,7 @@ func show_next_party_member():
 	
 
 func _process(delta):
+	# dirty
 	if Input.is_action_just_pressed("ui_cancel"):
 		if !show_next_party_member():
 			emit_signal("notify_finished");

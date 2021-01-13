@@ -1,6 +1,7 @@
 extends CanvasLayer
+# TODO: UI should attempt to have more fine grained control over it's widgets
+
 signal notify_finished_level_load_related_fading();
-# signal request_to_use_item(item_index); Might end up using? For now no.
 
 onready var stamina_bar = $SprintingStaminaBar;
 onready var stamina_bar_max_dimensions = $SprintingStaminaBar.rect_size;
@@ -24,10 +25,10 @@ func _ready():
 	reference_to_game_scene = get_parent().get_node("GameLayer");
 	dialogue_ui.reference_to_game_scene = reference_to_game_scene;
 
-	# add_popup("Hi");
-	# add_popup("My Name");
-	# add_popup("Is");
-	# add_popup("Eminem");
+	add_popup("Hi");
+	add_popup("My Name");
+	add_popup("Is");
+	add_popup("Eminem");
 
 func _on_LevelUpResults_notify_finished():
 	set_state(UI_STATE_GAME);
@@ -82,10 +83,13 @@ func any_popups_open():
 	return result and len(popups);
 
 const PopupTemplate = preload("res://ui/PopupTemplate.tscn");
-func add_popup(text):
+func _real_add_popup(text):
 	var popup = PopupTemplate.instance();
 	$Popups.add_child(popup);
 	$Popups.get_children()[-1].popup(text);
+	
+func add_popup(text):
+	call_deferred("_real_add_popup", text);
 
 func _process(delta):
 	# Still hardcoding certain transitions which I'm not proud of.
@@ -118,7 +122,12 @@ func _process(delta):
 						fade_hold_timer = 0;
 	else:
 		# handle last popup only
+		# also yes this is weird, this calls for a refactor later.
+		GameGlobals.pause();
 		$Popups.get_children()[-1].handle_inputs(delta);
+		if !any_popups_open():
+			GameGlobals.resume();
+			
 
 func set_state(state):
 	var previous_state = current_state;

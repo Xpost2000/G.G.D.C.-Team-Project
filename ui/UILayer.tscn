@@ -55,3 +55,4 @@ __meta__ = {
 }
 [connection signal="close" from="InventoryUI" to="." method="_on_InventoryUI_close"]
 [connection signal="notify_dialogue_terminated" from="DialogueUI" to="." method="_on_DialogueUI_notify_dialogue_terminated"]
+[connection signal="notify_finished" from="LevelUpUI" to="." method="_on_LevelUpResults_notify_finished"]

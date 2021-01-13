@@ -57,6 +57,11 @@ func is_channel_playing(index):
 func is_music_playing():
 	return music_channel.playing;
 
+func pause_music():
+	music_channel.stop();
+func resume_music():
+	music_channel.play();
+
 func play_music(filepath, volume=DEFAULT_MAX_VOLUME_DB):
 	var music = load_music(filepath);
 	music_channel.stream = music;
@@ -66,3 +71,6 @@ func play_music(filepath, volume=DEFAULT_MAX_VOLUME_DB):
 	print(music_channel.playing);
 	print(music_channel.stream_paused);
 	
+func looped_play_music(filepath, volume=DEFAULT_MAX_VOLUME_DB):
+	if !is_music_playing():
+		play_music(filepath, volume);

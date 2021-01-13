@@ -5,8 +5,10 @@ onready var notifier_content = $NotifierBackground/Content;
 onready var notifier_title = $NotifierBackground/Title;
 
 func _ready():
-	AudioGlobal.play_music("copyrighted-test-content/snd/012.ogg");
 	pass
+
+func _process(delta):
+	AudioGlobal.looped_play_music("copyrighted-test-content/snd/012.ogg");
 
 # maybe do a fancy fade out.
 

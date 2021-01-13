@@ -1,0 +1,102 @@
+[gd_scene load_steps=15 format=2]
+
+[ext_resource path="res://fonts/Alkhemikal.ttf" type="DynamicFontData" id=1]
+
+[sub_resource type="DynamicFont" id=1]
+size = 64
+font_data = ExtResource( 1 )
+
+[sub_resource type="DynamicFont" id=2]
+size = 32
+use_mipmaps = true
+font_data = ExtResource( 1 )
+
+[sub_resource type="Theme" id=3]
+default_font = SubResource( 2 )
+
+[sub_resource type="StyleBoxFlat" id=4]
+bg_color = Color( 0, 0, 0, 1 )
+
+[sub_resource type="StyleBoxEmpty" id=5]
+
+[sub_resource type="StyleBoxEmpty" id=6]
+
+[sub_resource type="StyleBoxEmpty" id=7]
+
+[sub_resource type="StyleBoxEmpty" id=8]
+
+[sub_resource type="StyleBoxFlat" id=9]
+bg_color = Color( 0, 0, 0, 1 )
+
+[sub_resource type="StyleBoxEmpty" id=10]
+
+[sub_resource type="StyleBoxEmpty" id=11]
+
+[sub_resource type="StyleBoxEmpty" id=12]
+
+[sub_resource type="StyleBoxEmpty" id=13]
+
+[node name="DeathScreenUI" type="Control"]
+visible = false
+margin_right = 40.0
+margin_bottom = 40.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Background" type="ColorRect" parent="."]
+margin_right = 1280.0
+margin_bottom = 720.0
+color = Color( 0.309804, 0, 0.0156863, 0.576471 )
+
+[node name="\?" type="Label" parent="."]
+margin_top = 87.0
+margin_right = 1280.0
+margin_bottom = 720.0
+custom_fonts/font = SubResource( 1 )
+text = "DEATH...
+
+Better luck next time."
+align = 1
+
+[node name="Selections" type="VBoxContainer" parent="."]
+margin_left = 376.836
+margin_top = 398.531
+margin_right = 848.836
+margin_bottom = 702.531
+theme = SubResource( 3 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Restart" type="Button" parent="Selections"]
+margin_right = 472.0
+margin_bottom = 32.0
+custom_styles/hover = SubResource( 4 )
+custom_styles/pressed = SubResource( 5 )
+custom_styles/focus = SubResource( 6 )
+custom_styles/disabled = SubResource( 7 )
+custom_styles/normal = SubResource( 8 )
+text = "Restart Game"
+
+[node name="Menu" type="Button" parent="Selections"]
+margin_top = 36.0
+margin_right = 472.0
+margin_bottom = 68.0
+custom_styles/hover = SubResource( 4 )
+custom_styles/pressed = SubResource( 5 )
+custom_styles/focus = SubResource( 6 )
+custom_styles/disabled = SubResource( 7 )
+custom_styles/normal = SubResource( 8 )
+text = "Return to Main Menu"
+
+[node name="Quit" type="Button" parent="Selections"]
+margin_top = 72.0
+margin_right = 472.0
+margin_bottom = 104.0
+custom_styles/hover = SubResource( 9 )
+custom_styles/pressed = SubResource( 10 )
+custom_styles/focus = SubResource( 11 )
+custom_styles/disabled = SubResource( 12 )
+custom_styles/normal = SubResource( 13 )
+text = "Quit Game"

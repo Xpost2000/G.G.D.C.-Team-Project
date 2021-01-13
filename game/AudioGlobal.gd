@@ -38,7 +38,7 @@ func _ready():
 
 func play_sound(filepath, volume=DEFAULT_MAX_VOLUME_DB, channel_index=-1):
 	var channel = null;
-	if channel_index == -1;
+	if channel_index == -1:
 		channel = sound_effect_channels[free_sound_channel];
 
 		free_sound_channel += 1;

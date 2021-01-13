@@ -13,6 +13,8 @@ margin_left = 405.018
 margin_top = 291.258
 margin_right = 904.018
 margin_bottom = 392.258
+focus_mode = 2
+mouse_filter = 0
 texture = ExtResource( 2 )
 patch_margin_left = 16
 patch_margin_top = 16
@@ -20,7 +22,7 @@ patch_margin_right = 16
 patch_margin_bottom = 16
 script = ExtResource( 3 )
 __meta__ = {
-"_edit_group_": true
+"_edit_use_anchors_": false
 }
 
 [node name="Text" type="Label" parent="."]
@@ -32,6 +34,17 @@ custom_fonts/font = SubResource( 1 )
 text = "This is an important popup!"
 align = 1
 valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ColorRect" type="ColorRect" parent="."]
+margin_left = -402.0
+margin_top = -293.67
+margin_right = 873.0
+margin_bottom = 425.33
+focus_mode = 2
+color = Color( 1, 1, 1, 0 )
 __meta__ = {
 "_edit_use_anchors_": false
 }

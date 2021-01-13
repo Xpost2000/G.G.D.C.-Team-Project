@@ -6,32 +6,47 @@ signal notify_finished_level_load_related_fading();
 onready var stamina_bar = $SprintingStaminaBar;
 onready var stamina_bar_max_dimensions = $SprintingStaminaBar.rect_size;
 onready var ui_dimmer = $DimmerRect;
-onready var inventory_ui = $InventoryUI;
-onready var death_ui = $DeathScreenUI;
-onready var pause_ui = $PauseScreenUI;
+onready var inventory_ui = $States/InventoryUI;
+onready var death_ui = $States/DeathScreenUI;
+onready var pause_ui = $States/PauseScreenUI;
 onready var party_member_information_holder = $PartyMemberInformation;
-onready var dialogue_ui = $DialogueUI;
+onready var dialogue_ui = $States/DialogueUI;
 
-onready var levelup_ui_container = $LevelUpUI;
-onready var levelup_ui = $LevelUpUI/LevelUpLayoutContainer/LevelUpResults;
+onready var levelup_ui_container = $States/LevelUpUI;
+onready var levelup_ui = $States/LevelUpUI/LevelUpLayoutContainer/LevelUpResults;
 
 var reference_to_game_scene = null;
 
 enum {UI_STATE_GAME, UI_STATE_INVENTORY, UI_STATE_DEATH, UI_STATE_PAUSE, UI_STATE_DIALOGUE, UI_STATE_LEVELUPS};
 var current_state = UI_STATE_GAME;
 
+# really only needed for popups...
+# func set_process_of_all_states(val):
+#	# $States.set_process(val);
+#	# for state in $States.get_children():
+#	#	state.set_process(val);
+#	#	state.set_process_input(val);
+#	#	state.set_process_internal(val);
+#	#	state.set_process_unhandled_input(val);
+#	pass;
+
 func _ready():
 	inventory_ui.get_node("Inventory/InventoryItemList").fixed_icon_size = Vector2(32,32);
 	reference_to_game_scene = get_parent().get_node("GameLayer");
 	dialogue_ui.reference_to_game_scene = reference_to_game_scene;
 
-	add_popup("Hi");
-	add_popup("My Name");
-	add_popup("Is");
-	add_popup("Eminem");
+	$States/PauseScreenUI/VBoxContainer/Resume.connect("pressed", self, "_on_PauseUI_Resume_pressed");
+	$States/PauseScreenUI/VBoxContainer/ReturnToTitle.connect("pressed", self, "_on_PauseUI_ReturnToTitle_pressed");
+	$States/PauseScreenUI/VBoxContainer/Quit.connect("pressed", self, "_on_PauseUI_Quit_pressed");
+
+	# add_popup("Hi");
+	# add_popup("My Name");
+	# add_popup("Is");
+	# add_popup("Eminem");
 
 func _on_LevelUpResults_notify_finished():
-	set_state(UI_STATE_GAME);
+	if current_state == UI_STATE_LEVELUPS:
+		set_state(UI_STATE_GAME);
 
 func _on_PlayerCharacter_handle_party_member_level_ups(party_members):
 	set_state(UI_STATE_LEVELUPS);
@@ -93,13 +108,11 @@ func add_popup(text):
 
 func _process(delta):
 	# Still hardcoding certain transitions which I'm not proud of.
+	# set_process_of_all_states(!any_popups_open());
 	if !any_popups_open():
 		if Input.is_action_just_pressed("game_action_ui_pause"):
 			if current_state != UI_STATE_LEVELUPS:
-				if current_state != UI_STATE_PAUSE:
-					set_state(UI_STATE_PAUSE);
-				else:
-					set_state(UI_STATE_GAME);
+				toggle_pause();
 
 		if current_state != UI_STATE_PAUSE:
 			if Input.is_action_just_pressed("game_action_open_inventory"):
@@ -128,12 +141,15 @@ func _process(delta):
 		if !any_popups_open():
 			GameGlobals.resume();
 			
-
-func set_state(state):
+func _real_set_state(state):
 	var previous_state = current_state;
 	leave_state(previous_state);
 	enter_state(state);
 	current_state = state;
+
+func set_state(state):
+	_real_set_state(state);
+	# call_deferred("_real_set_state", state);
 
 func enter_state(state):
 	match state:
@@ -142,7 +158,6 @@ func enter_state(state):
 			pass;
 		UI_STATE_INVENTORY:
 			inventory_ui.show();
-			print("SHOW ME HISTY");
 			pass;
 		UI_STATE_DEATH:
 			GameGlobals.pause();
@@ -151,6 +166,7 @@ func enter_state(state):
 		UI_STATE_PAUSE:
 			GameGlobals.pause();
 			pause_ui.show();
+			print("pause");
 			pass;
 		UI_STATE_DIALOGUE:
 			GameGlobals.pause();
@@ -167,7 +183,6 @@ func leave_state(state):
 			pass;
 		UI_STATE_INVENTORY:
 			inventory_ui.hide();
-			print("CLOSE ME");
 			pass;
 		UI_STATE_DEATH:
 			GameGlobals.resume();
@@ -176,6 +191,7 @@ func leave_state(state):
 		UI_STATE_PAUSE:
 			GameGlobals.resume();
 			pause_ui.hide();
+			print("un_pause");
 			pass;
 		UI_STATE_DIALOGUE:
 			GameGlobals.resume();
@@ -196,6 +212,14 @@ func show_inventory():
 func close_inventory():
 	set_state(UI_STATE_GAME);
 
+
+func toggle_pause():
+	if current_state == UI_STATE_PAUSE:
+		print("close");
+		set_state(UI_STATE_GAME);
+	else:
+		print("open");
+		set_state(UI_STATE_PAUSE);
 
 func toggle_inventory():
 	if current_state == UI_STATE_INVENTORY:

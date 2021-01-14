@@ -27,11 +27,6 @@ func update_based_on_entity(thing, inventory):
 func update_based_on_inventory(inventory):
 	update_based_on_entity(null, inventory);
 
-func _ready():
-	update_based_on_inventory([["healing_grass"],
-							   ["healing_pod"]]);
-	pass
-
 func _process(delta):
 	# This is probably not safe to do. 
 	if currently_observing_thing && currently_observing_inventory:

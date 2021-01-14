@@ -98,28 +98,28 @@ We can always change this though."
 
 [node name="Button" type="Button" parent="DialogueBackground/ChoicesContainer"]
 margin_right = 973.0
-margin_bottom = 24.0
+margin_bottom = 20.0
 text = "Hi Son"
 align = 0
 
 [node name="Button2" type="Button" parent="DialogueBackground/ChoicesContainer"]
-margin_top = 26.0
+margin_top = 22.0
 margin_right = 973.0
-margin_bottom = 50.0
+margin_bottom = 42.0
 text = "Hi Son"
 align = 0
 
 [node name="Button3" type="Button" parent="DialogueBackground/ChoicesContainer"]
-margin_top = 52.0
+margin_top = 44.0
 margin_right = 973.0
-margin_bottom = 76.0
+margin_bottom = 64.0
 text = "Hi Son"
 align = 0
 
 [node name="Button4" type="Button" parent="DialogueBackground/ChoicesContainer"]
-margin_top = 78.0
+margin_top = 66.0
 margin_right = 973.0
-margin_bottom = 102.0
+margin_bottom = 86.0
 text = "Hi Son"
 align = 0
 

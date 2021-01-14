@@ -117,8 +117,7 @@ func _process(delta):
 	any_open_popups = _any_popups_open();
 	if !any_popups_open():
 		if Input.is_action_just_pressed("ui_page_down"):
-			# shopping_ui.open_from_inventory();
-			toggle_shop();
+			toggle_shop("shop_files/test_stock.json");
 
 		if Input.is_action_just_pressed("game_action_ui_pause"):
 			if current_state != UI_STATE_LEVELUPS:
@@ -237,11 +236,12 @@ func toggle_pause():
 		print("open");
 		set_state(UI_STATE_PAUSE);
 
-func toggle_shop():
+func toggle_shop(shop_path):
 	if current_state == UI_STATE_SHOPPING:
 		set_state(UI_STATE_GAME);
 	else:
 		set_state(UI_STATE_SHOPPING);
+		shopping_ui.open_from_inventory(JSON.parse(Utilities.read_entire_file_as_string(shop_path)).get_result());
 
 func toggle_inventory():
 	if current_state == UI_STATE_INVENTORY:

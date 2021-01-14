@@ -34,11 +34,12 @@ custom_fonts/font = SubResource( 1 )
 text = "This is an important popup!"
 align = 1
 valign = 1
+clip_text = true
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="ColorRect" type="ColorRect" parent="."]
+[node name="Blocker" type="ColorRect" parent="."]
 margin_left = -402.0
 margin_top = -293.67
 margin_right = 873.0
@@ -46,5 +47,6 @@ margin_bottom = 425.33
 focus_mode = 2
 color = Color( 1, 1, 1, 0 )
 __meta__ = {
+"_edit_lock_": true,
 "_edit_use_anchors_": false
 }

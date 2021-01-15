@@ -5,19 +5,19 @@ signal notify_finished_level_load_related_fading();
 
 onready var stamina_bar = $SprintingStaminaBar;
 onready var stamina_bar_max_dimensions = $SprintingStaminaBar.rect_size;
+
+
+# god this is stupid
+var player_reference = null;
+var reference_to_game_scene = null;
+
 onready var inventory_ui = $States/InventoryUI;
 onready var shopping_ui = $States/InventoryShoppingUI;
 onready var death_ui = $States/DeathScreenUI;
 onready var pause_ui = $States/PauseScreenUI;
 onready var party_member_information_holder = $PartyMemberInformation;
 onready var dialogue_ui = $States/DialogueUI;
-
-onready var levelup_ui_container = $States/LevelUpUI;
-onready var levelup_ui = $States/LevelUpUI/LevelUpLayoutContainer/LevelUpResults;
-
-# god this is stupid
-var player_reference = null;
-var reference_to_game_scene = null;
+onready var levelup_ui = $States/LevelUpUI;
 
 enum {UI_STATE_GAME,
 	  UI_STATE_INVENTORY,
@@ -26,6 +26,16 @@ enum {UI_STATE_GAME,
 	  UI_STATE_PAUSE,
 	  UI_STATE_DIALOGUE,
 	  UI_STATE_LEVELUPS};
+onready var states = {
+	UI_STATE_GAME: null,
+	UI_STATE_INVENTORY: inventory_ui,
+	UI_STATE_SHOPPING: shopping_ui,
+	UI_STATE_DEATH: death_ui,
+	UI_STATE_PAUSE: pause_ui,
+	UI_STATE_DIALOGUE: dialogue_ui,
+	UI_STATE_LEVELUPS: levelup_ui
+	};
+
 var current_state = UI_STATE_GAME;
 
 var shown = true;
@@ -63,7 +73,7 @@ func _on_LevelUpResults_notify_finished():
 
 func _on_PlayerCharacter_handle_party_member_level_ups(party_members):
 	set_state(UI_STATE_LEVELUPS);
-	levelup_ui.open_with(party_members);
+	levelup_ui.get_node("LevelUpLayoutContainer/LevelUpResults").open_with(party_members);
 	pass;
 
 func _on_PlayerCharacter_report_party_info_to_ui(party_members, amount_of_gold):
@@ -161,17 +171,18 @@ func _process(delta):
 		if len(_popup_queue) > 0:
 			add_popup(_popup_queue.pop_front());
 		else:
-			# if shown:
-			if Input.is_action_just_pressed("ui_page_down"):
-				toggle_shop("shop_files/test_stock.json");
+			if current_state == UI_STATE_GAME:
+				if Input.is_action_just_pressed("ui_page_down"):
+					toggle_shop("shop_files/test_stock.json");
 
-			if Input.is_action_just_pressed("game_action_ui_pause"):
-				if current_state != UI_STATE_LEVELUPS:
-					toggle_pause();
+				if Input.is_action_just_pressed("game_action_ui_pause"):
+						toggle_pause();
 
-			if current_state != UI_STATE_PAUSE:
 				if Input.is_action_just_pressed("game_action_open_inventory"):
 					toggle_inventory();
+			else:
+				if states[current_state]:
+					states[current_state].handle_process(delta);
 	else:
 		# handle last popup only
 		# also yes this is weird, this calls for a refactor later.
@@ -189,69 +200,27 @@ func _process(delta):
 func set_state(state):
 	if current_state != state:
 		var previous_state = current_state;
-		leave_state(previous_state);
+		leave_state(previous_state, state);
 		enter_state(state);
 		current_state = state;
 
 func enter_state(state):
+	if state != UI_STATE_GAME:
+		if states[state]:
+			states[state].on_enter(current_state);
+
 	match state:
 		UI_STATE_GAME:
 			GameGlobals.resume();
-			pass;
-		UI_STATE_INVENTORY:
-			GameGlobals.pause();
-			inventory_ui.show();
-			pass;
-		UI_STATE_SHOPPING:
-			GameGlobals.pause();
-			shopping_ui.show();
-			pass;
-		UI_STATE_DEATH:
-			GameGlobals.pause();
-			death_ui.show();
-			pass;
-		UI_STATE_PAUSE:
-			GameGlobals.pause();
-			pause_ui.show();
-			print("pause");
-			pass;
-		UI_STATE_DIALOGUE:
-			GameGlobals.pause();
-			dialogue_ui.show();
-			pass;
-		UI_STATE_LEVELUPS:
-			GameGlobals.pause();
-			levelup_ui_container.show();
 			pass;
 
-func leave_state(state):
+func leave_state(state, leaving_to):
+	if state != UI_STATE_GAME:
+		if states[state]:
+			states[state].on_leave(leaving_to);
+
 	match state:
 		UI_STATE_GAME:
-			pass;
-		UI_STATE_INVENTORY:
-			GameGlobals.resume();
-			inventory_ui.hide();
-			pass;
-		UI_STATE_SHOPPING:
-			GameGlobals.resume();
-			shopping_ui.hide();
-			pass;
-		UI_STATE_DEATH:
-			GameGlobals.resume();
-			death_ui.hide();
-			pass;
-		UI_STATE_PAUSE:
-			GameGlobals.resume();
-			pause_ui.hide();
-			print("un_pause");
-			pass;
-		UI_STATE_DIALOGUE:
-			GameGlobals.resume();
-			dialogue_ui.hide();
-			pass;
-		UI_STATE_LEVELUPS:
-			GameGlobals.resume();
-			levelup_ui_container.hide();
 			pass;
 
 func show_death(val):

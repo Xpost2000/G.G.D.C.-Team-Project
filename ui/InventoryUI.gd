@@ -40,3 +40,15 @@ func _on_PartyMemberSelection_cancel_selection():
 	emit_signal("close", [CLOSE_REASON_CANCEL]);
 	inventory_widget.modulate = Color(1, 1, 1);
 	$Inventory/StupidBlocker.hide();
+
+func on_leave(to):
+	GameGlobals.resume();
+	hide();
+
+func on_enter(from):
+	GameGlobals.pause();
+	show();
+
+func handle_process(delta):
+	if Input.is_action_just_pressed("game_action_open_inventory"):
+		get_parent().get_parent().toggle_inventory();

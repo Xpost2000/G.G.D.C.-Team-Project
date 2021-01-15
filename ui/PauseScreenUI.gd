@@ -1,8 +1,5 @@
-extends ColorRect
-signal notify_finished;
+extends Control
 
-func _on_LevelUpResults_notify_finished():
-	emit_signal("notify_finished");
 
 func _ready():
 	pass
@@ -10,10 +7,13 @@ func _ready():
 func on_leave(to):
 	GameGlobals.resume();
 	hide();
+	print("un_pause");
 
 func on_enter(from):
 	GameGlobals.pause();
 	show();
+	print("pause");
 
 func handle_process(delta):
-	pass;
+	if Input.is_action_just_pressed("game_action_ui_pause"):
+		get_parent().get_parent().toggle_pause();

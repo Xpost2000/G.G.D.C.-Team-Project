@@ -228,7 +228,15 @@ func goto_scene(scene):
 		emit_signal("notify_dialogue_terminated", dialogue_terminate_normal());
 		AudioGlobal.stop_sound(0);
 
-func _process(delta):
+func on_leave(to):
+	GameGlobals.resume();
+	hide();
+
+func on_enter(from):
+	GameGlobals.pause();
+	show();
+
+func handle_process(delta):
 	if !initial_opening:
 		if current_scene in scenes:
 			var current_scene_object = scenes[current_scene];

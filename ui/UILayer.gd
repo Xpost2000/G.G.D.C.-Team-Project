@@ -5,7 +5,6 @@ signal notify_finished_level_load_related_fading();
 
 onready var stamina_bar = $SprintingStaminaBar;
 onready var stamina_bar_max_dimensions = $SprintingStaminaBar.rect_size;
-onready var ui_dimmer = $DimmerRect;
 onready var inventory_ui = $States/InventoryUI;
 onready var shopping_ui = $States/InventoryShoppingUI;
 onready var death_ui = $States/DeathScreenUI;
@@ -68,13 +67,32 @@ func _on_PlayerCharacter_report_sprinting_information(stamina_percent, can_sprin
 	stamina_bar.set_size(Vector2(stamina_percent * stamina_bar_max_dimensions.x, 
 								 stamina_bar_max_dimensions.y))
 
-enum {DIMMER_NOT_FADING, DIMMER_FADE_REASON_LEVEL_LOADING};
-var dimmer_fade_reason = DIMMER_NOT_FADING;
+const DimmerRect = preload("res://ui/DimmerRect.gd");
+func create_fade_dimmer(color, hang_time=0):
+	var new_fade_dimmer = DimmerRect.new();
+
+	new_fade_dimmer.disabled = false;
+	new_fade_dimmer.rect_size = Vector2(1280, 720);
+	new_fade_dimmer.color = color
+	new_fade_dimmer.hang_max_time = hang_time;
+
+	return new_fade_dimmer;
+	
+
+func _on_level_load_initial_fade_out(dimmer):
+	var new_fade_dimmer = create_fade_dimmer(Color(0, 0, 0, 0));
+	new_fade_dimmer.begin_fade_out();
+
+	add_child(new_fade_dimmer);
+	emit_signal("notify_finished_level_load_related_fading");
+
 func _on_MainGameScreen_notify_ui_of_level_load():
-	print("loading");
-	ui_dimmer.begin_fade_in();
-	dimmer_fade_reason = DIMMER_FADE_REASON_LEVEL_LOADING;
-	pass # Replace with function body.
+	var new_fade_dimmer = create_fade_dimmer(Color(0, 0, 0, 0), 0.15);
+
+	new_fade_dimmer.begin_fade_in();
+	new_fade_dimmer.connect("finished", self, "_on_level_load_initial_fade_out", [new_fade_dimmer]);
+
+	add_child(new_fade_dimmer);
 
 func _on_PauseUI_Resume_pressed():
 	set_state(UI_STATE_GAME);
@@ -126,22 +144,6 @@ func _process(delta):
 		if current_state != UI_STATE_PAUSE:
 			if Input.is_action_just_pressed("game_action_open_inventory"):
 				toggle_inventory();
-
-			# TODO USE BETTER FADE FROM LIKE TWEEN
-			match dimmer_fade_reason:
-				DIMMER_NOT_FADING: 
-					if ui_dimmer.finished_fade():
-						ui_dimmer.disabled = true;
-				DIMMER_FADE_REASON_LEVEL_LOADING:
-					ui_dimmer.disabled = false;
-					if ui_dimmer.finished_fade():
-						if fade_hold_timer >= fade_hold_timer_max:
-							emit_signal("notify_finished_level_load_related_fading");
-							dimmer_fade_reason = DIMMER_NOT_FADING;
-							ui_dimmer.begin_fade_out();
-						fade_hold_timer += delta;
-					else:
-						fade_hold_timer = 0;
 	else:
 		# handle last popup only
 		# also yes this is weird, this calls for a refactor later.

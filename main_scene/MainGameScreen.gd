@@ -104,11 +104,5 @@ func _on_PlayerCharacter_request_to_open_battle(left, right):
 	call_deferred("_open_battle", left, right);
 
 func _process(delta):
-	if Input.is_action_just_pressed("ui_end"):
-		GameGlobals.switch_to_scene(2);
-		
-	if player_node.all_members_dead():
-		ui_layer.show_death(true);
-	else:
-		ui_layer.show_death(false);
+	ui_layer.show_death(player_node.all_members_dead());
 		

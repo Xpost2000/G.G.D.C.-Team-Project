@@ -1,8 +1,10 @@
 extends NinePatchRect
+signal finished;
 
 var box_tweener;
 
 var active = false;
+var closing = false;
 const TRANSITION_TIME = 0.8;
 
 func _ready():
@@ -37,9 +39,16 @@ func handle_inputs(delta):
 	if Input.is_action_just_pressed("game_action_ui_pause"):
 		if !box_tweener.is_active():
 			close();
+		else:
+			if closing:
+				_close_actions(null, null);
+			else:
+				box_tweener.seek(box_tweener.get_runtime());
+			box_tweener.stop_all();
 
 func _close_actions(_a, _b):
 	active = false;
+	emit_signal("finished");
 	get_parent().remove_child(self);
 	queue_free();
 	
@@ -61,3 +70,4 @@ func close():
 									 Tween.EASE_IN_OUT);
 	box_tweener.start();
 	box_tweener.connect("tween_completed", self, "_close_actions");
+	closing = true;

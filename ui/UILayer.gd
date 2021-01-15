@@ -136,8 +136,6 @@ func add_popup(text):
 	call_deferred("_real_add_popup", text);
 
 func _process(delta):
-	# Still hardcoding certain transitions which I'm not proud of.
-	# set_process_of_all_states(!any_popups_open());
 	any_open_popups = _any_popups_open();
 	if !any_popups_open():
 		if Input.is_action_just_pressed("ui_page_down"):
@@ -154,9 +152,11 @@ func _process(delta):
 		# handle last popup only
 		# also yes this is weird, this calls for a refactor later.
 		GameGlobals.pause();
+		
+		if !$Popups.get_children()[0].is_connected("finished", GameGlobals, "resume"):
+			print("connect to resume!");
+			$Popups.get_children()[0].connect("finished", GameGlobals, "resume");
 		$Popups.get_children()[-1].handle_inputs(delta);
-		if !_any_popups_open():
-			GameGlobals.resume();
 			
 func set_state(state):
 	if current_state != state:

@@ -12,7 +12,7 @@ func handle_hi_bro(data):
 	print("HI ASIDOSAIODOIDAS");
 func handle_add_item(data):
 	print("HI ");
-	ui_layer.add_popup(data + " received!");
+	ui_layer.add_popup(ItemDatabase.get_item(data).name + " received!");
 	player_node.add_item(data);
 
 func _ready():
@@ -20,13 +20,10 @@ func _ready():
 	battle_screen.connect("combat_finished", self, "_on_BattleScreen_finished");
 	randomize();
 
-
-	$UILayer/States/DialogueUI.connect("add_item", self, "handle_add_item");
-	$UILayer/States/DialogueUI.connect("hi_bro", self, "handle_hi_bro");
-	# for handlable_response in ["add_item"]:
-	#	$UILayer/States/DialogueUI.connect(handlable_response,
-	#									   self,
-	#									   "handle_" + handlable_response);
+	for handlable_response in ["add_item", "hi_bro"]:
+		$UILayer/States/DialogueUI.connect(handlable_response,
+										   self,
+										   "handle_" + handlable_response);
 
 enum {
 	COMBAT_FINISHED_REASON_FLEE, # The winning party is the one that didn't flee.

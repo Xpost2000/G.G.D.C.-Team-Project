@@ -277,7 +277,7 @@ func toggle_shop(shop_path):
 		set_state(UI_STATE_GAME);
 	else:
 		set_state(UI_STATE_SHOPPING);
-		shopping_ui.open_from_inventory(JSON.parse(Utilities.read_entire_file_as_string(shop_path)).get_result());
+		shopping_ui.open_from_inventory(Utilities.read_json_no_check(shop_path));
 
 func toggle_inventory():
 	if current_state == UI_STATE_INVENTORY:

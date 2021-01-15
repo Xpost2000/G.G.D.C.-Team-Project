@@ -118,25 +118,16 @@ func parse_scene_choices(choices_data):
 			var choice_next_branch = choice["next"];
 
 			var new_choice = DialogueChoice.new(choice_text, choice_next_branch);
-			var potential_actions = dictionary_get_optional(choice, "actions");
-			if potential_actions:
-				for action in potential_actions:
-					print(action);
-					new_choice.add_response(action[0], action[1]);
-
-			new_choice.add_response("hi_bro", null);
+			new_choice.action_responses = Utilities.dictionary_get_optional(choice, "actions", []);
 			new_choices.push_back(new_choice);
 
 		return new_choices;
 	else:
 		return null;
 
-func dictionary_get_optional(dictionary, key):
-	return dictionary[key] if dictionary.has(key) else null;
-
 func load_dialogue_from_file(file_name):
 	# always assume in dialogue_files/
-	var json_results = JSON.parse(Utilities.read_entire_file_as_string("dialogue_files/" + file_name)).get_result();
+	var json_results = Utilities.read_json_no_check("dialogue_files/" + file_name);
 
 	var new_scenes = {};
 	for scene in json_results:
@@ -145,8 +136,8 @@ func load_dialogue_from_file(file_name):
 		var scene_speaker = parse_scene_speaker(current_scene_dictionary["speaker"]);
 		var scene_text = current_scene_dictionary["text"];
 
-		var scene_next = dictionary_get_optional(current_scene_dictionary, "next");
-		var scene_choices = parse_scene_choices(dictionary_get_optional(current_scene_dictionary, "choices"));
+		var scene_next = Utilities.dictionary_get_optional(current_scene_dictionary, "next");
+		var scene_choices = parse_scene_choices(Utilities.dictionary_get_optional(current_scene_dictionary, "choices"));
 
 		var new_scene_to_push = null;
 

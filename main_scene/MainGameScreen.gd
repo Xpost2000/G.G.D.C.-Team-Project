@@ -27,12 +27,12 @@ func _on_BattleScreen_finished(type, a, b):
 				# this would benefit from coroutines
 
 				player_node.award_experience(b.experience_value);
-				ui_layer.add_popup("You gain " + str(b.experience_value) + " XP!");
+				ui_layer.queue_popup("You gain " + str(b.experience_value) + " XP!");
 
 				if len(b.inventory):
 					for item in b.inventory:
 						var obtained_item = item;
-						ui_layer.add_popup("You get: x" + str(obtained_item[1]) + " " + ItemDatabase.get_item(obtained_item[0]).name);
+						ui_layer.queue_popup("You get: x" + str(obtained_item[1]) + " " + ItemDatabase.get_item(obtained_item[0]).name);
 						player_node.add_item(obtained_item[0], obtained_item[1]);
 			else:
 				print("We lost");

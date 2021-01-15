@@ -7,17 +7,19 @@ var active = false;
 var closing = false;
 const TRANSITION_TIME = 0.8;
 
+onready var final_width = rect_size.x;
+onready var height = rect_size.y;
+
 func _ready():
 	box_tweener = Tween.new();
 	add_child(box_tweener);
 
+	rect_size.x = 0;
 	hide();
 
 func popup(text):
 	$Text.text = text;
 	show();
-	var final_width = rect_size.x;
-	var height = rect_size.y;
 	box_tweener.interpolate_property(self, "rect_size",
 									 Vector2(0, height),
 									 Vector2(final_width, height),
@@ -53,9 +55,6 @@ func _close_actions(_a, _b):
 	queue_free();
 	
 func close():
-	var final_width = rect_size.x;
-	var height = rect_size.y;
-
 	box_tweener.remove_all();
 
 	box_tweener.interpolate_property(self, "rect_size",

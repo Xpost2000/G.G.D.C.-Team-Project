@@ -131,6 +131,10 @@ func _real_add_popup(text):
 	var popup = PopupTemplate.instance();
 	$Popups.add_child(popup);
 	$Popups.get_children()[-1].popup(text);
+
+var _popup_queue = [];
+func queue_popup(text):
+	_popup_queue.push_back(text);
 	
 func add_popup(text):
 	call_deferred("_real_add_popup", text);
@@ -138,24 +142,30 @@ func add_popup(text):
 func _process(delta):
 	any_open_popups = _any_popups_open();
 	if !any_popups_open():
-		if Input.is_action_just_pressed("ui_page_down"):
-			toggle_shop("shop_files/test_stock.json");
+		if len(_popup_queue) > 0:
+			add_popup(_popup_queue.pop_front());
+		else:
+			if Input.is_action_just_pressed("ui_page_down"):
+				toggle_shop("shop_files/test_stock.json");
 
-		if Input.is_action_just_pressed("game_action_ui_pause"):
-			if current_state != UI_STATE_LEVELUPS:
-				toggle_pause();
+			if Input.is_action_just_pressed("game_action_ui_pause"):
+				if current_state != UI_STATE_LEVELUPS:
+					toggle_pause();
 
-		if current_state != UI_STATE_PAUSE:
-			if Input.is_action_just_pressed("game_action_open_inventory"):
-				toggle_inventory();
+			if current_state != UI_STATE_PAUSE:
+				if Input.is_action_just_pressed("game_action_open_inventory"):
+					toggle_inventory();
 	else:
 		# handle last popup only
 		# also yes this is weird, this calls for a refactor later.
 		GameGlobals.pause();
 		
+		# gah.
 		if !$Popups.get_children()[0].is_connected("finished", GameGlobals, "resume"):
-			print("connect to resume!");
-			$Popups.get_children()[0].connect("finished", GameGlobals, "resume");
+			if len(_popup_queue) > 0:
+				$Popups.get_children()[0].connect("finished", self, "add_popup", [_popup_queue.pop_front()]);
+			else:
+				$Popups.get_children()[0].connect("finished", GameGlobals, "resume");
 		$Popups.get_children()[-1].handle_inputs(delta);
 			
 func set_state(state):

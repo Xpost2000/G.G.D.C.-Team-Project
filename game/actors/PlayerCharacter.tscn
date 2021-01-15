@@ -1,12 +1,13 @@
 [gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://game/actors/PlayerCharacter.gd" type="Script" id=1]
-[ext_resource path="res://images/portrait_draft.png" type="Texture" id=2]
+[ext_resource path="res://images/overworld/actors/protag/main_character_front.png" type="Texture" id=2]
 
 [sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 11.1645, 5.95453 )
 
 [sub_resource type="CircleShape2D" id=2]
-radius = 18.0785
+radius = 35.8132
 
 [node name="PlayerCharacter" type="KinematicBody2D"]
 position = Vector2( 285.174, -13.652 )
@@ -14,16 +15,19 @@ scale = Vector2( 3, 3 )
 script = ExtResource( 1 )
 
 [node name="CharacterSprite" type="Sprite" parent="."]
-position = Vector2( -0.44503, -13.3482 )
-scale = Vector2( 0.0421626, 0.0421626 )
+position = Vector2( 0.575272, 0.590172 )
 texture = ExtResource( 2 )
 
 [node name="CollisionShape" type="CollisionShape2D" parent="."]
-position = Vector2( 0.889809, 2.44734 )
+position = Vector2( -0.04557, 26.9544 )
 shape = SubResource( 1 )
 
 [node name="InteractableArea" type="Area2D" parent="."]
 position = Vector2( -8.39233e-05, 0.000139713 )
+__meta__ = {
+"_edit_group_": true,
+"_edit_lock_": true
+}
 
 [node name="Radius" type="CollisionShape2D" parent="InteractableArea"]
 shape = SubResource( 2 )

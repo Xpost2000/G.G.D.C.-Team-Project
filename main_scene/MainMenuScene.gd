@@ -26,6 +26,7 @@ func _on_StartGameButton_pressed():
 	AudioGlobal.pause_music();
 
 func _on_LoadGameButton_pressed():
+	# AudioGlobal.play_sound("copyrighted-test-content/snd/see.ogg");
 	thing = "copyrighted-test-content/snd/013.ogg";
 	print("load game?");
 	open_notification("Load Game Not Done!",
@@ -38,6 +39,7 @@ func _on_LoadGameButton_pressed():
 
 func _on_OptionsButton_pressed():
 	thing = "copyrighted-test-content/snd/012.ogg";
+	# AudioGlobal.play_sound("copyrighted-test-content/snd/almalexia.ogg");
 	print("options?");
 	open_notification("Options Are Not Done!",
 					  """

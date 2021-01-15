@@ -1,6 +1,8 @@
 extends "res://game/actors/GameActor.gd"
 const GameActor = preload("res://game/actors/GameActor.gd");
 
+onready var _stupid_sprite = $CharacterSprite;
+
 # our main issue, is that these guys don't represent one.
 # This is a PARTY, not a singular entity. That's the main thing we
 # have to figure out.
@@ -11,7 +13,22 @@ signal report_party_info_to_ui(party_members, amount_of_gold);
 signal request_to_open_battle(left, right);
 signal test_open_conversation;
 
+# temporary lazy
+enum {SPRITE_DIRECTION_UP,
+	  SPRITE_DIRECTION_DOWN,
+	  SPRITE_DIRECTION_RIGHT,
+	  SPRITE_DIRECTION_LEFT}
+var sprites = null;
+# temporary lazy
+
 func _ready():
+	sprites = [
+		load("res://images/overworld/actors/protag/up.png"),
+		load("res://images/overworld/actors/protag/down.png"),
+		load("res://images/overworld/actors/protag/right.png"),
+		load("res://images/overworld/actors/protag/left.png")
+		];
+
 	var protag = add_party_member_default("Mr. Protagonist");
 	protag.load_battle_portrait("sekijo_test");
 	protag.attacks.push_back(PartyMember.PartyMemberAttack.new("Quick Slash", 45, 1.0));
@@ -25,15 +42,19 @@ func _ready():
 func movement_direction_vector():
 	var movement_direction = Vector2.ZERO;
 
-	if Input.is_action_pressed("ui_left"):
-		movement_direction.x = -1;
-	elif Input.is_action_pressed("ui_right"):
-		movement_direction.x = 1;
-
 	if Input.is_action_pressed("ui_up"):
 		movement_direction.y = -1;
+		_stupid_sprite.texture = sprites[SPRITE_DIRECTION_UP];
 	elif Input.is_action_pressed("ui_down"):
 		movement_direction.y = 1;
+		_stupid_sprite.texture = sprites[SPRITE_DIRECTION_DOWN];
+
+	if Input.is_action_pressed("ui_left"):
+		movement_direction.x = -1;
+		_stupid_sprite.texture = sprites[SPRITE_DIRECTION_LEFT];
+	elif Input.is_action_pressed("ui_right"):
+		movement_direction.x = 1;
+		_stupid_sprite.texture = sprites[SPRITE_DIRECTION_RIGHT];
 
 	return movement_direction.normalized();
 

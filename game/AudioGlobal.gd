@@ -37,6 +37,10 @@ func _ready():
 	music_channel = AudioStreamPlayer.new();
 	add_child(music_channel);
 
+func stop_sound(channel_index):
+	var channel = sound_effect_channels[channel_index];
+	channel.stop();
+
 func play_sound(filepath, volume=DEFAULT_MAX_VOLUME_DB, channel_index=-1):
 	var channel = null;
 	if channel_index == -1:

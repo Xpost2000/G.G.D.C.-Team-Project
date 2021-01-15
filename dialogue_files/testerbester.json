@@ -5,7 +5,8 @@
             "speaker" : "PlayerCharacter"
         },
         "text": "This is a linear scene. This is referring to the fact we only go one direction... As in continue...",
-        "next": "next"
+        "next": "next",
+        "voice": "copyrighted-test-content/snd/see.ogg"
     },
     "next": {
         "speaker": {
@@ -13,6 +14,7 @@
             "speaker" : "PlayerCharacter"
         },
         "text": "This one has choices",
+        "voice": "copyrighted-test-content/snd/uninvited.ogg",
         "choices": [
             {
                 "text": "Wait let's grab an item!",
@@ -30,6 +32,7 @@
         ]
     },
     "meaningless": {
+        "voice": "copyrighted-test-content/snd/almalexia.ogg",
         "speaker": {
             "type" : "NodeSpeaker",
             "speaker" : "PlayerCharacter"

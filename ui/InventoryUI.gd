@@ -20,10 +20,14 @@ func update_based_on_entity(thing, inventory):
 
 func _on_Inventory_prompt_for_item_usage_selection(party_members, item_entry_information):
 	item_use_inventory_entry = item_entry_information;
-	party_member_selection_widget.show();
-	party_member_selection_widget.open_prompt(party_members, "Use on who?");
-	inventory_widget.modulate = Color(0.5, 0.5, 0.5);
-	$Inventory/StupidBlocker.show();
+	var item_entry = ItemDatabase.get_item(item_use_inventory_entry[0]);
+	if not (item_entry.implementation is ItemDatabase.MiscItemImplementation):
+		party_member_selection_widget.show();
+		party_member_selection_widget.open_prompt(party_members, "Use on who?");
+		inventory_widget.modulate = Color(0.5, 0.5, 0.5);
+		$Inventory/StupidBlocker.show();
+	else:
+		print("not using misc item");
 
 func _on_PartyMemberSelection_picked_party_member(party_member_object, index_of_party_member):
 	party_member_selection_widget.hide();

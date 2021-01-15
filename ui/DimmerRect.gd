@@ -44,7 +44,4 @@ func _process(delta):
 			if hang_time < hang_max_time:
 				hang_time += delta;
 			else:
-				if get_parent():
-					get_parent().remove_child(self);
-				queue_free();
 				emit_signal("finished");

@@ -79,11 +79,17 @@ func create_fade_dimmer(color, hang_time=0):
 	return new_fade_dimmer;
 	
 
-func _on_level_load_initial_fade_out(dimmer):
-	var new_fade_dimmer = create_fade_dimmer(Color(0, 0, 0, 0));
-	new_fade_dimmer.begin_fade_out();
+func delete_dimmer(dimmer):
+	remove_child(dimmer);
+	dimmer.queue_free();
 
-	add_child(new_fade_dimmer);
+func _on_level_load_initial_fade_out(dimmer):
+	dimmer.hang_time = 0;
+	dimmer.disconnect("finished", self, "_on_level_load_initial_fade_out");
+
+	dimmer.begin_fade_out();
+
+	dimmer.connect("finished", self, "delete_dimmer", [dimmer]);
 	emit_signal("notify_finished_level_load_related_fading");
 
 func _on_MainGameScreen_notify_ui_of_level_load():

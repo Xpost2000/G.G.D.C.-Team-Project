@@ -107,6 +107,16 @@ shape = SubResource( 3 )
 [node name="ShadowMe" parent="Entities" instance=ExtResource( 2 )]
 position = Vector2( 824.703, -296.185 )
 
+[node name="PotentialQuestLocation" type="Node2D" parent="Entities" groups=[
+"QUEST_LOCATION",
+]]
+position = Vector2( 256.979, 333.196 )
+
+[node name="PotentialQuestLocation2" type="Node2D" parent="Entities" groups=[
+"QUEST_LOCATION",
+]]
+position = Vector2( 1061.5, 172.834 )
+
 [node name="Props" type="Node2D" parent="."]
 __meta__ = {
 "_edit_lock_": true,

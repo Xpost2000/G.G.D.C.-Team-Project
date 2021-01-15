@@ -28,6 +28,22 @@ enum {UI_STATE_GAME,
 	  UI_STATE_LEVELUPS};
 var current_state = UI_STATE_GAME;
 
+var shown = true;
+func show_all():
+	shown = true;
+	for child in get_children():
+		child.show();
+func hide_all():
+	shown = false;
+	for child in get_children():
+		child.hide();
+
+func toggle_show():
+	if shown:
+		hide_all();
+	else:
+		show_all();
+
 func _ready():
 	inventory_ui.get_node("Inventory/InventoryItemList").fixed_icon_size = Vector2(32,32);
 	reference_to_game_scene = get_parent().get_node("GameLayer");
@@ -145,29 +161,30 @@ func _process(delta):
 		if len(_popup_queue) > 0:
 			add_popup(_popup_queue.pop_front());
 		else:
-			if Input.is_action_just_pressed("ui_page_down"):
-				toggle_shop("shop_files/test_stock.json");
+			if shown:
+				if Input.is_action_just_pressed("ui_page_down"):
+					toggle_shop("shop_files/test_stock.json");
 
-			if Input.is_action_just_pressed("game_action_ui_pause"):
-				if current_state != UI_STATE_LEVELUPS:
-					toggle_pause();
+				if Input.is_action_just_pressed("game_action_ui_pause"):
+					if current_state != UI_STATE_LEVELUPS:
+						toggle_pause();
 
-			if current_state != UI_STATE_PAUSE:
-				if Input.is_action_just_pressed("game_action_open_inventory"):
-					toggle_inventory();
+				if current_state != UI_STATE_PAUSE:
+					if Input.is_action_just_pressed("game_action_open_inventory"):
+						toggle_inventory();
 	else:
 		# handle last popup only
 		# also yes this is weird, this calls for a refactor later.
 		GameGlobals.pause();
-		
+
 		# gah.
 		if !$Popups.get_children()[0].is_connected("finished", GameGlobals, "resume"):
 			if len(_popup_queue) > 0:
 				$Popups.get_children()[0].connect("finished", self, "add_popup", [_popup_queue.pop_front()]);
 			else:
 				$Popups.get_children()[0].connect("finished", GameGlobals, "resume");
-		$Popups.get_children()[-1].handle_inputs(delta);
-			
+				$Popups.get_children()[-1].handle_inputs(delta);
+
 func set_state(state):
 	if current_state != state:
 		var previous_state = current_state;

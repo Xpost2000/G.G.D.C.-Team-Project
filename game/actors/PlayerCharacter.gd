@@ -40,7 +40,7 @@ func movement_direction_vector():
 func handle_interact_key(delta):
 	emit_signal("test_open_conversation");
 
-func _physics_process(delta):
+func override_physics_process(delta):
 	var sprinting = Input.is_action_pressed("game_sprinting_action");
 	if !GameGlobals.paused() && !all_members_dead():
 		handle_movement(sprinting,

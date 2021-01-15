@@ -8,6 +8,26 @@ onready var ui_layer = $UILayer;
 onready var level_information = $GameLayer/LevelInformation;
 onready var player_node = $GameLayer/PersistentThings/PlayerCharacter;
 
+func handle_hi_bro(data):
+	print("HI ASIDOSAIODOIDAS");
+func handle_add_item(data):
+	print("HI ");
+	ui_layer.add_popup(data + " received!");
+	player_node.add_item(data);
+
+func _ready():
+	var battle_screen = GameGlobals.get_scene(2);
+	battle_screen.connect("combat_finished", self, "_on_BattleScreen_finished");
+	randomize();
+
+
+	$UILayer/States/DialogueUI.connect("add_item", self, "handle_add_item");
+	$UILayer/States/DialogueUI.connect("hi_bro", self, "handle_hi_bro");
+	# for handlable_response in ["add_item"]:
+	#	$UILayer/States/DialogueUI.connect(handlable_response,
+	#									   self,
+	#									   "handle_" + handlable_response);
+
 enum {
 	COMBAT_FINISHED_REASON_FLEE, # The winning party is the one that didn't flee.
 	COMBAT_FINISHED_REASON_DEFEAT_OF, # The winning party is the last one standing.
@@ -41,11 +61,6 @@ func _on_BattleScreen_finished(type, a, b):
 			# b, a
 			print("forceful ejection");
 			pass;
-
-func _ready():
-	var battle_screen = GameGlobals.get_scene(2);
-	battle_screen.connect("combat_finished", self, "_on_BattleScreen_finished");
-	randomize();
 
 var loaded_levels = {};
 func load_new_level_scene(name):

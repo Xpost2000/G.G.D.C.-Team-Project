@@ -15,7 +15,8 @@
         "text": "This one has choices",
         "choices": [
             {
-                "text": "Yep for reals!",
+                "text": "Wait let's grab an item!",
+                "actions": [["add_item", "test_item"]],
                 "next": "meaningless"
             },
             {

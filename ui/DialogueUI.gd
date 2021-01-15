@@ -1,5 +1,10 @@
 extends Control
 
+# action signals
+signal add_item(data);
+signal hi_bro(data);
+# end of action signals
+
 var reference_to_game_scene = null;
 
 enum {DIALOGUE_TERMINATION_REASON_DEFAULT}
@@ -50,10 +55,15 @@ class DialogueChoice:
 	func _init(text, next):
 		self.text = text;
 		self.next = next;
+		self.action_responses = [];
+
+	func add_response(name, data):
+		action_responses.push_back([name, data]);
 
 	var text: String;
 	var next: String;
 	# TODO actions!
+	var action_responses: Array;
 
 class DialogueScene:
 	var speaker: DialogueSpeaker;
@@ -108,7 +118,13 @@ func parse_scene_choices(choices_data):
 			var choice_next_branch = choice["next"];
 
 			var new_choice = DialogueChoice.new(choice_text, choice_next_branch);
+			var potential_actions = dictionary_get_optional(choice, "actions");
+			if potential_actions:
+				for action in potential_actions:
+					print(action);
+					new_choice.add_response(action[0], action[1]);
 
+			new_choice.add_response("hi_bro", null);
 			new_choices.push_back(new_choice);
 
 		return new_choices;
@@ -156,6 +172,12 @@ func open_test_dialogue():
 func _ready():
 	hide();
 
+func _handle_selecting_dialogue_choice(choice):
+	for responses in choice.action_responses:
+		print("firing " + responses[0]);
+		emit_signal(responses[0], responses[1]);
+	goto_scene(choice.next);
+
 func goto_scene(scene):
 	current_scene = scene;
 	if !current_scene.empty():
@@ -201,7 +223,7 @@ func goto_scene(scene):
 				for dialogue_choice in current_scene_object.choices:
 					var choice_button = Button.new();
 					choice_button.text = dialogue_choice.text;
-					choice_button.connect("pressed", self, "goto_scene", [dialogue_choice.next]);
+					choice_button.connect("pressed", self, "_handle_selecting_dialogue_choice", [dialogue_choice]);
 					dialogue_choices_container.add_child(choice_button);
 			else:
 				dialogue_choices_container.hide();

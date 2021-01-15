@@ -13,8 +13,6 @@ var reference_to_game_scene = null;
 
 onready var inventory_ui = $States/InventoryUI;
 onready var shopping_ui = $States/InventoryShoppingUI;
-onready var death_ui = $States/DeathScreenUI;
-onready var pause_ui = $States/PauseScreenUI;
 onready var party_member_information_holder = $PartyMemberInformation;
 onready var dialogue_ui = $States/DialogueUI;
 onready var levelup_ui = $States/LevelUpUI;
@@ -30,8 +28,8 @@ onready var states = {
 	UI_STATE_GAME: null,
 	UI_STATE_INVENTORY: inventory_ui,
 	UI_STATE_SHOPPING: shopping_ui,
-	UI_STATE_DEATH: death_ui,
-	UI_STATE_PAUSE: pause_ui,
+	UI_STATE_DEATH: $States/DeathScreenUI,
+	UI_STATE_PAUSE: $States/PauseScreenUI,
 	UI_STATE_DIALOGUE: dialogue_ui,
 	UI_STATE_LEVELUPS: levelup_ui
 	};
@@ -58,14 +56,6 @@ func _ready():
 	inventory_ui.get_node("Inventory/InventoryItemList").fixed_icon_size = Vector2(32,32);
 	reference_to_game_scene = get_parent().get_node("GameLayer");
 	dialogue_ui.reference_to_game_scene = reference_to_game_scene;
-
-	$States/PauseScreenUI/VBoxContainer/Resume.connect("pressed", self, "_on_PauseUI_Resume_pressed");
-	$States/PauseScreenUI/VBoxContainer/ReturnToTitle.connect("pressed", self, "_on_PauseUI_ReturnToTitle_pressed");
-	$States/PauseScreenUI/VBoxContainer/Quit.connect("pressed", self, "_on_PauseUI_Quit_pressed");
-
-	$States/DeathScreenUI/Selections/Restart.connect("pressed", self, "_on_Restart_pressed");
-	$States/DeathScreenUI/Selections/Menu.connect("pressed", self, "_on_Menu_pressed");
-	$States/DeathScreenUI/Selections/Quit.connect("pressed", self, "_on_Quit_pressed");
 
 func _on_LevelUpResults_notify_finished():
 	if current_state == UI_STATE_LEVELUPS:
@@ -125,15 +115,6 @@ func _on_MainGameScreen_notify_ui_of_level_load():
 	new_fade_dimmer.connect("finished", self, "_on_level_load_initial_fade_out", [new_fade_dimmer]);
 
 	add_child(new_fade_dimmer);
-
-func _on_PauseUI_Resume_pressed():
-	set_state(UI_STATE_GAME);
-
-func _on_PauseUI_ReturnToTitle_pressed():
-	GameGlobals.switch_to_scene(1);
-
-func _on_PauseUI_Quit_pressed():
-	get_tree().quit();
 
 # Dirty, dirty, dirty
 # But I'm only using this like once so whatever.
@@ -283,20 +264,3 @@ func _on_InventoryShoppingUI_try_to_purchase_item(item):
 		add_popup("Purchased!");
 		player_reference.gold -= item_info.sell_value;
 		player_reference.add_item(item[0]);
-
-# Referring to death screen if anyone asks.
-enum{ MAIN_GAME_SCENE,
-	  MAIN_MENU_SCENE,
-	  BATTLE_SCENE,
-	  GAME_SCENE_TYPE_COUNT}
-
-func _on_Restart_pressed():	
-	GameGlobals.reload_scene(MAIN_GAME_SCENE);
-	GameGlobals.reload_scene(BATTLE_SCENE);
-	GameGlobals.switch_to_scene(0);
-
-func _on_Menu_pressed():
-	GameGlobals.switch_to_scene(1);
-
-func _on_Quit_pressed():
-	get_tree().quit();

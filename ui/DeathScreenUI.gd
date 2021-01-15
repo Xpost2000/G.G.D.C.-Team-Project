@@ -1,16 +1,29 @@
 extends Control
 
+func _on_Restart_pressed():	
+	GameGlobals.reload_scene(GameGlobals.MAIN_GAME_SCENE);
+	GameGlobals.reload_scene(GameGlobals.BATTLE_SCENE);
+	GameGlobals.switch_to_scene(0);
+
+func _on_Menu_pressed():
+	GameGlobals.switch_to_scene(1);
+
+func _on_Quit_pressed():
+	get_tree().quit();
 
 func _ready():
+	$Selections/Restart.connect("pressed", self, "_on_Restart_pressed");
+	$Selections/Menu.connect("pressed", self, "_on_Menu_pressed");
+	$Selections/Quit.connect("pressed", self, "_on_Quit_pressed");
 	pass
 
 func on_leave(to):
-	GameGlobals.pause();
-	show();
-
-func on_enter(from):
 	GameGlobals.resume();
 	hide();
+
+func on_enter(from):
+	GameGlobals.pause();
+	show();
 
 func handle_process(delta):
 	pass;

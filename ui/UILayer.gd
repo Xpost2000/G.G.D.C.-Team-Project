@@ -165,7 +165,8 @@ func _process(delta):
 		else:
 			if current_state == UI_STATE_GAME:
 				if Input.is_action_just_pressed("ui_page_up"):
-					QuestsGlobal.begin_quest(QuestsGlobal.TestDieQuest.new(player_reference));
+					get_parent().write_save_game();
+					add_popup("Saved game!");
 
 				if Input.is_action_just_pressed("ui_page_down"):
 					toggle_shop("shop_files/test_stock.json");

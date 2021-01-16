@@ -28,6 +28,32 @@ func handle_start_quest(data):
 	print("handling!");
 	QuestsGlobal.begin_quest(_generate_quest_from_name_type(data));
 
+func load_from_dictionary(data):
+	print("LOAD ME");
+	var full_scene_path = "res://scenes/" + data["current_level_scene"] + ".tscn";
+	load_new_level_scene(full_scene_path);
+
+	player_node.update_from_dictionary_data(data["actors"]["PlayerCharacter"]);
+	for actor in get_tree().get_nodes_in_group("Actors"):
+		if actor.name in data["actors"]:
+			actor.update_from_dictionary_data(data["actors"][actor.name]);
+
+func serialize_as_dictionary():
+	var actors = {"PlayerCharacter": player_node.dictionary_data()};
+
+	for actor in get_tree().get_nodes_in_group("Actors"):
+		actors[actor.name] = actor.dictionary_data();
+
+	var result = {
+		"current_level_scene": find_node("LevelInformation").get_children()[0].name,
+		"actors": actors
+		};
+
+	return result;
+
+func write_save_game():
+	Utilities.write_entire_file_from_string("saves/save.game_save", JSON.print(serialize_as_dictionary()));
+
 func _ready():
 	var battle_screen = GameGlobals.get_scene(2);
 	battle_screen.connect("combat_finished", self, "_on_BattleScreen_finished");

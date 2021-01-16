@@ -73,13 +73,13 @@ points = PoolVector2Array( 64, 64, 0, 64, 0, 0, 64, 0 )
 3/shapes = [  ]
 3/z_index = 0
 
-[sub_resource type="RectangleShape2D" id=4]
+[sub_resource type="RectangleShape2D" id=3]
 extents = Vector2( 23.1089, 27.7395 )
 
-[sub_resource type="CircleShape2D" id=3]
+[sub_resource type="CircleShape2D" id=4]
 radius = 82.4217
 
-[node name="LevelDemo" type="YSort"]
+[node name="LevelDemo2" type="YSort"]
 
 [node name="Tilesets" type="Node2D" parent="."]
 __meta__ = {
@@ -115,7 +115,7 @@ scale = Vector2( 8.74978, 1.28696 )
 
 [node name="Shape" type="CollisionShape2D" parent="Entities/DoorA/Collider"]
 position = Vector2( 0.594604, 0 )
-shape = SubResource( 4 )
+shape = SubResource( 3 )
 
 [node name="InteractRegion" type="Area2D" parent="Entities/DoorA"]
 position = Vector2( -6642.6, 93.4621 )
@@ -123,7 +123,7 @@ scale = Vector2( 8.74978, 1.28696 )
 
 [node name="Shape" type="CollisionShape2D" parent="Entities/DoorA/InteractRegion"]
 position = Vector2( 758.579, -71.433 )
-shape = SubResource( 4 )
+shape = SubResource( 3 )
 
 [node name="ExitToDemo1" parent="Entities" instance=ExtResource( 3 )]
 position = Vector2( 288.508, 6.91772 )
@@ -131,15 +131,21 @@ scene_to_transition_to = "LevelDemo"
 landmark_node = "EntranceToDemo2"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Entities/ExitToDemo1"]
-shape = SubResource( 3 )
+shape = SubResource( 4 )
 
-[node name="JesusTest" parent="Entities" instance=ExtResource( 4 )]
+[node name="JesusTest" parent="Entities" groups=[
+"Actors",
+] instance=ExtResource( 4 )]
 position = Vector2( 1124.67, -25.5429 )
 
-[node name="JesusTest2" parent="Entities" instance=ExtResource( 4 )]
+[node name="JesusTest2" parent="Entities" groups=[
+"Actors",
+] instance=ExtResource( 4 )]
 position = Vector2( 922.44, -244.746 )
 
-[node name="JesusTest3" parent="Entities" instance=ExtResource( 4 )]
+[node name="JesusTest3" parent="Entities" groups=[
+"Actors",
+] instance=ExtResource( 4 )]
 position = Vector2( 993.151, 390.236 )
 
 [node name="Props" type="Node2D" parent="."]

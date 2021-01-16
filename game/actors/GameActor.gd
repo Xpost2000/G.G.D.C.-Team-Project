@@ -29,6 +29,21 @@ var inventory = [];
 var gold = 0;
 var experience_value = 1;
 
+func update_from_dictionary_data(data):
+	global_position = Vector2(data["position"][0], data["position"][1]);
+	inventory = data["inventory"];
+	gold = data["gold"];
+
+func dictionary_data():
+	# TODO party members
+	var dictionary_of_important_properties = {
+		"position": [global_position.x, global_position.y],
+		"inventory": inventory,
+		"gold": gold
+		};
+
+	return dictionary_of_important_properties;
+
 func all_members_dead():
 	for party_member in party_members:
 		if !party_member.dead():

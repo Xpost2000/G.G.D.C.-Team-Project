@@ -172,9 +172,57 @@ margin_right = 250.761
 margin_bottom = 380.814
 theme = ExtResource( 6 )
 text = "Close this window!"
+
+[node name="SaveGamesWidget" type="NinePatchRect" parent="."]
+margin_left = 390.932
+margin_top = 235.661
+margin_right = 1111.93
+margin_bottom = 654.661
+texture = ExtResource( 4 )
+region_rect = Rect2( 0, 0, 95, 95 )
+patch_margin_left = 32
+patch_margin_top = 32
+patch_margin_right = 32
+patch_margin_bottom = 32
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Title" type="Label" parent="SaveGamesWidget"]
+margin_left = 18.0
+margin_top = 15.0
+margin_right = 703.0
+margin_bottom = 136.0
+custom_fonts/font = SubResource( 3 )
+custom_colors/font_color = Color( 0.290196, 0.164706, 0.164706, 1 )
+text = "Load Previous Save"
+align = 1
+
+[node name="VBoxContainer" type="ItemList" parent="SaveGamesWidget"]
+margin_left = 34.0
+margin_top = 90.0
+margin_right = 687.0
+margin_bottom = 355.0
+theme = ExtResource( 6 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Close" type="Button" parent="SaveGamesWidget"]
+margin_left = 238.761
+margin_top = 360.814
+margin_right = 250.761
+margin_bottom = 380.814
+theme = ExtResource( 6 )
+text = "Close Window!"
+__meta__ = {
+"_edit_use_anchors_": false
+}
 [connection signal="pressed" from="ContainerBackground/ButtonsContainer/StartGameButton" to="." method="_on_StartGameButton_pressed"]
 [connection signal="pressed" from="ContainerBackground/ButtonsContainer/LoadGameButton" to="." method="_on_LoadGameButton_pressed"]
 [connection signal="pressed" from="ContainerBackground/ButtonsContainer/OptionsButton" to="." method="_on_OptionsButton_pressed"]
 [connection signal="pressed" from="ContainerBackground/ButtonsContainer/AboutGameButton" to="." method="_on_AboutGameButton_pressed"]
 [connection signal="pressed" from="ContainerBackground/ButtonsContainer/QuitGame" to="." method="_on_QuitGame_pressed"]
 [connection signal="pressed" from="NotifierBackground/Close" to="." method="_on_NotifierBackground_Close_pressed"]
+[connection signal="item_activated" from="SaveGamesWidget/VBoxContainer" to="." method="_on_VBoxContainer_item_activated"]
+[connection signal="pressed" from="SaveGamesWidget/Close" to="." method="_on_NotifierBackground_Close_pressed"]

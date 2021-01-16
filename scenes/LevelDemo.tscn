@@ -104,7 +104,9 @@ landmark_node = "ExitToDemo1"
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Entities/EntranceToDemo2"]
 shape = SubResource( 3 )
 
-[node name="ShadowMe" parent="Entities" instance=ExtResource( 2 )]
+[node name="ShadowMe" parent="Entities" groups=[
+"Actors",
+] instance=ExtResource( 2 )]
 position = Vector2( 824.703, -296.185 )
 
 [node name="PotentialQuestLocation" type="Node2D" parent="Entities" groups=[

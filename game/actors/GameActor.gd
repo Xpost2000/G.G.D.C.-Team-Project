@@ -1,6 +1,9 @@
 extends KinematicBody2D
 signal handle_party_member_level_ups(members);
 
+# for some tutorial quests maybe?
+signal opened_inventory;
+
 const SPRINTING_STAMINA_MAX = 75;
 const STAMINA_REGENERATION_COOLDOWN_TIME = 1.66; # seconds
 

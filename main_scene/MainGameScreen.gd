@@ -8,19 +8,32 @@ onready var ui_layer = $UILayer;
 onready var level_information = $GameLayer/LevelInformation;
 onready var player_node = $GameLayer/PersistentThings/PlayerCharacter;
 
+func _generate_quest_from_name_type(quest_name):
+	match quest_name:
+		"test_die_quest":
+			var new_quest = QuestsGlobal.TestDieQuest.new(player_node);
+			return new_quest;
+		"open_your_inventory":
+			var new_quest = QuestsGlobal.OpenInventoryQuest.new(player_node);
+			return new_quest;
+
 func handle_hi_bro(data):
 	print("HI ASIDOSAIODOIDAS");
+
 func handle_add_item(data):
-	print("HI ");
 	ui_layer.add_popup(ItemDatabase.get_item(data).name + " received!");
 	player_node.add_item(data);
+
+func handle_start_quest(data):
+	print("handling!");
+	QuestsGlobal.begin_quest(_generate_quest_from_name_type(data));
 
 func _ready():
 	var battle_screen = GameGlobals.get_scene(2);
 	battle_screen.connect("combat_finished", self, "_on_BattleScreen_finished");
 	randomize();
 
-	for handlable_response in ["add_item", "hi_bro"]:
+	for handlable_response in ["add_item", "start_quest"]:
 		$UILayer/States/DialogueUI.connect(handlable_response,
 										   self,
 										   "handle_" + handlable_response);

@@ -3,6 +3,7 @@ extends Control
 # action signals
 signal add_item(data);
 signal hi_bro(data);
+signal start_quest(data);
 # end of action signals
 
 var reference_to_game_scene = null;
@@ -116,7 +117,7 @@ func parse_scene_choices(choices_data):
 
 		for choice in choices_data:
 			var choice_text = choice["text"];
-			var choice_next_branch = choice["next"];
+			var choice_next_branch = Utilities.dictionary_get_optional(choice, "next", "");
 
 			var new_choice = DialogueChoice.new(choice_text, choice_next_branch);
 			new_choice.action_responses = Utilities.dictionary_get_optional(choice, "actions", []);

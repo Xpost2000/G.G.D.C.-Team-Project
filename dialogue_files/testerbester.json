@@ -22,8 +22,12 @@
                 "next": "meaningless"
             },
             {
-                "text": "Yay",
-                "next": "meaningless"
+                "text": "Hey... I need a favor!",
+                "actions": [["start_quest", "test_die_quest"]],
+            },
+            {
+                "text": "Let's teach you how to play the game.",
+                "actions": [["start_quest", "open_your_inventory"]],
             },
             {
                 "text": "AISODOISADIOSADIOASD",

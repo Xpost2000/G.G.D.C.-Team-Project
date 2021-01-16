@@ -6,7 +6,6 @@ signal notify_finished_level_load_related_fading();
 onready var stamina_bar = $SprintingStaminaBar;
 onready var stamina_bar_max_dimensions = $SprintingStaminaBar.rect_size;
 
-
 # god this is stupid
 var player_reference = null;
 var reference_to_game_scene = null;
@@ -52,10 +51,22 @@ func toggle_show():
 	else:
 		show_all();
 
+func _handle_quest_start(quest_info):
+	queue_popup("Quest Taken: " + quest_info.name);
+	queue_popup(quest_info.description);
+
+func _handle_quest_end(quest_info):
+	queue_popup("Quest Completed: " + quest_info.name);
+	queue_popup("Wait for your reward!");
+		
 func _ready():
 	inventory_ui.get_node("Inventory/InventoryItemList").fixed_icon_size = Vector2(32,32);
 	reference_to_game_scene = get_parent().get_node("GameLayer");
+	player_reference = reference_to_game_scene.find_node("PlayerCharacter");
 	dialogue_ui.reference_to_game_scene = reference_to_game_scene;
+	
+	QuestsGlobal.connect("notify_begin_quest", self, "_handle_quest_start");
+	QuestsGlobal.connect("notify_end_quest", self, "_handle_quest_end");
 
 func _on_LevelUpResults_notify_finished():
 	if current_state == UI_STATE_LEVELUPS:
@@ -153,6 +164,9 @@ func _process(delta):
 			add_popup(_popup_queue.pop_front());
 		else:
 			if current_state == UI_STATE_GAME:
+				if Input.is_action_just_pressed("ui_page_up"):
+					QuestsGlobal.begin_quest(QuestsGlobal.TestDieQuest.new(player_reference));
+
 				if Input.is_action_just_pressed("ui_page_down"):
 					toggle_shop("shop_files/test_stock.json");
 
@@ -209,6 +223,7 @@ func show_death(val):
 		set_state(UI_STATE_DEATH);
 
 func show_inventory():
+	player_reference.emit_signal("opened_inventory");
 	set_state(UI_STATE_INVENTORY);
 
 func close_inventory():

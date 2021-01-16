@@ -47,6 +47,7 @@ visible = false
 script = ExtResource( 10 )
 
 [node name="PauseScreenUI" parent="States" instance=ExtResource( 7 )]
+visible = false
 script = ExtResource( 4 )
 
 [node name="LevelUpUI" parent="States" instance=ExtResource( 8 )]

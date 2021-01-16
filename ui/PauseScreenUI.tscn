@@ -8,7 +8,6 @@ size = 96
 font_data = ExtResource( 2 )
 
 [node name="PauseScreenUI" type="Control"]
-visible = false
 margin_right = 40.0
 margin_bottom = 40.0
 __meta__ = {
@@ -20,30 +19,41 @@ __meta__ = {
 margin_right = 1280.0
 margin_bottom = 720.0
 color = Color( 0, 0.14902, 0.501961, 0.156863 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ColorRect" type="ColorRect" parent="."]
+margin_right = 321.0
+margin_bottom = 722.0
+color = Color( 0, 0, 0, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="Header" type="Label" parent="."]
-margin_left = 378.752
-margin_top = 78.9643
-margin_right = 918.752
-margin_bottom = 174.964
+margin_left = 18.6652
+margin_top = 27.0136
+margin_right = 312.665
+margin_bottom = 123.014
 custom_fonts/font = SubResource( 1 )
-text = "GAME PAUSED"
+text = "PAUSED"
 align = 1
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
-margin_left = 362.881
-margin_top = 283.881
-margin_right = 911.881
-margin_bottom = 642.881
+margin_left = 19.7916
+margin_top = 220.249
+margin_right = 280.792
+margin_bottom = 579.249
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="Resume" type="Button" parent="VBoxContainer"]
-margin_right = 549.0
+margin_right = 261.0
 margin_bottom = 36.0
 theme = ExtResource( 1 )
 custom_colors/font_color = Color( 1, 1, 1, 1 )
@@ -51,7 +61,7 @@ text = "Resume"
 
 [node name="Options" type="Button" parent="VBoxContainer"]
 margin_top = 40.0
-margin_right = 549.0
+margin_right = 261.0
 margin_bottom = 76.0
 theme = ExtResource( 1 )
 custom_colors/font_color = Color( 1, 1, 1, 1 )
@@ -59,7 +69,7 @@ text = "Options"
 
 [node name="ReturnToTitle" type="Button" parent="VBoxContainer"]
 margin_top = 80.0
-margin_right = 549.0
+margin_right = 261.0
 margin_bottom = 116.0
 theme = ExtResource( 1 )
 custom_colors/font_color = Color( 1, 1, 1, 1 )
@@ -67,8 +77,14 @@ text = "Return to Title"
 
 [node name="Quit" type="Button" parent="VBoxContainer"]
 margin_top = 120.0
-margin_right = 549.0
+margin_right = 261.0
 margin_bottom = 156.0
 theme = ExtResource( 1 )
 custom_colors/font_color = Color( 1, 1, 1, 1 )
 text = "Quit"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+margin_left = 378.661
+margin_top = -2.34387
+margin_right = 1272.66
+margin_bottom = 712.656

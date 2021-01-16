@@ -1,5 +1,6 @@
 extends Control
 
+const FullPartyMemberUIView = preload("res://ui/FullPartyMemberStatInfo.tscn");
 
 func _ready():
 	$VBoxContainer/Resume.connect("pressed", self, "_on_Resume_pressed");
@@ -24,6 +25,21 @@ func on_enter(from):
 	GameGlobals.pause();
 	show();
 	print("pause");
+
+	var player = get_parent().get_parent().player_reference;
+
+	for child in $HBoxContainer.get_children():
+		$HBoxContainer.remove_child(child);
+
+	for party_member in player.party_members:
+		var new_card = FullPartyMemberUIView.instance();
+		$HBoxContainer.add_child(new_card);
+
+	# I'm going to be honest I have no reason to believe why I need to do this after...
+	var children = $HBoxContainer.get_children();
+	for child_index in len(children):
+		children[child_index].build_based_on_party_member(player.get_party_member(child_index));
+
 
 func handle_process(delta):
 	if Input.is_action_just_pressed("game_action_ui_pause"):

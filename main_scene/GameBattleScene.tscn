@@ -13,7 +13,6 @@
 [ext_resource path="res://ui/PartyMemberSelectionWidget.tscn" type="PackedScene" id=12]
 [ext_resource path="res://images/ui/ui_cobble.png" type="Texture" id=13]
 
-
 [sub_resource type="DynamicFont" id=1]
 font_data = ExtResource( 3 )
 
@@ -197,8 +196,7 @@ margin_right = 841.941
 margin_bottom = 476.348
 [connection signal="pressed" from="BattleUILayer/BattleDashboard/Actions/Attack" to="." method="_on_BattleDashboard_Attack_pressed"]
 [connection signal="pressed" from="BattleUILayer/BattleDashboard/Actions/UseAbility" to="." method="_on_BattleDashboard_UseAbility_pressed"]
-[connection signal="pressed" from="BattleUILayer/BattleDashboard/Actions/UseItem" to="." method="_on_BattleDashboard_UseItem_pressed"]
-[connection signal="pressed" from="BattleUILayer/BattleDashboard/Actions/UseItem" to="." method="_on_BattleDashBoard_UseItem_pressed"]
+[connection signal="pressed" from="BattleUILayer/BattleDashboard/Actions/UseItem" to="." method="show_inventory"]
 [connection signal="pressed" from="BattleUILayer/BattleDashboard/Actions/Skip" to="." method="_on_BattleDashboard_ForfeitTurn_pressed"]
 [connection signal="pressed" from="BattleUILayer/BattleDashboard/Actions/Flee" to="." method="_on_BattleDashboard_Flee_pressed"]
 [connection signal="close" from="BattleUILayer/InventoryUI" to="." method="_on_InventoryUI_close"]

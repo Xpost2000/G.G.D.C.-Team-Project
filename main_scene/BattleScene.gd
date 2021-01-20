@@ -191,8 +191,12 @@ func _process(delta):
 			report_inventory_of_active_party();
 
 			if party is GameActor:
-				allow_access_to_dashboard(party is PlayerCharacter);
+				allow_access_to_dashboard(party is PlayerCharacter and not inventory_showing);
 
+				if inventory_showing:
+					if Input.is_action_just_pressed("game_action_open_inventory") or Input.is_action_just_pressed("ui_cancel"):
+						close_inventory();
+					
 				if party is PlayerCharacter:
 					battle_turn_widget_head_label.text = "YOUR TURN";
 				else:
@@ -331,18 +335,21 @@ func _on_PartyMemberSelectionForAction_picked_party_member(party_member_object, 
 			battle_information.decided_action = ability(active_actor, party_member_object, picking_item_index);
 	party_member_select_for_action.hide();
 
-func _on_BattleDashboard_UseItem_pressed():
-	battle_log_widget.push_message("UI Requests to use an item");
+
+var inventory_showing = false;
+func close_inventory():
+	inventory_ui.hide();
+	inventory_showing = false;
+func show_inventory():
 	inventory_ui.show();
+	inventory_showing = true;
 
 enum {CLOSE_REASON_CANCEL, CLOSE_REASON_USED}
 func _on_InventoryUI_close(reason):
 	var active_actor = battle_information.active_actor();
 	var parties = get_party_pairs(whose_side_is_active(active_actor));
 
-	var reason_type = reason[0];
-	
-	match reason_type:
+	match reason[0]:
 		CLOSE_REASON_CANCEL: pass;
 		CLOSE_REASON_USED:
 			var target_actor_index = reason[1];
@@ -351,5 +358,4 @@ func _on_InventoryUI_close(reason):
 			battle_information.decided_action = use_item(active_actor,
 														 parties[0].get_party_member(target_actor_index),
 														 item_entry_index);
-
-	inventory_ui.hide();
+	close_inventory();

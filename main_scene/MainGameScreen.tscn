@@ -50,6 +50,5 @@ pause_mode = 2
 [connection signal="report_party_info_to_ui" from="GameLayer/PersistentThings/PlayerCharacter" to="UILayer" method="_on_PlayerCharacter_report_party_info_to_ui"]
 [connection signal="report_sprinting_information" from="GameLayer/PersistentThings/PlayerCharacter" to="UILayer" method="_on_PlayerCharacter_report_sprinting_information"]
 [connection signal="request_to_open_battle" from="GameLayer/PersistentThings/PlayerCharacter" to="." method="_on_PlayerCharacter_request_to_open_battle"]
-[connection signal="test_open_conversation" from="GameLayer/PersistentThings/PlayerCharacter" to="." method="_on_PlayerCharacter_test_open_conversation"]
 [connection signal="transitioning_to_another_level" from="GameLayer/PersistentThings/PlayerCharacter" to="." method="_on_PlayerCharacter_transitioning_to_another_level"]
 [connection signal="notify_finished_level_load_related_fading" from="UILayer" to="." method="_on_UILayer_notify_finished_level_load_related_fading"]

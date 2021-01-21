@@ -1,8 +1,9 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://images/test_tiles.png" type="Texture" id=1]
 [ext_resource path="res://game/actors/ShadowMe.tscn" type="PackedScene" id=2]
 [ext_resource path="res://game/LevelTransition.tscn" type="PackedScene" id=3]
+[ext_resource path="res://game/misc_entities/EnemySpawnerTemplate.tscn" type="PackedScene" id=4]
 
 [sub_resource type="ConvexPolygonShape2D" id=1]
 points = PoolVector2Array( 64, 64, 0, 64, 0, 0, 64, 0 )
@@ -118,6 +119,14 @@ position = Vector2( 256.979, 333.196 )
 "QUEST_LOCATION",
 ]]
 position = Vector2( 1061.5, 172.834 )
+
+[node name="TestSpawner" parent="Entities" instance=ExtResource( 4 )]
+
+[node name="TestSpawner2" parent="Entities" instance=ExtResource( 4 )]
+position = Vector2( 843.16, 76.3869 )
+
+[node name="TestSpawner3" parent="Entities" instance=ExtResource( 4 )]
+position = Vector2( 1187.67, 73.5553 )
 
 [node name="Props" type="Node2D" parent="."]
 __meta__ = {

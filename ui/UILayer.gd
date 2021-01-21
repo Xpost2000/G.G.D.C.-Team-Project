@@ -245,6 +245,12 @@ func toggle_pause():
 		print("open");
 		set_state(UI_STATE_PAUSE);
 
+func toggle_quest_log():
+	if current_state == UI_STATE_QUEST_LOG:
+		set_state(UI_STATE_PAUSE);
+	else:
+		set_state(UI_STATE_QUEST_LOG);
+
 func toggle_shop(shop_path):
 	if current_state == UI_STATE_SHOPPING:
 		set_state(UI_STATE_GAME);

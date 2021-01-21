@@ -5,14 +5,19 @@ signal notify_end_quest(quest_info);
 # Basically I'm wishing Quests were closures.
 class Quest:
 	const GameActor = preload("res://game/actors/GameActor.gd");
-	func __initialize__(name, description):
+	func __initialize__(name, description, long_description=null):
 		self.name = name;
 		self.description = description;
+		if long_description:
+			self.long_description = long_description;
+		else:
+			self.long_description = description;
 		self.finished = false;
 		self.quester = null
 		
 	var name: String;
 	var description: String;
+	var long_description: String;
 
 	var finished: bool;
 	var quester: GameActor;
@@ -27,11 +32,20 @@ class TestDieQuest extends Quest:
 	var player: GameActor;
 
 	func _init(player):
-		__initialize__("Die For Me!", "Mind trying out some death for me? K THX BYE!");
+		__initialize__("Die For Me!", "Mind trying out some death for me? K THX BYE!",
+					   """
+					   This is a test quest that allows me to try out how this works.
+
+					   If you can see this, the system is working okay enough, and you have to kill yourself.
+					   This is best accomplished by fighting the test enemy in the first room who is unbeatable.
+					   """);
 		self.quester = player;
 
 	func considered_completed():
-		return self.quester.all_members_dead();
+		if self.quester:
+			return self.quester.all_members_dead();
+		else:
+			return false;
 
 	func handle_reward():
 		print("REWARD FOR DEATH!@");
@@ -44,7 +58,14 @@ class OpenInventoryQuest extends Quest:
 		self.notified = true;
 
 	func _init(player):
-		__initialize__("TUTORIAL: Open your inventory!", "You can do this by pressing the I key!");
+		__initialize__("TUTORIAL: Open your inventory!", "You can do this by pressing the I key!",
+					   """
+					   This quest is a simple tutorial quest. The start to successful gameplay is learning how to
+					   use the inventory correctly.
+
+					   The short description is actually wrong, you are supposed to access the inventory through
+					   the pause-menu now.
+					   """);
 		self.quester = player;
 		self.quester.connect("opened_inventory", self, "_notified_set");
 
@@ -55,6 +76,9 @@ class OpenInventoryQuest extends Quest:
 		print("REWARD FOR DEATH!@");
 
 var active_quests = [];
+
+func reset_all_quests():
+	active_quests = [];
 
 func _ready():
 	pass;

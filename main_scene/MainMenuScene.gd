@@ -35,6 +35,7 @@ func start_game():
 	GameGlobals.reload_scene(MAIN_GAME_SCENE);
 	GameGlobals.reload_scene(BATTLE_SCENE);
 	GameGlobals.switch_to_scene(0);
+	QuestsGlobal.reset_all_quests();
 	AudioGlobal.pause_music();
 
 func _on_StartGameButton_pressed():

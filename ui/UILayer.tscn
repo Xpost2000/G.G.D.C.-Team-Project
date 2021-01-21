@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=16 format=2]
 
 [ext_resource path="res://ui/InventoryUI.tscn" type="PackedScene" id=1]
 [ext_resource path="res://ui/PartyMemberInformationLayoutUI.tscn" type="PackedScene" id=2]
@@ -11,6 +11,18 @@
 [ext_resource path="res://ui/DeathScreenUI.tscn" type="PackedScene" id=9]
 [ext_resource path="res://ui/DeathScreenUI.gd" type="Script" id=10]
 [ext_resource path="res://ui/QuestLogUI.gd" type="Script" id=11]
+[ext_resource path="res://fonts/Alkhemikal.ttf" type="DynamicFontData" id=12]
+[ext_resource path="res://ui_themes/buttons_for_paperbg.tres" type="Theme" id=13]
+
+[sub_resource type="DynamicFont" id=1]
+size = 96
+outline_color = Color( 0.301961, 0.156863, 0.156863, 1 )
+font_data = ExtResource( 12 )
+
+[sub_resource type="DynamicFont" id=2]
+size = 24
+use_mipmaps = true
+font_data = ExtResource( 12 )
 
 [node name="UILayer" type="CanvasLayer"]
 layer = 0
@@ -52,9 +64,63 @@ visible = false
 script = ExtResource( 4 )
 
 [node name="QuestLogUI" type="Control" parent="States"]
+visible = false
 margin_right = 40.0
 margin_bottom = 40.0
 script = ExtResource( 11 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Background" type="ColorRect" parent="States/QuestLogUI"]
+margin_left = 112.0
+margin_top = 1.0
+margin_right = 1185.0
+margin_bottom = 718.0
+color = Color( 0.823529, 0.823529, 0.823529, 1 )
+
+[node name="Title" type="Label" parent="States/QuestLogUI/Background"]
+margin_left = 28.3629
+margin_top = 3.49492
+margin_right = 394.363
+margin_bottom = 99.4949
+custom_fonts/font = SubResource( 1 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "Quest Log"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="QuestList" type="ItemList" parent="States/QuestLogUI/Background"]
+margin_left = 45.5153
+margin_top = 113.0
+margin_right = 346.515
+margin_bottom = 667.0
+theme = ExtResource( 13 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="QuestDescriptionBackground" type="ColorRect" parent="States/QuestLogUI/Background"]
+margin_left = 426.0
+margin_top = 16.0
+margin_right = 1047.0
+margin_bottom = 682.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="QuestDescription" type="Label" parent="States/QuestLogUI/Background/QuestDescriptionBackground"]
+margin_left = 13.6569
+margin_top = 18.6569
+margin_right = 615.657
+margin_bottom = 661.657
+custom_fonts/font = SubResource( 2 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = " Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus non eros augue. Nunc eget porttitor sapien, ut dictum dui. In porttitor turpis non neque venenatis vestibulum. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Vivamus eu metus tempor, rutrum ante eu, gravida lectus. Donec elit tortor, ultrices non ornare a, convallis feugiat dolor. Nulla facilisi. Aenean quam felis, tempus eget nibh sed, scelerisque finibus lorem. Duis ligula augue, laoreet in facilisis eget, consequat id massa. Nam euismod, dolor a pretium eleifend, ligula libero convallis nibh, aliquet volutpat nisi tellus ut diam. Sed dui turpis, consectetur sed lacus quis, sollicitudin porttitor sapien. Praesent bibendum venenatis vestibulum.
+
+Fusce id bibendum dui. Sed feugiat nunc felis, id placerat libero tristique vel. Proin sagittis pellentesque nibh ac efficitur. Aenean quis dignissim risus. Aliquam aliquam mi ut cursus dignissim. Ut urna urna, fringilla id nibh vel, pretium dictum nulla. Integer consectetur quam sit amet libero dapibus finibus. Vivamus odio diam, scelerisque vel nibh sed, congue fermentum ligula. "
+autowrap = true
 __meta__ = {
 "_edit_use_anchors_": false
 }

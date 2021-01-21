@@ -5,6 +5,7 @@ const FullPartyMemberUIView = preload("res://ui/FullPartyMemberStatInfo.tscn");
 func _ready():
 	$VBoxContainer/Resume.connect("pressed", self, "_on_Resume_pressed");
 	$VBoxContainer/ReturnToTitle.connect("pressed", self, "_on_ReturnToTitle_pressed");
+	$VBoxContainer/Quests.connect("pressed", self, "_on_Quests_pressed");
 	$VBoxContainer/Quit.connect("pressed", self, "_on_Quit_pressed");
 	$VBoxContainer/Inventory.connect("pressed", self, "_on_Inventory_pressed");
 
@@ -16,6 +17,9 @@ func _on_Resume_pressed():
 
 func _on_ReturnToTitle_pressed():
 	GameGlobals.switch_to_scene(1);
+
+func _on_Quests_pressed():
+	get_parent().get_parent().set_state(get_parent().get_parent().UI_STATE_QUEST_LOG);
 
 func _on_Quit_pressed():
 	get_tree().quit();

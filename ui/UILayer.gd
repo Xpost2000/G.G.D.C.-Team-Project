@@ -276,10 +276,11 @@ func _on_InventoryUI_close(reason):
 			ItemDatabase.apply_item_to(targetting, reason[2][0]);
 
 func _on_InventoryShoppingUI_try_to_purchase_item(item):
-	var item_info = ItemDatabase.get_item(item[0]);
-	if item_info.sell_value > player_reference.gold:
-		add_popup("This item is too expensive!");
-	else:
-		add_popup("Purchased!");
-		player_reference.gold -= item_info.sell_value;
-		player_reference.add_item(item[0]);
+	if !any_popups_open() and len(_popup_queue) <= 0:
+		var item_info = ItemDatabase.get_item(item[0]);
+		if item_info.sell_value > player_reference.gold:
+			add_popup("This item is too expensive!");
+		else:
+			add_popup("Purchased!");
+			player_reference.gold -= item_info.sell_value;
+			player_reference.add_item(item[0]);

@@ -172,6 +172,13 @@ func _handle_selecting_dialogue_choice(choice):
 		emit_signal(responses[0], responses[1]);
 	goto_scene(choice.next);
 
+func setup_focus():
+	if len(dialogue_choices_container.get_children()):
+		dialogue_choices_container.get_children()[0].call_deferred("grab_focus");
+		print("grab focus for choice!");
+	else:
+		dialogue_continue_prompt.grab_focus();
+
 func goto_scene(scene):
 	current_scene = scene;
 	if !current_scene.empty():
@@ -225,6 +232,8 @@ func goto_scene(scene):
 			else:
 				dialogue_choices_container.hide();
 				dialogue_continue_prompt.show();
+
+			setup_focus();
 	else:
 		emit_signal("notify_dialogue_terminated", dialogue_terminate_normal());
 		AudioGlobal.stop_sound(0);
@@ -236,12 +245,16 @@ func on_leave(to):
 func on_enter(from):
 	GameGlobals.pause();
 	show();
+	setup_focus();
+
+func continue_to_next_scene():
+	if is_linear() and current_scene in scenes:
+		var current_scene_object = scenes[current_scene];
+		goto_scene(current_scene_object.next_for_continue);
 
 func handle_process(delta):
 	if !initial_opening:
-		if current_scene in scenes:
-			var current_scene_object = scenes[current_scene];
-			if is_linear() && Input.is_action_just_pressed("game_interact_action"):
-				goto_scene(current_scene_object.next_for_continue);
+		if Input.is_action_just_pressed("game_interact_action"):
+			continue_to_next_scene();
 	else:
 		initial_opening = false;

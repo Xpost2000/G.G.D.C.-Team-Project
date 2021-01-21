@@ -44,5 +44,5 @@ func on_enter(from):
 
 
 func handle_process(delta):
-	if Input.is_action_just_pressed("game_action_ui_pause"):
+	if Input.is_action_just_pressed("game_action_ui_pause") or Input.is_action_just_pressed("ui_cancel"):
 		get_parent().get_parent().toggle_pause();

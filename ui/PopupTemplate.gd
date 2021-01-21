@@ -1,6 +1,8 @@
 extends NinePatchRect
 signal finished;
 
+signal any_key_pressed;
+
 var box_tweener;
 
 var active = false;
@@ -16,6 +18,8 @@ func _ready():
 
 	rect_size.x = 0;
 	hide();
+
+	connect("any_key_pressed", self, "any_key_pressed");
 
 func popup(text):
 	$Text.text = text;
@@ -37,16 +41,23 @@ func popup(text):
 	box_tweener.start();
 	active = true;
 
-func handle_inputs(delta):
-	if Input.is_action_just_pressed("game_action_ui_pause"):
-		if !box_tweener.is_active():
-			close();
+func _input(event):
+	if (event is InputEventKey or event is InputEventJoypadButton) and event.is_pressed():
+		emit_signal("any_key_pressed");
+
+func any_key_pressed():
+	if !box_tweener.is_active():
+		close();
+	else:
+		if closing:
+			_close_actions(null, null);
 		else:
-			if closing:
-				_close_actions(null, null);
-			else:
-				box_tweener.seek(box_tweener.get_runtime());
-			box_tweener.stop_all();
+			box_tweener.seek(box_tweener.get_runtime());
+		box_tweener.stop_all();
+	
+
+func handle_inputs(delta):
+	pass;
 
 func _close_actions(_a, _b):
 	active = false;

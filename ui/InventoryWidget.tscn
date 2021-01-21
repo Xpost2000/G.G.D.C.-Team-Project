@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://ui_themes/buttons_for_paperbg.tres" type="Theme" id=1]
 [ext_resource path="res://fonts/Alkhemikal.ttf" type="DynamicFontData" id=2]
@@ -7,7 +7,6 @@
 [ext_resource path="res://images/ui/ui_paper.png" type="Texture" id=5]
 [ext_resource path="res://images/light_blob.png" type="Texture" id=6]
 [ext_resource path="res://images/ui/ui_amber.png" type="Texture" id=7]
-[ext_resource path="res://ui/inventory_item_list_style.tres" type="Theme" id=8]
 
 [sub_resource type="DynamicFont" id=1]
 size = 24
@@ -38,7 +37,6 @@ margin_left = 20.0
 margin_top = 21.0
 margin_right = 681.0
 margin_bottom = 632.0
-theme = ExtResource( 8 )
 __meta__ = {
 "_edit_use_anchors_": false
 }

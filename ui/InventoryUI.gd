@@ -48,7 +48,9 @@ func on_leave(to):
 func on_enter(from):
 	GameGlobals.pause();
 	show();
+	inventory_widget.currently_selected = 0;
+	inventory_widget_item_list.grab_focus();
 
 func handle_process(delta):
-	if Input.is_action_just_pressed("game_action_open_inventory"):
+	if Input.is_action_just_pressed("game_action_open_inventory") or Input.is_action_just_pressed("ui_cancel"):
 		get_parent().get_parent().toggle_inventory();

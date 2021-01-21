@@ -38,7 +38,7 @@ func start_game():
 	AudioGlobal.pause_music();
 
 func _on_StartGameButton_pressed():
-	start_game();
+	call_deferred("start_game");
 
 func _on_LoadGameButton_pressed():
 	# AudioGlobal.play_sound("copyrighted-test-content/snd/see.ogg");
@@ -99,14 +99,14 @@ func valid_save_file_names(path):
 		if ".game_save" in save_file:
 			result.push_back(save_file);
 	return result;
-	
+
+func do_save_game_loading(save_name):
+	start_game();
+	GameGlobals.get_scene(GameGlobals.MAIN_GAME_SCENE).load_from_dictionary(Utilities.read_json_no_check("saves/" + save_name));
 
 func _on_VBoxContainer_item_activated(index):
 	var save_files = valid_save_file_names(SAVE_PATH);
-	print(save_files[index]);
-	start_game();
-	GameGlobals.get_scene(GameGlobals.MAIN_GAME_SCENE).load_from_dictionary(Utilities.read_json_no_check("saves/" + save_files[index]));
-	pass;
+	call_deferred("do_save_game_loading", save_files[index]);
 
 func open_save_games_widget(save_path):
 	last_focused_widget = $ContainerBackground/ButtonsContainer.get_focus_owner();

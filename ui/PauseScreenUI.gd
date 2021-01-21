@@ -6,6 +6,10 @@ func _ready():
 	$VBoxContainer/Resume.connect("pressed", self, "_on_Resume_pressed");
 	$VBoxContainer/ReturnToTitle.connect("pressed", self, "_on_ReturnToTitle_pressed");
 	$VBoxContainer/Quit.connect("pressed", self, "_on_Quit_pressed");
+	$VBoxContainer/Inventory.connect("pressed", self, "_on_Inventory_pressed");
+
+func _on_Inventory_pressed():
+	get_parent().get_parent().set_state(get_parent().get_parent().UI_STATE_INVENTORY);
 
 func _on_Resume_pressed():
 	get_parent().get_parent().set_state(get_parent().get_parent().UI_STATE_GAME);

@@ -175,7 +175,7 @@ func _process(delta):
 					toggle_shop("shop_files/test_stock.json");
 
 				if Input.is_action_just_pressed("game_action_ui_pause"):
-						toggle_pause();
+					toggle_pause();
 
 				if Input.is_action_just_pressed("game_action_open_inventory"):
 					toggle_inventory();
@@ -231,7 +231,7 @@ func show_inventory():
 	set_state(UI_STATE_INVENTORY);
 
 func close_inventory():
-	set_state(UI_STATE_GAME);
+	set_state(UI_STATE_PAUSE);
 
 func toggle_pause():
 	if current_state == UI_STATE_PAUSE:

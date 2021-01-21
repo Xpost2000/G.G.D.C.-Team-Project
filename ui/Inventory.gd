@@ -9,6 +9,9 @@ onready var item_preview_widget = $ItemPreview;
 var currently_observing_thing = null;
 var currently_observing_inventory = null;
 
+# this is because I rebuild the inventory every frame lmao
+var currently_selected = 0;
+
 func update_based_on_entity(thing, inventory):
 	 # for now I'm assuming these are arrays
 	inventory_item_list.clear();
@@ -34,6 +37,19 @@ func _process(delta):
 			if len(inventory_item_entry_information) == 2 and inventory_item_entry_information[1] <= 0:
 				currently_observing_inventory.erase(inventory_item_entry_information);
 
+	if inventory_item_list.has_focus():
+		if Input.is_action_just_pressed("ui_up"):
+			currently_selected -= 1;
+		elif Input.is_action_just_pressed("ui_down"):
+			currently_selected += 1;
+
+		if currently_selected >= inventory_item_list.get_item_count():
+			currently_selected = inventory_item_list.get_item_count() - 1;
+		elif currently_selected < 0:
+			currently_selected = 0;
+
+		inventory_item_list.select(currently_selected);
+
 func _on_InventoryItemList_item_activated(index):
 	var inventory_item_entry_information = currently_observing_inventory[index];
 
@@ -57,3 +73,4 @@ func _on_InventoryItemList_nothing_selected():
 func _on_InventoryItemList_item_selected(index):
 	var inventory_item_entry_information = currently_observing_inventory[index];
 	item_preview_widget.set_information_based_on_item(inventory_item_entry_information[0]);
+	currently_selected = index;

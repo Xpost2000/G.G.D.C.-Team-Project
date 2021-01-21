@@ -26,6 +26,8 @@ func on_enter(from):
 	show();
 	print("pause");
 
+	$VBoxContainer/Resume.grab_focus();
+
 	var player = get_parent().get_parent().player_reference;
 
 	for child in $HBoxContainer.get_children():

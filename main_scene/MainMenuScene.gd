@@ -7,13 +7,21 @@ onready var save_games_widget = $SaveGamesWidget;
 onready var notifier_content = $NotifierBackground/Content;
 onready var notifier_title = $NotifierBackground/Title;
 
-func _ready():
-	pass;
 
 var thing = "copyrighted-test-content/snd/012.ogg";
 
+func on_enter():
+	$ContainerBackground/ButtonsContainer/StartGameButton.call_deferred("grab_focus");
+
+func _ready():
+	on_enter();
+
 func _process(delta):
 	AudioGlobal.looped_play_music(thing);
+
+	if save_games_widget.is_visible() or notifier_background.is_visible():
+		if Input.is_action_just_pressed("ui_cancel"):
+			_on_NotifierBackground_Close_pressed();
 
 # maybe do a fancy fade out.
 
@@ -67,15 +75,22 @@ func _on_QuitGame_pressed():
 
 # both buttons are hooked to this signal... There's no reason
 # to really separate it...
+var last_focused_widget = null;
 func _on_NotifierBackground_Close_pressed():
 	notifier_background.hide();
 	save_games_widget.hide();
 
+	if last_focused_widget:
+		last_focused_widget.grab_focus();
+
 func open_notification(title, text):
+	last_focused_widget = $ContainerBackground/ButtonsContainer.get_focus_owner();
+
 	notifier_background.show();
 	save_games_widget.hide();
 	notifier_title.text = title;
 	notifier_content.text = text;
+	$NotifierBackground/Close.grab_focus();
 
 func valid_save_file_names(path):
 	var result = [];
@@ -94,6 +109,7 @@ func _on_VBoxContainer_item_activated(index):
 	pass;
 
 func open_save_games_widget(save_path):
+	last_focused_widget = $ContainerBackground/ButtonsContainer.get_focus_owner();
 	notifier_background.hide();
 	save_games_widget.show();
 
@@ -105,3 +121,9 @@ func open_save_games_widget(save_path):
 	for save_file in potential_save_files:
 		if ".game_save" in save_file:
 			vbox_container.add_item(save_file, null);
+
+	if len(vbox_container.get_children()):
+		vbox_container.grab_focus();
+		vbox_container.select(0);
+	else:
+		$SaveGamesWidget/Close.grab_focus();

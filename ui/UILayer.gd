@@ -15,6 +15,7 @@ onready var shopping_ui = $States/InventoryShoppingUI;
 onready var party_member_information_holder = $PartyMemberInformation;
 onready var dialogue_ui = $States/DialogueUI;
 onready var levelup_ui = $States/LevelUpUI;
+onready var quest_log_ui = $States/QuestLogUI;
 
 enum {UI_STATE_GAME,
 	  UI_STATE_INVENTORY,
@@ -22,6 +23,7 @@ enum {UI_STATE_GAME,
 	  UI_STATE_DEATH,
 	  UI_STATE_PAUSE,
 	  UI_STATE_DIALOGUE,
+	  UI_STATE_QUEST_LOG,
 	  UI_STATE_LEVELUPS};
 onready var states = {
 	UI_STATE_GAME: null,
@@ -30,6 +32,7 @@ onready var states = {
 	UI_STATE_DEATH: $States/DeathScreenUI,
 	UI_STATE_PAUSE: $States/PauseScreenUI,
 	UI_STATE_DIALOGUE: dialogue_ui,
+	UI_STATE_QUEST_LOG: quest_log_ui, 
 	UI_STATE_LEVELUPS: levelup_ui
 	};
 

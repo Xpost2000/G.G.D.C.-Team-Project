@@ -50,6 +50,13 @@ script = ExtResource( 10 )
 visible = false
 script = ExtResource( 4 )
 
+[node name="QuestLogUI" type="Control" parent="States"]
+margin_right = 40.0
+margin_bottom = 40.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="LevelUpUI" parent="States" instance=ExtResource( 8 )]
 
 [node name="Popups" type="Control" parent="."]

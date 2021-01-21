@@ -40,6 +40,9 @@ func switch_to_scene(scene):
 		MAIN_MENU_SCENE: scene_object = main_menu_screen;
 		BATTLE_SCENE: scene_object = battle_screen;
 
+	if scene_object.has_method("on_enter"):
+		scene_object.on_enter();
+
 	var root = get_tree().get_root();
 	var last_child = root.get_children()[-1];
 	root.remove_child(last_child);

@@ -37,7 +37,7 @@ margin_top = 27.0136
 margin_right = 312.665
 margin_bottom = 123.014
 custom_fonts/font = SubResource( 1 )
-text = "PAUSED"
+text = "MENU"
 align = 1
 __meta__ = {
 "_edit_use_anchors_": false

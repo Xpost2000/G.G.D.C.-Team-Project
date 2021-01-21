@@ -20,7 +20,10 @@ func _on_ReturnToTitle_pressed():
 func _on_Quit_pressed():
 	get_tree().quit();
 
+var last_focused_widget = null;
 func on_leave(to):
+	last_focused_widget = $VBoxContainer.get_focus_owner();
+
 	GameGlobals.resume();
 	hide();
 	print("un_pause");
@@ -30,7 +33,12 @@ func on_enter(from):
 	show();
 	print("pause");
 
-	$VBoxContainer/Resume.grab_focus();
+	if from == get_parent().get_parent().UI_STATE_GAME:
+		$VBoxContainer/Resume.grab_focus();
+	else:
+		if last_focused_widget:
+			last_focused_widget.grab_focus();
+
 
 	var player = get_parent().get_parent().player_reference;
 

@@ -37,17 +37,10 @@ func _process(delta):
 			if len(inventory_item_entry_information) == 2 and inventory_item_entry_information[1] <= 0:
 				currently_observing_inventory.erase(inventory_item_entry_information);
 
+	# This unusual feedback thing is cause the inventory is rebuilt every single frame.
+	# So I have to force the selection to remember what happened, otherwise things will unselect.
+	# A bit nasty, because I used an item list to do the inventory.
 	if inventory_item_list.has_focus():
-		if Input.is_action_just_pressed("ui_up"):
-			currently_selected -= 1;
-		elif Input.is_action_just_pressed("ui_down"):
-			currently_selected += 1;
-
-		if currently_selected >= inventory_item_list.get_item_count():
-			currently_selected = inventory_item_list.get_item_count() - 1;
-		elif currently_selected < 0:
-			currently_selected = 0;
-
 		inventory_item_list.select(currently_selected);
 
 func _on_InventoryItemList_item_activated(index):

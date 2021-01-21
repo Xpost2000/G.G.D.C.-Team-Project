@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://ui/InventoryUI.tscn" type="PackedScene" id=1]
 [ext_resource path="res://ui/PartyMemberInformationLayoutUI.tscn" type="PackedScene" id=2]
@@ -10,6 +10,7 @@
 [ext_resource path="res://ui/LevelUpUI.tscn" type="PackedScene" id=8]
 [ext_resource path="res://ui/DeathScreenUI.tscn" type="PackedScene" id=9]
 [ext_resource path="res://ui/DeathScreenUI.gd" type="Script" id=10]
+[ext_resource path="res://ui/QuestLogUI.gd" type="Script" id=11]
 
 [node name="UILayer" type="CanvasLayer"]
 layer = 0
@@ -53,6 +54,7 @@ script = ExtResource( 4 )
 [node name="QuestLogUI" type="Control" parent="States"]
 margin_right = 40.0
 margin_bottom = 40.0
+script = ExtResource( 11 )
 __meta__ = {
 "_edit_use_anchors_": false
 }

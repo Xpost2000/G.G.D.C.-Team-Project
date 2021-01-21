@@ -11,7 +11,6 @@ signal report_sprinting_information(stamina_percent, can_sprint, trying_to_sprin
 signal report_inventory_contents(player, player_inventory);
 signal report_party_info_to_ui(party_members, amount_of_gold);
 signal request_to_open_battle(left, right);
-signal test_open_conversation;
 
 # temporary lazy
 enum {SPRITE_DIRECTION_UP,
@@ -59,7 +58,7 @@ func movement_direction_vector():
 	return movement_direction.normalized();
 
 func handle_interact_key(delta):
-	emit_signal("test_open_conversation");
+	pass;
 
 func override_physics_process(delta):
 	var sprinting = Input.is_action_pressed("game_sprinting_action");

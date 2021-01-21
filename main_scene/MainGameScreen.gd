@@ -142,10 +142,6 @@ func _on_UILayer_notify_finished_level_load_related_fading():
 	var loaded_scene = load_new_level_scene(full_scene_path);
 	setup_new_level_scene(player, level_transition, loaded_scene);
 
-func _on_PlayerCharacter_test_open_conversation():
-	emit_signal("ask_ui_to_open_dialogue", "testerbester.json");
-	print("open test convo");
-
 func _open_battle(left, right):
 	print("starting fight")
 	GameGlobals.switch_to_scene(2);

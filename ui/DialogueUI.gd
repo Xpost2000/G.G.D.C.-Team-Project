@@ -174,8 +174,15 @@ func _handle_selecting_dialogue_choice(choice):
 
 func setup_focus():
 	if len(dialogue_choices_container.get_children()):
-		dialogue_choices_container.get_children()[0].call_deferred("grab_focus");
-		print("grab focus for choice!");
+		# dirty little thing to deal with popups stealing all the focus.
+		var any_already_selected = false;
+		for child in dialogue_choices_container.get_children():
+			if child.has_focus():
+				any_already_selected = true;
+				break;
+		if !any_already_selected:
+			dialogue_choices_container.get_children()[0].call_deferred("grab_focus");
+			print("grab focus for choice!");
 	else:
 		dialogue_continue_prompt.grab_focus();
 
@@ -232,8 +239,7 @@ func goto_scene(scene):
 			else:
 				dialogue_choices_container.hide();
 				dialogue_continue_prompt.show();
-
-			setup_focus();
+			# setup_focus();
 	else:
 		emit_signal("notify_dialogue_terminated", dialogue_terminate_normal());
 		AudioGlobal.stop_sound(0);
@@ -254,6 +260,7 @@ func continue_to_next_scene():
 
 func handle_process(delta):
 	if !initial_opening:
+		setup_focus();
 		if Input.is_action_just_pressed("game_interact_action"):
 			continue_to_next_scene();
 	else:

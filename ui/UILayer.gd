@@ -179,6 +179,10 @@ func _process(delta):
 
 				if Input.is_action_just_pressed("game_action_open_inventory"):
 					toggle_inventory();
+
+				if Input.is_action_just_pressed("game_interact_action"):
+					set_state(UI_STATE_DIALOGUE);
+					dialogue_ui.open_dialogue("testerbester.json");
 			else:
 				if states[current_state]:
 					states[current_state].handle_process(delta);
@@ -195,6 +199,7 @@ func _process(delta):
 				if current_state == UI_STATE_GAME:
 					$Popups.get_children()[0].connect("finished", GameGlobals, "resume");
 			$Popups.get_children()[-1].handle_inputs(delta);
+			$Popups.get_children()[-1].grab_focus();
 
 func set_state(state):
 	if current_state != state:
@@ -227,7 +232,6 @@ func show_death(val):
 		set_state(UI_STATE_DEATH);
 
 func show_inventory():
-	player_reference.emit_signal("opened_inventory");
 	set_state(UI_STATE_INVENTORY);
 
 func close_inventory():

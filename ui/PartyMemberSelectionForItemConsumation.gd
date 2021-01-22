@@ -19,6 +19,7 @@ func open_prompt(party_members, heading_text="Who?"):
 		selection_item_list.add_item(party_member.name, null);
 	selection_item_list.grab_focus();
 	selection_item_list.select(0);
+	selection_item_list.emit_signal("item_selected", 0);
 
 func _on_Selections_item_selected(index):
 	print("selected!");

@@ -415,14 +415,21 @@ func _on_ActionSelectionPrompt_picked(index):
 	picking_item_index = index;
 	party_member_select_for_action.show();
 
+var last_highlighted_actor = null;
+func unhighlight_last_actor_when_present():
+	if last_highlighted_actor:
+		last_highlighted_actor.self_modulate = Color(1, 1, 1);
+	
 func _on_PartyMemberSelectionForAction_cancel_selection():
+	unhighlight_last_actor_when_present();
 	party_member_select_for_action.hide();
 
-# seems to never get called. whatever
 func _on_PartyMemberSelectionForAction_highlight_party_member(party_member_object, party_member_index):
 	var attacker_information = participant_side_and_index_of_actor(party_member_object);
 	var attacker_battle_sprite = attacker_information[0][attacker_information[1]];
+	unhighlight_last_actor_when_present();
 	attacker_battle_sprite.self_modulate = Color(1, 1, 0);
+	last_highlighted_actor = attacker_battle_sprite;
 	print("HIGHLIGHT!");
 
 func _on_PartyMemberSelectionForAction_picked_party_member(party_member_object, party_member_index):

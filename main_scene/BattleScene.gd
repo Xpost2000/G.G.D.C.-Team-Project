@@ -75,6 +75,7 @@ func attack(actor_self, actor_target, which_attack):
 	attack_action.actor_target = actor_target;
 	attack_action.index = which_attack;
 
+	populate_participants_with_sprites(left_side_participants, party_on_the_left.party_members);
 	return attack_action;
 
 var battle_information = BattleTurnStatus.new();
@@ -129,6 +130,12 @@ func get_party_from_side(side):
 		BATTLE_SIDE_LEFT: return party_on_the_left;
 		BATTLE_SIDE_RIGHT: return party_on_the_right;
 	return null;
+	
+func participant_side_and_index_of_actor(actor):
+	if actor in party_on_the_right.party_members:
+		return [right_side_participants.get_children(), party_on_the_right.party_members.find(actor)];
+	elif actor in party_on_the_left.party_members:
+		return [left_side_participants.get_children(), party_on_the_left.party_members.find(actor)];
 
 func whose_side_is_active(active_actor):
 	if active_actor in party_on_the_right.party_members:
@@ -169,9 +176,10 @@ var camera_shake_timer = 0;
 var camera_shake_strength = 0;
 
 func begin_camera_shake(length, magnitude):
-	camera_shake_timer_length = length;
-	camera_shake_timer = 0;
-	camera_shake_strength = magnitude;
+	# camera_shake_timer_length = length;
+	# camera_shake_timer = 0;
+	# camera_shake_strength = magnitude;
+	pass;
 
 func handle_camera_shake(delta):
 	if camera_shake_timer <= camera_shake_timer_length:
@@ -311,6 +319,7 @@ func _on_ActionSelectionPrompt_picked(index):
 	# TODO, highlight who is picked on the battle view.
 	var active_actor = battle_information.active_actor();
 	var parties = get_party_pairs(whose_side_is_active(active_actor));
+	print("PICKU");
 	
 	match action_prompt_mode:
 		ACTION_PROMPT_MODE_ATTACK:
@@ -324,13 +333,70 @@ func _on_ActionSelectionPrompt_picked(index):
 func _on_PartyMemberSelectionForAction_cancel_selection():
 	party_member_select_for_action.hide();
 
+# seems to never get called. whatever
+func _on_PartyMemberSelectionForAction_highlight_party_member(party_member_object, party_member_index):
+	var attacker_information = participant_side_and_index_of_actor(party_member_object);
+	var attacker_battle_sprite = attacker_information[0][attacker_information[1]];
+	attacker_battle_sprite.self_modulate = Color(1, 1, 0);
+	print("HIGHLIGHT!");
+
+func finished_bump_animation(anim_name, animation_player):
+	remove_child(animation_player);
+	animation_player.queue_free();
+	print("play animation")
+
+# fun....
+func create_attack_bump_animation(attacker, target):
+	var attacker_information = participant_side_and_index_of_actor(attacker);
+	var target_information = participant_side_and_index_of_actor(target);
+	var attacker_battle_sprite = attacker_information[0][attacker_information[1]];
+	var target_battle_sprite = target_information[0][target_information[1]];
+
+	var attack_bump = Animation.new();
+	attack_bump.length = 2;
+	var target_color_track_index = attack_bump.add_track(0);
+	var attacker_position_track_index = attack_bump.add_track(0);
+
+	attack_bump.track_set_path(target_color_track_index, String(target_battle_sprite.get_path()) + ":self_modulate");
+	attack_bump.track_set_path(attacker_position_track_index, String(attacker_battle_sprite.get_path()) + ":global_position");
+
+	attack_bump.track_set_interpolation_type(attacker_position_track_index, Animation.INTERPOLATION_LINEAR);
+	attack_bump.track_set_interpolation_type(target_color_track_index, Animation.INTERPOLATION_LINEAR);
+	attack_bump.track_insert_key(target_color_track_index, 0, Color(1, 1, 1));
+	attack_bump.track_insert_key(attacker_position_track_index, 0, attacker_battle_sprite.global_position);
+	var direction_between_target_and_attacker = (target_battle_sprite.global_position - attacker_battle_sprite.global_position).normalized(); 
+	var position_right_before_attack = target_battle_sprite.global_position - (direction_between_target_and_attacker * 20);
+	attack_bump.track_insert_key(attacker_position_track_index, 0.5, position_right_before_attack);
+	attack_bump.track_insert_key(attacker_position_track_index, 0.9, position_right_before_attack);
+	attack_bump.track_insert_key(target_color_track_index, 0.89, Color(1, 1, 1));
+	attack_bump.track_insert_key(attacker_position_track_index, 1.10, target_battle_sprite.global_position);
+	attack_bump.track_insert_key(target_color_track_index, 1.10, Color(1, 0, 0));
+	attack_bump.track_insert_key(attacker_position_track_index, 1.3, position_right_before_attack);
+	attack_bump.track_insert_key(target_color_track_index, 1.18, Color(1, 1, 1));
+	attack_bump.track_insert_key(attacker_position_track_index, 1.5, position_right_before_attack);
+	attack_bump.track_insert_key(attacker_position_track_index, 2.0, attacker_battle_sprite.global_position);
+	attack_bump.value_track_set_update_mode(target_color_track_index, Animation.UPDATE_CONTINUOUS);
+	attack_bump.value_track_set_update_mode(attacker_position_track_index, Animation.UPDATE_CONTINUOUS);
+
+	return attack_bump;
+
 func _on_PartyMemberSelectionForAction_picked_party_member(party_member_object, party_member_index):
 	var active_actor = battle_information.active_actor();
 	var parties = get_party_pairs(whose_side_is_active(active_actor));
 
 	match action_prompt_mode:
 		ACTION_PROMPT_MODE_ATTACK:
+			# TODO make this animate for the enemy as well!
 			battle_information.decided_action = attack(active_actor, party_member_object, picking_item_index);
+
+			var animation_player = AnimationPlayer.new();
+			add_child(animation_player);
+			animation_player.add_animation("temporary_bump_hit", create_attack_bump_animation(active_actor, party_member_object));
+			animation_player.play("temporary_bump_hit");
+			animation_player.connect("animation_finished", self, "finished_bump_animation", [animation_player]);
+			# attack_bump.length = 0.6;
+
+			
 		ACTION_PROMPT_MODE_ABILITY:
 			battle_information.decided_action = ability(active_actor, party_member_object, picking_item_index);
 	party_member_select_for_action.hide();

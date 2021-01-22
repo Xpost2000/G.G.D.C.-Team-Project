@@ -2,6 +2,7 @@
 extends NinePatchRect;
 # I don't know why I would need the index but I guess it's insurance?
 signal picked_party_member(object, index);
+signal highlight_party_member(object, index);
 signal cancel_selection;
 
 onready var selection_item_list = $Selections;
@@ -20,10 +21,11 @@ func open_prompt(party_members, heading_text="Who?"):
 	selection_item_list.select(0);
 
 func _on_Selections_item_selected(index):
-	# dummy
-	pass;
+	print("selected!");
+	emit_signal("highlight_party_member", reference_to_party_member_list[index], index);
 	
 func _on_Selections_item_activated(index):
+	print("activated");
 	emit_signal("picked_party_member", reference_to_party_member_list[index], index);
 
 func _on_CancelUsage_pressed():

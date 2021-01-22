@@ -204,4 +204,5 @@ margin_bottom = 476.348
 [connection signal="item_activated" from="BattleUILayer/ActionSelectionPrompt/Selections" to="BattleUILayer/ActionSelectionPrompt" method="_on_Selections_item_activated"]
 [connection signal="pressed" from="BattleUILayer/ActionSelectionPrompt/ClosePrompt" to="BattleUILayer/ActionSelectionPrompt" method="_on_ClosePrompt_pressed"]
 [connection signal="cancel_selection" from="BattleUILayer/PartyMemberSelectionForAction" to="." method="_on_PartyMemberSelectionForAction_cancel_selection"]
+[connection signal="highlight_party_member" from="BattleUILayer/PartyMemberSelectionForAction" to="." method="_on_PartyMemberSelectionForAction_highlight_party_member"]
 [connection signal="picked_party_member" from="BattleUILayer/PartyMemberSelectionForAction" to="." method="_on_PartyMemberSelectionForAction_picked_party_member"]

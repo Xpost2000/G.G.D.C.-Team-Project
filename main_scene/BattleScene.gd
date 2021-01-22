@@ -69,6 +69,56 @@ func use_item(actor_self, actor_target, which_item):
 
 	return ability_action;
 
+func finished_bump_animation(anim_name, animation_player, attack_action):
+	remove_child(animation_player);
+	animation_player.queue_free();
+	attack_action.marked_done = true;
+	print("play animation")
+
+func entity_take_damage(target, damage):
+	print("PREPARE TO DIE");
+	target.take_damage(damage);
+# fun....
+func create_attack_bump_animation(attacker, target, attack):
+	var attacker_information = participant_side_and_index_of_actor(attacker);
+	var target_information = participant_side_and_index_of_actor(target);
+	var attacker_battle_sprite = attacker_information[0][attacker_information[1]];
+	var target_battle_sprite = target_information[0][target_information[1]];
+
+	var attack_bump = Animation.new();
+	attack_bump.length = 2;
+	var target_color_track_index = attack_bump.add_track(0);
+	var self_method_track_index = attack_bump.add_track(2);
+	var attacker_position_track_index = attack_bump.add_track(0);
+
+	attack_bump.track_set_path(target_color_track_index, String(target_battle_sprite.get_path()) + ":self_modulate");
+	attack_bump.track_set_path(attacker_position_track_index, String(attacker_battle_sprite.get_path()) + ":global_position");
+	attack_bump.track_set_path(self_method_track_index, String(self.get_path()));
+
+	attack_bump.track_set_interpolation_type(attacker_position_track_index, Animation.INTERPOLATION_LINEAR);
+	attack_bump.track_set_interpolation_type(target_color_track_index, Animation.INTERPOLATION_CUBIC);
+	attack_bump.track_insert_key(target_color_track_index, 0, Color(1, 1, 1));
+	attack_bump.track_insert_key(attacker_position_track_index, 0, attacker_battle_sprite.global_position);
+	var direction_between_target_and_attacker = (target_battle_sprite.global_position - attacker_battle_sprite.global_position).normalized(); 
+	var position_right_before_attack = target_battle_sprite.global_position - (direction_between_target_and_attacker * 45);
+	attack_bump.track_insert_key(attacker_position_track_index, 0.5, position_right_before_attack);
+	attack_bump.track_insert_key(attacker_position_track_index, 0.9, position_right_before_attack);
+	attack_bump.track_insert_key(target_color_track_index, 0.89, Color(1, 1, 1));
+	attack_bump.track_insert_key(attacker_position_track_index, 0.98, target_battle_sprite.global_position);
+	attack_bump.track_insert_key(target_color_track_index, 1.02, Color(1, 0, 0));
+	# Did I have to make another track to have same time?
+	attack_bump.track_insert_key(self_method_track_index, 1.03, {"method": "entity_take_damage", "args": [target, attack.magnitude]});
+	attack_bump.track_insert_key(self_method_track_index, 1.02, {"method": "begin_camera_shake", "args": [0.45, 25]});
+	# s
+	attack_bump.track_insert_key(attacker_position_track_index, 1.18, position_right_before_attack);
+	attack_bump.track_insert_key(target_color_track_index, 1.18, Color(1, 1, 1));
+	attack_bump.track_insert_key(attacker_position_track_index, 1.5, position_right_before_attack);
+	attack_bump.track_insert_key(attacker_position_track_index, 2.0, attacker_battle_sprite.global_position);
+	attack_bump.value_track_set_update_mode(target_color_track_index, Animation.UPDATE_CONTINUOUS);
+	attack_bump.value_track_set_update_mode(attacker_position_track_index, Animation.UPDATE_CONTINUOUS);
+
+	return attack_bump;
+
 func attack(actor_self, actor_target, which_attack):
 	var attack_action = BattleTurnAction.new(BATTLE_TURN_ACTION_DO_ATTACK,
 											 actor_self);
@@ -76,6 +126,15 @@ func attack(actor_self, actor_target, which_attack):
 	attack_action.index = which_attack;
 
 	populate_participants_with_sprites(left_side_participants, party_on_the_left.party_members);
+
+	var animation_player = AnimationPlayer.new();
+	add_child(animation_player);
+	animation_player.add_animation("temporary_bump_hit", create_attack_bump_animation(actor_self, actor_target, actor_self.attacks[which_attack]));
+	animation_player.play("temporary_bump_hit");
+	animation_player.connect("animation_finished", self, "finished_bump_animation", [animation_player, attack_action]);
+
+	battle_log_widget.push_message(actor_self.name + " performs " + actor_self.attacks[which_attack].name);
+
 	return attack_action;
 
 var battle_information = BattleTurnStatus.new();
@@ -176,10 +235,9 @@ var camera_shake_timer = 0;
 var camera_shake_strength = 0;
 
 func begin_camera_shake(length, magnitude):
-	# camera_shake_timer_length = length;
-	# camera_shake_timer = 0;
-	# camera_shake_strength = magnitude;
-	pass;
+	camera_shake_timer_length = length;
+	camera_shake_timer = 0;
+	camera_shake_strength = magnitude;
 
 func handle_camera_shake(delta):
 	if camera_shake_timer <= camera_shake_timer_length:
@@ -230,6 +288,7 @@ func _process(delta):
 
 			var parties = get_party_pairs(whose_side_is_active(current_actor));
 
+			# fix messages.
 			match turn_action.type:
 				BATTLE_TURN_ACTION_SKIP_TURN:
 					battle_log_widget.push_message("Skipping turn...");
@@ -240,16 +299,7 @@ func _process(delta):
 					var item_to_use = parties[0].inventory[turn_action.index];
 					item_to_use[1] -= 1;
 					ItemDatabase.apply_item_to(turn_action.actor_target, item_to_use[0]);
-				BATTLE_TURN_ACTION_DO_ATTACK:
-					battle_turn_widget_head_label.text = "ATTACKING!";
-					battle_log_widget.push_message("attacking something");
-					# TODO figure out how I would do animation based on this.
-					var selected_attack = current_actor.attacks[turn_action.index];
-					battle_log_widget.push_message(current_actor.name + " performs " + selected_attack.name);
-					# insert plays animation!
-					# TODO randomized attack hit chance or whatevers.
-					target_actor.take_damage(selected_attack.magnitude);
-					begin_camera_shake(0.45, 25);
+				BATTLE_TURN_ACTION_DO_ATTACK: battle_turn_widget_head_label.text = "ATTACKING!";
 				BATTLE_TURN_ACTION_DO_ABILITY: 
 					battle_turn_widget_head_label.text = "ABILITY!";
 					battle_log_widget.push_message("using ability");
@@ -272,9 +322,10 @@ func _process(delta):
 				finish_battle(COMBAT_FINISHED_REASON_DEFEAT_OF, party_on_the_right, party_on_the_left);
 
 			if battle_information.decided_action.done():
+				allow_access_to_dashboard(true);
 				advance_actor();
 			else:
-				print("not done!");
+				allow_access_to_dashboard(false);
 
 
 		handle_camera_shake(delta);
@@ -340,46 +391,6 @@ func _on_PartyMemberSelectionForAction_highlight_party_member(party_member_objec
 	attacker_battle_sprite.self_modulate = Color(1, 1, 0);
 	print("HIGHLIGHT!");
 
-func finished_bump_animation(anim_name, animation_player):
-	remove_child(animation_player);
-	animation_player.queue_free();
-	print("play animation")
-
-# fun....
-func create_attack_bump_animation(attacker, target):
-	var attacker_information = participant_side_and_index_of_actor(attacker);
-	var target_information = participant_side_and_index_of_actor(target);
-	var attacker_battle_sprite = attacker_information[0][attacker_information[1]];
-	var target_battle_sprite = target_information[0][target_information[1]];
-
-	var attack_bump = Animation.new();
-	attack_bump.length = 2;
-	var target_color_track_index = attack_bump.add_track(0);
-	var attacker_position_track_index = attack_bump.add_track(0);
-
-	attack_bump.track_set_path(target_color_track_index, String(target_battle_sprite.get_path()) + ":self_modulate");
-	attack_bump.track_set_path(attacker_position_track_index, String(attacker_battle_sprite.get_path()) + ":global_position");
-
-	attack_bump.track_set_interpolation_type(attacker_position_track_index, Animation.INTERPOLATION_LINEAR);
-	attack_bump.track_set_interpolation_type(target_color_track_index, Animation.INTERPOLATION_LINEAR);
-	attack_bump.track_insert_key(target_color_track_index, 0, Color(1, 1, 1));
-	attack_bump.track_insert_key(attacker_position_track_index, 0, attacker_battle_sprite.global_position);
-	var direction_between_target_and_attacker = (target_battle_sprite.global_position - attacker_battle_sprite.global_position).normalized(); 
-	var position_right_before_attack = target_battle_sprite.global_position - (direction_between_target_and_attacker * 20);
-	attack_bump.track_insert_key(attacker_position_track_index, 0.5, position_right_before_attack);
-	attack_bump.track_insert_key(attacker_position_track_index, 0.9, position_right_before_attack);
-	attack_bump.track_insert_key(target_color_track_index, 0.89, Color(1, 1, 1));
-	attack_bump.track_insert_key(attacker_position_track_index, 1.10, target_battle_sprite.global_position);
-	attack_bump.track_insert_key(target_color_track_index, 1.10, Color(1, 0, 0));
-	attack_bump.track_insert_key(attacker_position_track_index, 1.3, position_right_before_attack);
-	attack_bump.track_insert_key(target_color_track_index, 1.18, Color(1, 1, 1));
-	attack_bump.track_insert_key(attacker_position_track_index, 1.5, position_right_before_attack);
-	attack_bump.track_insert_key(attacker_position_track_index, 2.0, attacker_battle_sprite.global_position);
-	attack_bump.value_track_set_update_mode(target_color_track_index, Animation.UPDATE_CONTINUOUS);
-	attack_bump.value_track_set_update_mode(attacker_position_track_index, Animation.UPDATE_CONTINUOUS);
-
-	return attack_bump;
-
 func _on_PartyMemberSelectionForAction_picked_party_member(party_member_object, party_member_index):
 	var active_actor = battle_information.active_actor();
 	var parties = get_party_pairs(whose_side_is_active(active_actor));
@@ -388,14 +399,6 @@ func _on_PartyMemberSelectionForAction_picked_party_member(party_member_object, 
 		ACTION_PROMPT_MODE_ATTACK:
 			# TODO make this animate for the enemy as well!
 			battle_information.decided_action = attack(active_actor, party_member_object, picking_item_index);
-
-			var animation_player = AnimationPlayer.new();
-			add_child(animation_player);
-			animation_player.add_animation("temporary_bump_hit", create_attack_bump_animation(active_actor, party_member_object));
-			animation_player.play("temporary_bump_hit");
-			animation_player.connect("animation_finished", self, "finished_bump_animation", [animation_player]);
-			# attack_bump.length = 0.6;
-
 			
 		ACTION_PROMPT_MODE_ABILITY:
 			battle_information.decided_action = ability(active_actor, party_member_object, picking_item_index);

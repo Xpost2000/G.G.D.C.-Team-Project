@@ -1,9 +1,12 @@
 extends Control
 
 func _on_Restart_pressed():	
+	GameGlobals.resume();
 	GameGlobals.reload_scene(GameGlobals.MAIN_GAME_SCENE);
 	GameGlobals.reload_scene(GameGlobals.BATTLE_SCENE);
-	GameGlobals.switch_to_scene(0);
+	GameGlobals.switch_to_scene(GameGlobals.MAIN_GAME_SCENE);
+	QuestsGlobal.reset_all_quests();
+	AudioGlobal.pause_music();
 
 func _on_Menu_pressed():
 	GameGlobals.switch_to_scene(1);

@@ -13,6 +13,8 @@ enum {
 	}
 signal combat_finished(combat_finished_information);
 
+const BloodParticleSystemPrefab = preload("res://game/misc_entities/BloodParticleSystem.tscn");
+
 onready var battle_layer = $BattleLayer;
 onready var battle_ui_layer = $BattleUILayer;
 
@@ -75,9 +77,34 @@ func finished_bump_animation(anim_name, animation_player, attack_action):
 	attack_action.marked_done = true;
 	print("play animation")
 
+func remove_particle_system_and_timer(timer, particle_system):
+	remove_child(timer);
+	remove_child(particle_system);
+	timer.queue_free();
+	particle_system.queue_free();
+
+const DIRECTION_MAGNITUDE = 1.56;
 func entity_take_damage(target, damage):
 	print("PREPARE TO DIE");
 	target.take_damage(damage);
+	# TODO, probably don't make a new instance each time.
+	var new_particle_system = BloodParticleSystemPrefab.instance();
+	var target_information = participant_side_and_index_of_actor(target);
+	var target_battle_sprite = target_information[0][target_information[1]];
+	new_particle_system.global_position = target_battle_sprite.global_position;
+	new_particle_system.emitting = true;
+	new_particle_system.one_shot = true;
+	var new_timer = Timer.new();
+	new_timer.connect("timeout", self, "remove_particle_system_and_timer", [new_timer, new_particle_system]);
+	add_child(new_timer);
+	new_timer.wait_time = 10; # a good enough time based on my settings.
+	new_timer.start();
+	if target_information[0] == right_side_participants.get_children():
+		new_particle_system.direction = Vector2(DIRECTION_MAGNITUDE, 0);
+	else:
+		new_particle_system.direction = Vector2(-DIRECTION_MAGNITUDE, 0);
+	add_child(new_particle_system);
+
 # fun....
 func create_attack_bump_animation(attacker, target, attack):
 	var attacker_information = participant_side_and_index_of_actor(attacker);
@@ -86,7 +113,7 @@ func create_attack_bump_animation(attacker, target, attack):
 	var target_battle_sprite = target_information[0][target_information[1]];
 
 	var attack_bump = Animation.new();
-	attack_bump.length = 2;
+	attack_bump.length = 2.25;
 	var target_color_track_index = attack_bump.add_track(0);
 	var self_method_track_index = attack_bump.add_track(2);
 	var attacker_position_track_index = attack_bump.add_track(0);
@@ -316,12 +343,13 @@ func _process(delta):
 
 					finish_battle(COMBAT_FINISHED_REASON_FLEE, parties[0], parties[1]);
 
-			if party_on_the_right.all_members_dead():
-				finish_battle(COMBAT_FINISHED_REASON_DEFEAT_OF, party_on_the_left, party_on_the_right);
-			elif party_on_the_left.all_members_dead():
-				finish_battle(COMBAT_FINISHED_REASON_DEFEAT_OF, party_on_the_right, party_on_the_left);
-
 			if battle_information.decided_action.done():
+				# TODO: do death fade out or something!
+				if party_on_the_right.all_members_dead():
+					finish_battle(COMBAT_FINISHED_REASON_DEFEAT_OF, party_on_the_left, party_on_the_right);
+				elif party_on_the_left.all_members_dead():
+					finish_battle(COMBAT_FINISHED_REASON_DEFEAT_OF, party_on_the_right, party_on_the_left);
+
 				allow_access_to_dashboard(true);
 				advance_actor();
 			else:

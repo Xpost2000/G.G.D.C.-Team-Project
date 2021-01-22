@@ -25,15 +25,10 @@ func _process(delta):
 
 # maybe do a fancy fade out.
 
-enum{ MAIN_GAME_SCENE,
-	  MAIN_MENU_SCENE,
-	  BATTLE_SCENE,
-	  GAME_SCENE_TYPE_COUNT}
-
 func start_game():
 	GameGlobals.resume();
-	GameGlobals.reload_scene(MAIN_GAME_SCENE);
-	GameGlobals.reload_scene(BATTLE_SCENE);
+	GameGlobals.reload_scene(GameGlobals.MAIN_GAME_SCENE);
+	GameGlobals.reload_scene(GameGlobals.BATTLE_SCENE);
 	GameGlobals.switch_to_scene(0);
 	QuestsGlobal.reset_all_quests();
 	AudioGlobal.pause_music();

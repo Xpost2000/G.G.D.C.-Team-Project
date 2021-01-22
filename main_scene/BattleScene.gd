@@ -6,6 +6,11 @@ extends Node2D
 # I guess when I was just testing stuff out but I'm probably not changing things too much since it's
 # not really necessary.
 
+var table_of_hit_sounds = ["snd/hit0.wav", "snd/hit1.wav", "snd/hit2.wav", "snd/hit3.wav"];
+func play_random_hit_sound():
+	var index = randi() % len(table_of_hit_sounds);
+	AudioGlobal.play_sound(table_of_hit_sounds[index]);
+
 enum {
 	COMBAT_FINISHED_REASON_FLEE, # The winning party is the one that didn't flee.
 	COMBAT_FINISHED_REASON_DEFEAT_OF, # The winning party is the last one standing.
@@ -104,6 +109,7 @@ func entity_take_damage(target, damage):
 	else:
 		new_particle_system.direction = Vector2(-DIRECTION_MAGNITUDE, 0);
 	add_child(new_particle_system);
+	play_random_hit_sound();
 
 # fun....
 func create_attack_bump_animation(attacker, target, attack):

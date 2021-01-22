@@ -53,7 +53,7 @@ func play_sound(filepath, volume=DEFAULT_MAX_VOLUME_DB, channel_index=-1):
 	
 
 	channel.stream = load_sound(filepath);
-	channel.stream.loop = false;
+	# channel.loop = false;
 	channel.volume_db = volume;
 	channel.play();
 

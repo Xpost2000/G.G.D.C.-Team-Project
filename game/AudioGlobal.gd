@@ -24,7 +24,8 @@ func load_sound(filepath):
 	var resource = null;
 	if !(filepath in sound_effect_resources):
 		sound_effect_resources[filepath] = load("res://" + filepath);
-		sound_effect_resources[filepath].loop = false;
+		if "loop" in sound_effect_resources[filepath]:
+			sound_effect_resources[filepath].loop = false;
 
 	resource = sound_effect_resources[filepath];
 	return resource;

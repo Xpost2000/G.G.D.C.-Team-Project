@@ -93,22 +93,23 @@ const BATTLE_COOLDOWN_MAX_TIME = 2.0;
 var battle_cooldown = BATTLE_COOLDOWN_MAX_TIME;
 
 func _on_InteractableArea_area_entered(area):
-	if area is LevelTransitionClass:
-		if just_transitioned_from_other_level:
-			just_transitioned_from_other_level = false;
-		else:
-			emit_signal("transitioning_to_another_level", self, area);
-	# I would make another node just to check the type explicitly...
-	# but I'll settle for this since it takes less time.
-	if area.name == "InteractableArea":
-		var parent = area.get_parent();
-		if parent is GameActor && battle_cooldown >= BATTLE_COOLDOWN_MAX_TIME && !parent.all_members_dead():
-			print("Another actor.");
-			print("I humbly request a battle with this one.");
-			emit_signal("request_to_open_battle", self, parent);
-			battle_cooldown = 0;
-		else:
-			print("Unknown parent or too many battles at once... Or they're a corpse.");
+	if can_think():
+		if area is LevelTransitionClass:
+			if just_transitioned_from_other_level:
+				just_transitioned_from_other_level = false;
+			else:
+				emit_signal("transitioning_to_another_level", self, area);
+		# I would make another node just to check the type explicitly...
+		# but I'll settle for this since it takes less time.
+		if area.name == "InteractableArea":
+			var parent = area.get_parent();
+			if parent is GameActor && battle_cooldown >= BATTLE_COOLDOWN_MAX_TIME && !parent.all_members_dead():
+				print("Another actor.");
+				print("I humbly request a battle with this one.");
+				emit_signal("request_to_open_battle", self, parent);
+				battle_cooldown = 0;
+			else:
+				print("Unknown parent or too many battles at once... Or they're a corpse.");
 
 func _on_InteractableArea_area_exited(area):
 	if area.name == "InteractableArea":

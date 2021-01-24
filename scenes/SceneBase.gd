@@ -16,10 +16,23 @@ func _remove_player_control():
 func _set_player_position_to(where: Vector2):
 	main_game_scene.player_node.global_position = where;
 
+func _set_entity_position_to(entity_name: String, where: Vector2):
+	var target = find_node("Entities/" + entity_name);
+	target.global_position = where;
+
 const GameActor = preload("res://game/actors/GameActor.gd");
 func _move_player_to(goal: Vector2, relative = false):
-	main_game_scene.player_node.action_walk_to(goal);
-	main_game_scene.player_node.action_walk_to(main_game_scene.player_node.global_position+goal);
+	if relative:
+		main_game_scene.player_node.action_walk_to(main_game_scene.player_node.global_position+goal);
+	else:
+		main_game_scene.player_node.action_walk_to(goal);
+
+func _move_entity_to(entity_name: String, goal: Vector2, relative = false):
+	var target = find_node("Entities/" + entity_name);
+	if relative:
+		target.action_walk_to(target.global_position+goal);
+	else:
+		target.action_walk_to(goal);
 
 func _open_dialogue(what: String):
 	main_game_scene.emit_signal("ask_ui_to_open_dialogue", what);
@@ -64,17 +77,25 @@ func _mark_end_of_cutscene():
 	main_game_scene.enable_ui();
 	_enable_player_control();
 	GameGlobals.playing_cutscene = null;
-	print("HALT!");
+	resume_all_entities();
+
+func halt_all_entities():
+	for entity in $Entities.get_children():
+		if entity is GameActor:
+			entity.disable_think();
+
+func resume_all_entities():
+	for entity in $Entities.get_children():
+		if entity is GameActor:
+			entity.enable_think();
 
 func _ready():
-	# if has_method("initialize"):
-	#	initialize();
-
 	if $Cutscenes:
 		$Cutscenes.connect("animation_started", self, "_set_cutscene_start", [$Cutscenes]);
 
 func play_cutscene(name):
 	$Cutscenes.play(name);
+	halt_all_entities();
 
 func _process(delta):
 	pass;

@@ -85,13 +85,16 @@ tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = {
-"times": PoolRealArray( 0.1, 0.2, 4.7 ),
-"transitions": PoolRealArray( 1, 1, 1 ),
+"times": PoolRealArray( 0, 0.2, 4.01861, 4.03589 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
 "values": [ {
 "args": [  ],
 "method": "_mark_start_of_cutscene"
 }, {
 "args": [ Vector2( 349.713, -61 ) ],
+"method": "_set_player_position_to"
+}, {
+"args": [ Vector2( 805, -300 ) ],
 "method": "_set_player_position_to"
 }, {
 "args": [  ],
@@ -105,17 +108,20 @@ tracks/1/loop_wrap = true
 tracks/1/imported = false
 tracks/1/enabled = true
 tracks/1/keys = {
-"times": PoolRealArray( 0.1, 0.2, 2.3 ),
-"transitions": PoolRealArray( 1, 1, 1 ),
+"times": PoolRealArray( 0, 0.3, 2.9, 3.2 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
 "values": [ {
 "args": [ Color( 0, 0, 0, 1 ), null ],
 "method": "_do_fade_out"
 }, {
-"args": [ Vector2( 500, 0 ) ],
+"args": [ Vector2( 1000, 0 ) ],
 "method": "_move_player_to"
 }, {
 "args": [ "testerbester.json" ],
 "method": "_open_dialogue"
+}, {
+"args": [ Color( 0, 0, 0, 1 ), 1.55 ],
+"method": "_do_fade_in_and_out"
 } ]
 }
 

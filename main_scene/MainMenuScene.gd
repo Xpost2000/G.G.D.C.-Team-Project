@@ -32,6 +32,7 @@ func start_game():
 	GameGlobals.switch_to_scene(0);
 	QuestsGlobal.reset_all_quests();
 	AudioGlobal.pause_music();
+	GameGlobals.get_scene(GameGlobals.MAIN_GAME_SCENE).current_level_node().play_cutscene("Introduction");
 
 func _on_StartGameButton_pressed():
 	call_deferred("start_game");

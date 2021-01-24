@@ -182,7 +182,6 @@ func setup_focus():
 				break;
 		if !any_already_selected:
 			dialogue_choices_container.get_children()[0].call_deferred("grab_focus");
-			print("grab focus for choice!");
 	else:
 		dialogue_continue_prompt.grab_focus();
 
@@ -260,7 +259,7 @@ func continue_to_next_scene():
 
 func handle_process(delta):
 	if !initial_opening:
-		setup_focus();
+		call_deferred("setup_focus");
 		if Input.is_action_just_pressed("game_interact_action"):
 			continue_to_next_scene();
 	else:

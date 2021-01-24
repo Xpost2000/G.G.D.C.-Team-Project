@@ -8,6 +8,9 @@ onready var ui_layer = $UILayer;
 onready var level_information = $GameLayer/LevelInformation;
 onready var player_node = $GameLayer/PersistentThings/PlayerCharacter;
 
+# FOR TESTING
+onready var level_node = $GameLayer/LevelInformation/LevelDemo;
+
 func _generate_quest_from_name_type(quest_name):
 	match quest_name:
 		"test_die_quest":
@@ -152,4 +155,20 @@ func _on_PlayerCharacter_request_to_open_battle(left, right):
 
 func _process(delta):
 	ui_layer.show_death(player_node.all_members_dead());
+	if Input.is_action_just_pressed("ui_end"):
+		level_node.play_cutscene("Introduction");
 		
+		
+func enable_ui():
+	ui_layer.show_all();
+	ui_layer.allow_think = true;
+func disable_ui():
+	ui_layer.hide_all();
+	ui_layer.allow_think = false;
+
+func enable_player_control():
+	player_node.enable_think();
+
+func disable_player_control():
+	player_node.disable_think();
+	

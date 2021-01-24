@@ -1,9 +1,8 @@
 [gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://images/test_tiles.png" type="Texture" id=1]
-[ext_resource path="res://game/actors/ShadowMe.tscn" type="PackedScene" id=2]
 [ext_resource path="res://game/LevelTransition.tscn" type="PackedScene" id=3]
-[ext_resource path="res://game/misc_entities/EnemySpawnerTemplate.tscn" type="PackedScene" id=4]
+[ext_resource path="res://scenes/LevelDemo.gd" type="Script" id=5]
 
 [sub_resource type="ConvexPolygonShape2D" id=1]
 points = PoolVector2Array( 64, 64, 0, 64, 0, 0, 64, 0 )
@@ -76,7 +75,52 @@ points = PoolVector2Array( 64, 64, 0, 64, 0, 0, 64, 0 )
 [sub_resource type="CircleShape2D" id=3]
 radius = 60.3525
 
+[sub_resource type="Animation" id=4]
+resource_name = "Introduction"
+length = 5.0
+tracks/0/type = "method"
+tracks/0/path = NodePath(".")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0.1, 0.2, 4.7 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"values": [ {
+"args": [  ],
+"method": "_mark_start_of_cutscene"
+}, {
+"args": [ Vector2( 349.713, -61 ) ],
+"method": "_set_player_position_to"
+}, {
+"args": [  ],
+"method": "_mark_end_of_cutscene"
+} ]
+}
+tracks/1/type = "method"
+tracks/1/path = NodePath(".")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0.1, 0.2, 2.3 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"values": [ {
+"args": [ Color( 0, 0, 0, 1 ), null ],
+"method": "_do_fade_out"
+}, {
+"args": [ Vector2( 500, 0 ) ],
+"method": "_move_player_to"
+}, {
+"args": [ "testerbester.json" ],
+"method": "_open_dialogue"
+} ]
+}
+
 [node name="LevelDemo" type="YSort"]
+script = ExtResource( 5 )
 
 [node name="Tilesets" type="Node2D" parent="."]
 __meta__ = {
@@ -105,11 +149,6 @@ landmark_node = "ExitToDemo1"
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Entities/EntranceToDemo2"]
 shape = SubResource( 3 )
 
-[node name="ShadowMe" parent="Entities" groups=[
-"Actors",
-] instance=ExtResource( 2 )]
-position = Vector2( 824.703, -296.185 )
-
 [node name="PotentialQuestLocation" type="Node2D" parent="Entities" groups=[
 "QUEST_LOCATION",
 ]]
@@ -120,13 +159,8 @@ position = Vector2( 256.979, 333.196 )
 ]]
 position = Vector2( 1061.5, 172.834 )
 
-[node name="TestSpawner" parent="Entities" instance=ExtResource( 4 )]
-
-[node name="TestSpawner2" parent="Entities" instance=ExtResource( 4 )]
-position = Vector2( 843.16, 76.3869 )
-
-[node name="TestSpawner3" parent="Entities" instance=ExtResource( 4 )]
-position = Vector2( 1187.67, 73.5553 )
+[node name="Cutscenes" type="AnimationPlayer" parent="."]
+anims/Introduction = SubResource( 4 )
 
 [node name="Props" type="Node2D" parent="."]
 __meta__ = {

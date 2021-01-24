@@ -24,6 +24,7 @@ func load_sound(filepath):
 	var resource = null;
 	if !(filepath in sound_effect_resources):
 		sound_effect_resources[filepath] = load("res://" + filepath);
+		sound_effect_resources[filepath].loop = false;
 
 	resource = sound_effect_resources[filepath];
 	return resource;
@@ -53,7 +54,6 @@ func play_sound(filepath, volume=DEFAULT_MAX_VOLUME_DB, channel_index=-1):
 	
 
 	channel.stream = load_sound(filepath);
-	# channel.loop = false;
 	channel.volume_db = volume;
 	channel.play();
 

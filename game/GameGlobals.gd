@@ -26,6 +26,8 @@ var main_game_screen;
 var main_menu_screen;
 var battle_screen;
 
+var game_variables = []; # For reasons.
+
 enum{ MAIN_GAME_SCENE,
 	  MAIN_MENU_SCENE,
 	  BATTLE_SCENE,
@@ -85,3 +87,16 @@ func _ready():
 	# I'm going to skip preloading the game. There's no point?
 	for screen_type in range(MAIN_GAME_SCENE+1, GAME_SCENE_TYPE_COUNT):
 		reload_scene(screen_type);
+
+var playing_cutscene = null;
+func _process(delta):
+	if playing_cutscene:
+		if paused():
+			if playing_cutscene.is_playing():
+				playing_cutscene.stop(false);
+				print("stopping cause of pause");
+		else:
+			if not playing_cutscene.is_playing():
+				playing_cutscene.play();
+				print("resunming");
+

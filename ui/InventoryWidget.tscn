@@ -6,7 +6,7 @@
 [ext_resource path="res://ui/ItemPreview.gd" type="Script" id=4]
 [ext_resource path="res://images/ui/ui_paper.png" type="Texture" id=5]
 [ext_resource path="res://images/light_blob.png" type="Texture" id=6]
-[ext_resource path="res://images/ui/ui_amber.png" type="Texture" id=7]
+[ext_resource path="res://images/ui/ui_teal.png" type="Texture" id=7]
 
 [sub_resource type="DynamicFont" id=1]
 size = 24
@@ -42,10 +42,10 @@ __meta__ = {
 }
 
 [node name="ItemPreview" type="NinePatchRect" parent="."]
-margin_left = 719.005
-margin_top = 7.66974
+margin_left = 719.0
+margin_top = 16.0
 margin_right = 1132.0
-margin_bottom = 641.67
+margin_bottom = 642.0
 texture = ExtResource( 7 )
 patch_margin_left = 8
 patch_margin_top = 8

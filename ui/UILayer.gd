@@ -17,6 +17,8 @@ onready var dialogue_ui = $States/DialogueUI;
 onready var levelup_ui = $States/LevelUpUI;
 onready var quest_log_ui = $States/QuestLogUI;
 
+var allow_think = true;
+
 enum {UI_STATE_GAME,
 	  UI_STATE_INVENTORY,
 	  UI_STATE_SHOPPING,
@@ -39,14 +41,19 @@ onready var states = {
 var current_state = UI_STATE_GAME;
 
 var shown = true;
+# var hide_exceptions = [$States/PauseScreenUI, $States/DeathScreenUI, dialogue_ui];
 func show_all():
 	shown = true;
 	for child in get_children():
 		child.show();
+	$States.show();
+	$Popups.show();
 func hide_all():
 	shown = false;
 	for child in get_children():
 		child.hide();
+	$States.show();
+	$Popups.show();
 
 func toggle_show():
 	if shown:
@@ -108,7 +115,6 @@ func create_fade_dimmer(color, hang_time=0):
 
 	return new_fade_dimmer;
 	
-
 func delete_dimmer(dimmer):
 	remove_child(dimmer);
 	dimmer.queue_free();
@@ -167,22 +173,23 @@ func _process(delta):
 			add_popup(_popup_queue.pop_front());
 		else:
 			if current_state == UI_STATE_GAME:
-				if Input.is_action_just_pressed("ui_page_up"):
-					get_parent().write_save_game();
-					add_popup("Saved game!");
-
-				if Input.is_action_just_pressed("ui_page_down"):
-					toggle_shop("shop_files/test_stock.json");
-
 				if Input.is_action_just_pressed("game_action_ui_pause"):
 					toggle_pause();
 
-				if Input.is_action_just_pressed("game_action_open_inventory"):
-					toggle_inventory();
+				if allow_think:
+					if Input.is_action_just_pressed("ui_page_up"):
+						get_parent().write_save_game();
+						add_popup("Saved game!");
 
-				if Input.is_action_just_pressed("game_interact_action"):
-					set_state(UI_STATE_DIALOGUE);
-					dialogue_ui.open_dialogue("testerbester.json");
+					if Input.is_action_just_pressed("ui_page_down"):
+						toggle_shop("shop_files/test_stock.json");
+
+					if Input.is_action_just_pressed("game_action_open_inventory"):
+						toggle_inventory();
+
+					if Input.is_action_just_pressed("game_interact_action"):
+						set_state(UI_STATE_DIALOGUE);
+						dialogue_ui.open_dialogue("testerbester.json");
 			else:
 				if states[current_state]:
 					states[current_state].handle_process(delta);

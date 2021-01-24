@@ -1,9 +1,10 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://images/test_tiles.png" type="Texture" id=1]
 [ext_resource path="res://scenes/DoorA.gd" type="Script" id=2]
 [ext_resource path="res://game/LevelTransition.tscn" type="PackedScene" id=3]
 [ext_resource path="res://game/actors/JesusTest.tscn" type="PackedScene" id=4]
+[ext_resource path="res://scenes/LevelDemo2.gd" type="Script" id=5]
 
 [sub_resource type="ConvexPolygonShape2D" id=1]
 points = PoolVector2Array( 64, 64, 0, 64, 0, 0, 64, 0 )
@@ -80,6 +81,7 @@ extents = Vector2( 23.1089, 27.7395 )
 radius = 82.4217
 
 [node name="LevelDemo2" type="YSort"]
+script = ExtResource( 5 )
 
 [node name="Tilesets" type="Node2D" parent="."]
 __meta__ = {

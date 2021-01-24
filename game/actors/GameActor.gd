@@ -149,6 +149,10 @@ func disable_think():
 func _physics_process(delta):
 	if can_think():
 		override_physics_process(delta);
+	else:
+		# in the case of AI, this will be identical behavior for them...
+		# print("MOVE!");
+		execute_actions(delta);
 
 func _process(delta):
 	if can_think():
@@ -160,18 +164,21 @@ var think_timer = TIME_UNTIL_NEXT_THINK;
 
 func force_next_think():
 	think_timer = TIME_UNTIL_NEXT_THINK;
+	thought_action = nothing_action();
 
 class ThinkAction:
 	func _init(type):
 		self.type = type;
 		
 	var type: int;
-	var walk_direction: Vector2;
+	var walk_direction: Vector2; # or location if that's the case
 
 enum{ ACTION_TYPE_NOTHING,
 	  ACTION_TYPE_WALK_IN_DIRECTION,
+	  ACTION_TYPE_WALK_TO,
 	  ACTION_TYPE_COUNT };
-
+# 349.713
+# -61
 func nothing_action():
 	return ThinkAction.new(ACTION_TYPE_NOTHING);
 	
@@ -179,6 +186,18 @@ func walk_action(direction):
 	var new_action = ThinkAction.new(ACTION_TYPE_WALK_IN_DIRECTION);
 	new_action.walk_direction = direction;
 	return new_action;
+
+func walk_to(where):
+	var new_action = ThinkAction.new(ACTION_TYPE_WALK_TO);
+	new_action.walk_direction = where;
+	return new_action;
+
+func _action_walk_to(where):
+	thought_action = walk_to(where);
+	print("setting action");
+
+func action_walk_to(where):
+	call_deferred("_action_walk_to", where);
 
 func decide_new_action():
 	var type = randi() % ACTION_TYPE_COUNT;
@@ -195,13 +214,26 @@ func decide_new_action():
 			return new_walk_action;
 
 var thought_action = nothing_action();
+func execute_actions(delta):
+	if thought_action:
+		match thought_action.type:
+			ACTION_TYPE_NOTHING: pass;
+			ACTION_TYPE_WALK_TO: 
+				var real_direction = (thought_action.walk_direction - global_position).normalized();
+				var successful_move = handle_movement(false, real_direction, delta);
+
+				# Should really be called "about" there... Hopefully no
+				if !successful_move or (global_position.distance_to(thought_action.walk_direction) < 10):
+					force_next_think();
+				pass;
+			ACTION_TYPE_WALK_IN_DIRECTION:
+				var successful_move = handle_movement(false, thought_action.walk_direction, delta);
+				if !successful_move:
+					force_next_think();
+
 func override_physics_process(delta):
-	match thought_action.type:
-		ACTION_TYPE_NOTHING: pass;
-		ACTION_TYPE_WALK_IN_DIRECTION:
-			var successful_move = handle_movement(false, thought_action.walk_direction, delta);
-			if !successful_move:
-				force_next_think();
+	execute_actions(delta);
+
 func override_process(delta):
 	if think_timer >= TIME_UNTIL_NEXT_THINK:
 		thought_action = decide_new_action();

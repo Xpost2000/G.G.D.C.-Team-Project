@@ -2,6 +2,8 @@
   TODO(jerry): Make name not something you can enter on dialogue choices and next scene, rather
   have them selectable from a list of nodes.
 */
+
+// delete_dom_element_with_confirmation element things
 function delete_dom_element_with_confirmation(element) {
     if (confirm("Are you sure you want to delete this scene?")) {
         element.remove();

@@ -293,34 +293,44 @@ func _process(delta):
 				if party is PlayerCharacter:
 					battle_turn_widget_head_label.text = "YOUR TURN";
 
-					if Input.is_action_just_pressed("ui_up"):
-						focused_party_member_index -= 1;
-					if Input.is_action_just_pressed("ui_down"):
-						focused_party_member_index += 1;
-					if Input.is_action_just_pressed("ui_right"):
-						focused_party_member_index = recalculate_party_member_index(party_on_the_right);
-						focused_party = party_on_the_right;
-					if Input.is_action_just_pressed("ui_left"):
-						focused_party_member_index = recalculate_party_member_index(party_on_the_left);
-						focused_party = party_on_the_left;
-					if Input.is_action_just_pressed("ui_accept"):
+					if not last_created_selection_menu:
+						if Input.is_action_just_pressed("ui_up"):
+							focused_party_member_index -= 1;
+						if Input.is_action_just_pressed("ui_down"):
+							focused_party_member_index += 1;
+						if Input.is_action_just_pressed("ui_right"):
+							focused_party_member_index = recalculate_party_member_index(party_on_the_right);
+							focused_party = party_on_the_right;
+						if Input.is_action_just_pressed("ui_left"):
+							focused_party_member_index = recalculate_party_member_index(party_on_the_left);
+							focused_party = party_on_the_left;
+
+						if Input.is_action_just_pressed("ui_accept"):
+							var new_selection_menu = SelectionOptionsMenu.instance();
+
+							var participants_side = left_side_participants if focused_party == party_on_the_left else right_side_participants;
+							var focused_party_member = participants_side.get_children()[focused_party_member_index];
+
+							var direction = Vector2.ZERO;
+							if focused_party == party_on_the_left:
+								direction = Vector2(1, 0);
+								new_selection_menu.get_node("Container/Layout/Attack").hide();
+							else:
+								direction = Vector2(-1, 0);
+
+							new_selection_menu.rect_position = focused_party_member.global_position + (direction * 85);
+
+							battle_ui_layer.add_child(new_selection_menu);
+							last_created_selection_menu = new_selection_menu;
+
+							for child in new_selection_menu.get_node("Container/Layout").get_children():
+								if child.is_visible():
+									child.grab_focus();
+									break;
+
+					if Input.is_action_just_pressed("ui_cancel"):
 						if last_created_selection_menu:
 							last_created_selection_menu.queue_free();
-
-						var new_selection_menu = SelectionOptionsMenu.instance();
-
-						var participants_side = left_side_participants if focused_party == party_on_the_left else right_side_participants;
-						var focused_party_member = participants_side.get_children()[focused_party_member_index];
-
-						var direction = Vector2.ZERO;
-						if focused_party == party_on_the_left:
-							direction = Vector2(1, 0);
-						else:
-							direction = Vector2(-1, 0);
-
-						new_selection_menu.rect_position = focused_party_member.global_position + (direction * 85);
-						battle_ui_layer.add_child(new_selection_menu);
-						last_created_selection_menu = new_selection_menu;
 
 					if focused_party_member_index <= 0:
 						focused_party_member_index = 0;

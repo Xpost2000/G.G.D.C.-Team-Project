@@ -9,11 +9,37 @@ __meta__ = {
 }
 
 [node name="Container" type="ColorRect" parent="."]
-margin_left = -31.1815
-margin_top = -21.3815
-margin_right = 37.8185
-margin_bottom = 80.6185
-color = Color( 0.921569, 0.690196, 0.886275, 1 )
+margin_left = -39.0
+margin_top = -31.0
+margin_right = 37.0
+margin_bottom = 51.0
+color = Color( 0.180392, 0.180392, 0.180392, 1 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="Layout" type="VBoxContainer" parent="Container"]
+margin_left = 3.0
+margin_top = 7.0
+margin_right = 72.0
+margin_bottom = 83.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Attack" type="Button" parent="Container/Layout"]
+margin_right = 69.0
+margin_bottom = 20.0
+text = "Attack"
+
+[node name="Ability" type="Button" parent="Container/Layout"]
+margin_top = 24.0
+margin_right = 69.0
+margin_bottom = 44.0
+text = "Ability"
+
+[node name="Item" type="Button" parent="Container/Layout"]
+margin_top = 48.0
+margin_right = 69.0
+margin_bottom = 68.0
+text = "Item"

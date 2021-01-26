@@ -32,12 +32,6 @@ onready var right_side_info = $BattleUILayer/RightSidePartyInfo;
 onready var battle_turn_widget = $BattleUILayer/TurnMeter;
 onready var battle_turn_widget_head_label = $BattleUILayer/TurnMeter/Head;
 onready var battle_log_widget = $BattleUILayer/Battlelog;
-onready var inventory_ui = $BattleUILayer/InventoryUI;
-
-onready var party_member_select_for_action = $BattleUILayer/PartyMemberSelectionForAction;
-onready var action_selection_prompt = $BattleUILayer/ActionSelectionPrompt;
-
-onready var battle_dashboard_actions_layout = $BattleUILayer/BattleDashboard/Actions;
 
 # MAKE THIS OF TYPE P.C.
 var party_on_the_left;
@@ -198,6 +192,8 @@ func begin_battle(left, right):
 	populate_participants_with_sprites(left_side_participants, party_on_the_left.party_members);
 	populate_participants_with_sprites(right_side_participants, party_on_the_right.party_members);
 
+	focused_party = party_on_the_left;
+
 
 # Technically... This doesn't matter to me... What I really care about
 # is the "brain" controller.
@@ -248,11 +244,6 @@ var artificial_thinking_time = 0;
 const GameActor = preload("res://game/actors/GameActor.gd");
 const PlayerCharacter = preload("res://game/actors/PlayerCharacter.gd");
 
-func allow_access_to_dashboard(val):
-	for child in battle_dashboard_actions_layout.get_children():
-		if child is Button:
-			child.disabled = !val;
-
 # a stupid helper function
 func finish_battle(reason, winner, loser):
 	emit_signal("combat_finished", reason, winner, loser);
@@ -261,7 +252,7 @@ func finish_battle(reason, winner, loser):
 func report_inventory_of_active_party():
 	var active_actor = battle_information.active_actor();
 	var active_party = get_party_pairs(whose_side_is_active(active_actor))[0];
-	inventory_ui.update_based_on_entity(active_party, active_party.inventory);
+	# inventory_ui.update_based_on_entity(active_party, active_party.inventory);
 
 var camera_shake_timer_length = 0;
 var camera_shake_timer = 0;
@@ -280,6 +271,13 @@ func handle_camera_shake(delta):
 	else:
 		$Camera2D.offset = Vector2.ZERO;
 	
+var focused_party = null;
+var focused_party_member_index = 0;
+
+func recalculate_party_member_index(changing_to_party):
+	var percent = float(focused_party_member_index)/(len(focused_party.party_members)-1);
+	return int((len(changing_to_party.party_members)-1) * percent);
+
 func _process(delta):
 	if party_on_the_left and party_on_the_right:
 		if !battle_information.decided_action:
@@ -290,14 +288,26 @@ func _process(delta):
 			report_inventory_of_active_party();
 
 			if party is GameActor:
-				allow_access_to_dashboard(party is PlayerCharacter and not inventory_showing);
-
-				if inventory_showing:
-					if Input.is_action_just_pressed("game_action_open_inventory") or Input.is_action_just_pressed("ui_cancel"):
-						close_inventory();
-					
 				if party is PlayerCharacter:
 					battle_turn_widget_head_label.text = "YOUR TURN";
+
+					if Input.is_action_just_pressed("ui_up"):
+						focused_party_member_index -= 1;
+					if Input.is_action_just_pressed("ui_down"):
+						focused_party_member_index += 1;
+					if Input.is_action_just_pressed("ui_right"):
+						focused_party_member_index = recalculate_party_member_index(party_on_the_right);
+						focused_party = party_on_the_right;
+					if Input.is_action_just_pressed("ui_left"):
+						focused_party_member_index = recalculate_party_member_index(party_on_the_left);
+						focused_party = party_on_the_left;
+
+					if focused_party_member_index <= 0:
+						focused_party_member_index = 0;
+					elif focused_party_member_index >= len(focused_party.party_members):
+						focused_party_member_index = len(focused_party.party_members)-1;
+
+					highlight_actor(focused_party.party_members[focused_party_member_index]);
 				else:
 					battle_turn_widget_head_label.text = "AI THINKING...";
 					if artificial_thinking_time >= ARTIFICIAL_THINKING_TIME_MAX:
@@ -356,116 +366,27 @@ func _process(delta):
 				elif party_on_the_left.all_members_dead():
 					finish_battle(COMBAT_FINISHED_REASON_DEFEAT_OF, party_on_the_right, party_on_the_left);
 
-				allow_access_to_dashboard(true);
 				advance_actor();
-			else:
-				allow_access_to_dashboard(false);
 
 
 		handle_camera_shake(delta);
 		battle_turn_widget.update_view_of_turns(battle_information);
 
-func _on_BattleDashboard_Flee_pressed():
-	var active_actor = battle_information.active_actor();
-	var parties = get_party_pairs(whose_side_is_active(active_actor));
-	finish_battle(COMBAT_FINISHED_REASON_FLEE, parties[0], parties[1]);
-
-func _on_BattleDashboard_ForfeitTurn_pressed():
-	var active_actor = battle_information.active_actor();
-	battle_information.decided_action = skip_turn(active_actor);
-
-enum{ ACTION_PROMPT_MODE_ATTACK, ACTION_PROMPT_MODE_ABILITY };
-var action_prompt_mode = 0;
-
-func _on_BattleDashboard_UseAbility_pressed():
-	battle_log_widget.push_message("UI Requests to use an ability.");
-	action_prompt_mode = ACTION_PROMPT_MODE_ABILITY;
-	var active_actor = battle_information.active_actor();
-	action_selection_prompt.show();
-	action_selection_prompt.open_prompt(active_actor.abilities, "Select Ability");
-
-func _on_BattleDashboard_Attack_pressed():
-	battle_log_widget.push_message("UI Requests to do an attack");
-	action_prompt_mode = ACTION_PROMPT_MODE_ATTACK;
-	var active_actor = battle_information.active_actor();
-	action_selection_prompt.show();
-	action_selection_prompt.open_prompt(active_actor.attacks, "Select Attack");
-
-var picking_item_index = -1;
-# I miss FP
 func filter_for_non_dead(party_members):
 	var result = [];
 	for party_member in party_members:
 		if !party_member.dead():
 			result.push_back(party_member);
 	return result;
-func _on_ActionSelectionPrompt_picked(index):
-	# I'd check the ability for target allowance...
-	# TODO, highlight who is picked on the battle view.
-	var active_actor = battle_information.active_actor();
-	var parties = get_party_pairs(whose_side_is_active(active_actor));
-	print("PICKU");
-	
-	match action_prompt_mode:
-		ACTION_PROMPT_MODE_ATTACK:
-			party_member_select_for_action.open_prompt(filter_for_non_dead(parties[1].party_members));
-		ACTION_PROMPT_MODE_ABILITY:
-			party_member_select_for_action.open_prompt(parties[0].party_members + filter_for_non_dead(parties[1].party_members));
-	action_selection_prompt.hide();
-	picking_item_index = index;
-	party_member_select_for_action.show();
 
 var last_highlighted_actor = null;
 func unhighlight_last_actor_when_present():
 	if last_highlighted_actor:
 		last_highlighted_actor.self_modulate = Color(1, 1, 1);
-	
-func _on_PartyMemberSelectionForAction_cancel_selection():
+
+func highlight_actor(actor):
+	var actor_information = participant_side_and_index_of_actor(actor);
+	var actor_battle_sprite = actor_information[0][actor_information[1]];
 	unhighlight_last_actor_when_present();
-	party_member_select_for_action.hide();
-
-func _on_PartyMemberSelectionForAction_highlight_party_member(party_member_object, party_member_index):
-	var attacker_information = participant_side_and_index_of_actor(party_member_object);
-	var attacker_battle_sprite = attacker_information[0][attacker_information[1]];
-	unhighlight_last_actor_when_present();
-	attacker_battle_sprite.self_modulate = Color(1, 1, 0);
-	last_highlighted_actor = attacker_battle_sprite;
-	print("HIGHLIGHT!");
-
-func _on_PartyMemberSelectionForAction_picked_party_member(party_member_object, party_member_index):
-	var active_actor = battle_information.active_actor();
-	var parties = get_party_pairs(whose_side_is_active(active_actor));
-
-	match action_prompt_mode:
-		ACTION_PROMPT_MODE_ATTACK:
-			# TODO make this animate for the enemy as well!
-			battle_information.decided_action = attack(active_actor, party_member_object, picking_item_index);
-			
-		ACTION_PROMPT_MODE_ABILITY:
-			battle_information.decided_action = ability(active_actor, party_member_object, picking_item_index);
-	party_member_select_for_action.hide();
-
-
-var inventory_showing = false;
-func close_inventory():
-	inventory_ui.hide();
-	inventory_showing = false;
-func show_inventory():
-	inventory_ui.show();
-	inventory_showing = true;
-
-enum {CLOSE_REASON_CANCEL, CLOSE_REASON_USED}
-func _on_InventoryUI_close(reason):
-	var active_actor = battle_information.active_actor();
-	var parties = get_party_pairs(whose_side_is_active(active_actor));
-
-	match reason[0]:
-		CLOSE_REASON_CANCEL: pass;
-		CLOSE_REASON_USED:
-			var target_actor_index = reason[1];
-			var item_entry = reason[2];
-			var item_entry_index = parties[0].inventory.find(item_entry);
-			battle_information.decided_action = use_item(active_actor,
-														 parties[0].get_party_member(target_actor_index),
-														 item_entry_index);
-	close_inventory();
+	actor_battle_sprite.self_modulate = Color(1, 1, 0);
+	last_highlighted_actor = actor_battle_sprite;

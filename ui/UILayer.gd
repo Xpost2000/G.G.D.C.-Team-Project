@@ -1,5 +1,6 @@
 extends CanvasLayer
-# TODO: UI should attempt to have more fine grained control over it's widgets
+
+# Again not great code, but whatever, it's simple and easy to edit.
 
 signal notify_finished_level_load_related_fading();
 
@@ -16,6 +17,14 @@ onready var party_member_information_holder = $PartyMemberInformation;
 onready var dialogue_ui = $States/DialogueUI;
 onready var levelup_ui = $States/LevelUpUI;
 onready var quest_log_ui = $States/QuestLogUI;
+
+const MAX_PARTY_MEMBER_INFO_VIEW_TIME = 0.75;
+const MAX_PARTY_MEMBER_VIEW_TIME_PADDING = 1.25;
+var party_member_info_view_timer = 0;
+
+const MAX_SPRINT_TIMER_VIEW_TIME = 0.5;
+const MAX_SPRINT_TIMER_VIEW_TIME_PADDING = 0.85;
+var sprint_bar_view_timer = 0;
 
 var allow_think = true;
 
@@ -46,14 +55,14 @@ func show_all():
 	shown = true;
 	for child in get_children():
 		child.show();
-	$States.show();
-	$Popups.show();
+		$States.show();
+		$Popups.show();
 func hide_all():
 	shown = false;
 	for child in get_children():
 		child.hide();
-	$States.show();
-	$Popups.show();
+		$States.show();
+		$Popups.show();
 
 func toggle_show():
 	if shown:
@@ -68,7 +77,7 @@ func _handle_quest_start(quest_info):
 func _handle_quest_end(quest_info):
 	queue_popup("Quest Completed: " + quest_info.name);
 	queue_popup("Wait for your reward!");
-		
+	
 func _ready():
 	inventory_ui.get_node("Inventory/InventoryItemList").fixed_icon_size = Vector2(32,32);
 	reference_to_game_scene = get_parent().get_node("GameLayer");
@@ -98,8 +107,12 @@ func _on_PlayerCharacter_report_inventory_contents(player, player_inventory):
 func _on_PlayerCharacter_report_sprinting_information(stamina_percent, can_sprint, _trying_to_sprint):
 	if can_sprint:
 		stamina_bar.color = Color.green;
+		if _trying_to_sprint:
+			sprint_bar_view_timer = MAX_SPRINT_TIMER_VIEW_TIME + MAX_SPRINT_TIMER_VIEW_TIME_PADDING;
 	else:
 		stamina_bar.color = Color.yellow;
+		if _trying_to_sprint:
+			sprint_bar_view_timer = MAX_SPRINT_TIMER_VIEW_TIME * 1.5 + MAX_SPRINT_TIMER_VIEW_TIME_PADDING * 2;
 		
 	stamina_bar.set_size(Vector2(stamina_percent * stamina_bar_max_dimensions.x, 
 								 stamina_bar_max_dimensions.y))
@@ -166,6 +179,19 @@ func queue_popup(text):
 func add_popup(text):
 	call_deferred("_real_add_popup", text);
 
+func handle_game_state_ui(delta):
+	party_member_information_holder.show();
+	stamina_bar.show();
+
+	if party_member_info_view_timer > 0.0:
+		party_member_info_view_timer -= delta;
+
+	if sprint_bar_view_timer > 0.0:
+		sprint_bar_view_timer -= delta;
+
+	party_member_information_holder.modulate = Color(1, 1, 1, 1.0 if party_member_info_view_timer/MAX_PARTY_MEMBER_INFO_VIEW_TIME > 1.0 else party_member_info_view_timer/MAX_PARTY_MEMBER_INFO_VIEW_TIME);
+	stamina_bar.modulate = Color(1, 1, 1, 1.0 if sprint_bar_view_timer/MAX_SPRINT_TIMER_VIEW_TIME > 1.0 else sprint_bar_view_timer/MAX_SPRINT_TIMER_VIEW_TIME);
+
 func _process(delta):
 	any_open_popups = _any_popups_open();
 	if !any_popups_open():
@@ -173,6 +199,10 @@ func _process(delta):
 			add_popup(_popup_queue.pop_front());
 		else:
 			if current_state == UI_STATE_GAME:
+				# This is hacky... But it's simple.
+				if shown:
+					handle_game_state_ui(delta);
+
 				if Input.is_action_just_pressed("game_action_ui_pause"):
 					toggle_pause();
 
@@ -190,7 +220,12 @@ func _process(delta):
 					if Input.is_action_just_pressed("game_interact_action"):
 						set_state(UI_STATE_DIALOGUE);
 						dialogue_ui.open_dialogue("testerbester.json");
+
+					if Input.is_action_pressed("game_action_show_info"):
+						party_member_info_view_timer = MAX_PARTY_MEMBER_INFO_VIEW_TIME + MAX_PARTY_MEMBER_VIEW_TIME_PADDING;
 			else:
+				party_member_information_holder.hide();
+				stamina_bar.hide();
 				if states[current_state]:
 					states[current_state].handle_process(delta);
 	else:
@@ -205,8 +240,8 @@ func _process(delta):
 			if !$Popups.get_children()[0].is_connected("finished", GameGlobals, "resume"):
 				if current_state == UI_STATE_GAME:
 					$Popups.get_children()[0].connect("finished", GameGlobals, "resume");
-			$Popups.get_children()[-1].handle_inputs(delta);
-			$Popups.get_children()[-1].grab_focus();
+					$Popups.get_children()[-1].handle_inputs(delta);
+					$Popups.get_children()[-1].grab_focus();
 
 func set_state(state):
 	if current_state != state:

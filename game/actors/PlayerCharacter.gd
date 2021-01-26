@@ -62,10 +62,11 @@ func handle_interact_key(delta):
 
 func override_physics_process(delta):
 	var sprinting = Input.is_action_pressed("game_sprinting_action");
+	var movement_result = false;
 	if !GameGlobals.paused() && !all_members_dead():
-		handle_movement(sprinting,
-						movement_direction_vector(),
-						delta);
+		movement_result = handle_movement(sprinting,
+										  movement_direction_vector(),
+										  delta);
 
 		if Input.is_action_just_pressed("game_interact_action"):
 			print(GameGlobals.paused());
@@ -77,7 +78,7 @@ func override_physics_process(delta):
 	emit_signal("report_sprinting_information", 
 				float(sprinting_stamina)/float(SPRINTING_STAMINA_MAX),
 				can_sprint(), 
-				sprinting);
+				sprinting && movement_result);
 	emit_signal("report_party_info_to_ui",
 				party_members, gold)
 

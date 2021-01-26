@@ -11,7 +11,7 @@ var reference_to_party_member = null;
 
 func set_target(thing):
 	reference_to_party_member = thing;
-	
+
 func _process(_delta):
 	if reference_to_party_member:
 		member_name.text = reference_to_party_member.name + " (LVL " + str(reference_to_party_member.level) + ")";

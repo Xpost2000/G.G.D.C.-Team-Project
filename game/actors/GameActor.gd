@@ -133,7 +133,7 @@ func handle_movement(sprinting, direction, delta):
 		handle_sprinting(sprinting && (direction.length() != 0), delta);
 		var slide_velocity = move_and_slide(velocity, Vector2.UP);
 
-		return (slide_velocity == velocity);
+		return (slide_velocity == velocity) && velocity.length() > 0;
 	else:
 		return true;
 

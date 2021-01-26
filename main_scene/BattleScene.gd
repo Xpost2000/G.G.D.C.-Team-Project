@@ -331,6 +331,10 @@ func _process(delta):
 					if Input.is_action_just_pressed("ui_cancel"):
 						if last_created_selection_menu:
 							last_created_selection_menu.queue_free();
+						else:
+							print("TODO POINT OUT CONFIRMATION");
+							# battle_information.decided_action = flee(active_actor);
+							battle_information.decided_action = flee(active_actor);
 
 					if focused_party_member_index <= 0:
 						focused_party_member_index = 0;

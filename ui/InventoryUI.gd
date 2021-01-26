@@ -64,7 +64,9 @@ func on_enter(from):
 	inventory_item_list_focus_on(0);
 
 func handle_process(delta):
-	inventory_widget_item_list.grab_focus();
+	if not $Inventory/StupidBlocker.is_visible():
+		inventory_widget_item_list.grab_focus();
+
 	if Input.is_action_just_pressed("game_action_open_inventory") or Input.is_action_just_pressed("ui_cancel"):
 		if party_member_selection_widget.is_visible():
 			close_selection_menu();

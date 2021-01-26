@@ -278,6 +278,8 @@ func recalculate_party_member_index(changing_to_party):
 	var percent = float(focused_party_member_index)/(len(focused_party.party_members)-1);
 	return int((len(changing_to_party.party_members)-1) * percent);
 
+const SelectionOptionsMenu = preload("res://ui/BattleSelectionOptions.tscn");
+var last_created_selection_menu = null;
 func _process(delta):
 	if party_on_the_left and party_on_the_right:
 		if !battle_information.decided_action:
@@ -301,6 +303,24 @@ func _process(delta):
 					if Input.is_action_just_pressed("ui_left"):
 						focused_party_member_index = recalculate_party_member_index(party_on_the_left);
 						focused_party = party_on_the_left;
+					if Input.is_action_just_pressed("ui_accept"):
+						if last_created_selection_menu:
+							last_created_selection_menu.queue_free();
+
+						var new_selection_menu = SelectionOptionsMenu.instance();
+
+						var participants_side = left_side_participants if focused_party == party_on_the_left else right_side_participants;
+						var focused_party_member = participants_side.get_children()[focused_party_member_index];
+
+						var direction = Vector2.ZERO;
+						if focused_party == party_on_the_left:
+							direction = Vector2(1, 0);
+						else:
+							direction = Vector2(-1, 0);
+
+						new_selection_menu.rect_position = focused_party_member.global_position + (direction * 85);
+						battle_ui_layer.add_child(new_selection_menu);
+						last_created_selection_menu = new_selection_menu;
 
 					if focused_party_member_index <= 0:
 						focused_party_member_index = 0;

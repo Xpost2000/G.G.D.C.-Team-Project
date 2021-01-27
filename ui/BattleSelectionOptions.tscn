@@ -1,4 +1,10 @@
-[gd_scene format=2]
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://fonts/Alkhemikal.ttf" type="DynamicFontData" id=1]
+
+[sub_resource type="DynamicFont" id=1]
+size = 24
+font_data = ExtResource( 1 )
 
 [node name="SelectionOptions" type="Control"]
 anchor_right = 1.0
@@ -10,36 +16,123 @@ __meta__ = {
 
 [node name="Container" type="ColorRect" parent="."]
 margin_left = -39.0
-margin_top = -31.0
+margin_top = -45.0
 margin_right = 37.0
-margin_bottom = 51.0
+margin_bottom = 31.0
 color = Color( 0.180392, 0.180392, 0.180392, 1 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="Layout" type="VBoxContainer" parent="Container"]
-margin_left = 3.0
-margin_top = 7.0
+margin_left = 3.00001
+margin_top = 2.28065
 margin_right = 72.0
-margin_bottom = 83.0
+margin_bottom = 78.2806
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="Attack" type="Button" parent="Container/Layout"]
-margin_right = 69.0
+margin_right = 68.0
 margin_bottom = 20.0
 text = "Attack"
 
+[node name="OptionsContainer" type="ColorRect" parent="Container/Layout/Attack"]
+visible = false
+margin_left = -150.0
+margin_top = -1.0
+margin_right = -5.0
+margin_bottom = 151.0
+color = Color( 0.152941, 0.152941, 0.152941, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="Container/Layout/Attack/OptionsContainer"]
+margin_right = 141.0
+margin_bottom = 17.0
+text = "ATTACKS"
+align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Selections" type="ItemList" parent="Container/Layout/Attack/OptionsContainer"]
+margin_left = 4.0
+margin_top = 14.0
+margin_right = 140.0
+margin_bottom = 143.0
+
 [node name="Ability" type="Button" parent="Container/Layout"]
 margin_top = 24.0
-margin_right = 69.0
+margin_right = 68.0
 margin_bottom = 44.0
 text = "Ability"
 
+[node name="OptionsContainer" type="ColorRect" parent="Container/Layout/Ability"]
+visible = false
+margin_left = -148.0
+margin_right = -4.0
+margin_bottom = 124.0
+color = Color( 0.152941, 0.152941, 0.152941, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="Container/Layout/Ability/OptionsContainer"]
+margin_right = 142.0
+margin_bottom = 17.0
+text = "ABILITIES"
+align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Selections" type="ItemList" parent="Container/Layout/Ability/OptionsContainer"]
+margin_left = 4.0
+margin_top = 15.0
+margin_right = 140.0
+margin_bottom = 120.0
+
 [node name="Item" type="Button" parent="Container/Layout"]
 margin_top = 48.0
-margin_right = 69.0
+margin_right = 68.0
 margin_bottom = 68.0
 text = "Item"
+
+[node name="OptionsContainer" type="ColorRect" parent="Container/Layout/Item"]
+visible = false
+margin_left = -202.0
+margin_right = -3.0
+margin_bottom = 177.0
+color = Color( 0.152941, 0.152941, 0.152941, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="Container/Layout/Item/OptionsContainer"]
+margin_top = 1.0
+margin_right = 196.0
+margin_bottom = 18.0
+text = "ITEMS"
+align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Selections" type="ItemList" parent="Container/Layout/Item/OptionsContainer"]
+margin_left = 4.0
+margin_top = 15.0
+margin_right = 196.0
+margin_bottom = 172.0
+
+[node name="Label" type="Label" parent="Container"]
+margin_left = -64.6553
+margin_top = -27.3723
+margin_right = 144.345
+margin_bottom = -3.37231
+custom_fonts/font = SubResource( 1 )
+text = "Battle Character Name"
+align = 1
+valign = 1

@@ -1,10 +1,7 @@
 extends Node2D
-# also welcome to monster file.
+# also welcome to monster file, I could split things up but I actually found it easier to do
+# it as an all in one.
 # TODO: AOE attacks?
-
-# TODO when I'm back on emacs, when the hell did I decide party_on_the_* was a good idea?
-# I guess when I was just testing stuff out but I'm probably not changing things too much since it's
-# not really necessary.
 
 var table_of_hit_sounds = ["snd/hit0.wav", "snd/hit1.wav", "snd/hit2.wav", "snd/hit3.wav"];
 func play_random_hit_sound():
@@ -280,6 +277,36 @@ func recalculate_party_member_index(changing_to_party):
 
 const SelectionOptionsMenu = preload("res://ui/BattleSelectionOptions.tscn");
 var last_created_selection_menu = null;
+var last_shown_container = null;
+var last_focused_button = null;
+
+func show_option_selection(container):
+	if last_shown_container:
+		last_shown_container.hide();
+
+	container.show();
+	container.get_node("Selections").grab_focus();
+	container.get_node("Selections").select(0);
+	last_focused_button = container.get_parent();
+	last_shown_container = container;
+
+func perform_action(selected_item_index, action_type):
+	var active_actor = battle_information.active_actor();
+	var target = focused_party.party_members[focused_party_member_index];
+	match action_type:
+		0: # Attack
+			battle_information.decided_action = attack(active_actor, target, selected_item_index);
+			pass;
+		1: # Ability
+			battle_information.decided_action = ability(active_actor, target, selected_item_index);
+			pass;
+		2:
+			battle_information.decided_action = use_item(active_actor, target, selected_item_index);
+			pass;
+
+	if last_created_selection_menu:
+		last_created_selection_menu.queue_free();
+	
 func _process(delta):
 	if party_on_the_left and party_on_the_right:
 		if !battle_information.decided_action:
@@ -318,10 +345,43 @@ func _process(delta):
 							else:
 								direction = Vector2(-1, 0);
 
-							new_selection_menu.rect_position = focused_party_member.global_position + (direction * 85);
+							new_selection_menu.rect_position = focused_party_member.global_position + (direction * 125);
 
 							battle_ui_layer.add_child(new_selection_menu);
 							last_created_selection_menu = new_selection_menu;
+
+							var attack_button = new_selection_menu.get_node("Container/Layout/Attack");
+							var ability_button = new_selection_menu.get_node("Container/Layout/Ability");
+							var item_button = new_selection_menu.get_node("Container/Layout/Item");
+
+							attack_button.connect("pressed", self, "show_option_selection", [attack_button.get_node("OptionsContainer")]);
+							ability_button.connect("pressed", self, "show_option_selection", [ability_button.get_node("OptionsContainer")]);
+							item_button.connect("pressed", self, "show_option_selection", [item_button.get_node("OptionsContainer")]);
+
+							var container = new_selection_menu.get_node("Container");
+							if focused_party == party_on_the_left:
+								attack_button.get_node("OptionsContainer").rect_position.x = (container.rect_size.x);
+								ability_button.get_node("OptionsContainer").rect_position.x = (container.rect_size.x);
+								item_button.get_node("OptionsContainer").rect_position.x = (container.rect_size.x);
+							else: # Although the editor already has it setup... Just incase.
+								attack_button.get_node("OptionsContainer").rect_position.x = -(attack_button.get_node("OptionsContainer").rect_size.x);
+								ability_button.get_node("OptionsContainer").rect_position.x = -(ability_button.get_node("OptionsContainer").rect_size.x);
+								item_button.get_node("OptionsContainer").rect_position.x = -(item_button.get_node("OptionsContainer").rect_size.x);
+								
+
+							for attack in active_actor.attacks:
+								attack_button.get_node("OptionsContainer/Selections").add_item(attack.name);
+							attack_button.get_node("OptionsContainer/Selections").connect("item_activated", self, "perform_action", [0]);
+							for ability in active_actor.abilities:
+								ability_button.get_node("OptionsContainer/Selections").add_item(ability.name);
+							ability_button.get_node("OptionsContainer/Selections").connect("item_activated", self, "perform_action", [1]);
+
+							var active_party = get_party_pairs(whose_side_is_active(active_actor))[0];
+							# TODO filter items, although I'd have to force an indirection to lookup since I can't use the item anymore lol.
+							for item in active_party.inventory:
+								var item_info = ItemDatabase.get_item(item[0]);
+								item_button.get_node("OptionsContainer/Selections").add_item(item_info.name + " x" + str(item[1]));
+							item_button.get_node("OptionsContainer/Selections").connect("item_activated", self, "perform_action", [2]);
 
 							for child in new_selection_menu.get_node("Container/Layout").get_children():
 								if child.is_visible():
@@ -329,12 +389,15 @@ func _process(delta):
 									break;
 
 					if Input.is_action_just_pressed("ui_cancel"):
-						if last_created_selection_menu:
-							last_created_selection_menu.queue_free();
+						if last_shown_container:
+							last_shown_container.hide();
+							last_shown_container = null;
+							last_focused_button.grab_focus();
 						else:
-							print("TODO POINT OUT CONFIRMATION");
-							# battle_information.decided_action = flee(active_actor);
-							battle_information.decided_action = flee(active_actor);
+							if last_created_selection_menu:
+								last_created_selection_menu.queue_free();
+							else:
+								battle_information.decided_action = flee(active_actor);
 
 					if focused_party_member_index <= 0:
 						focused_party_member_index = 0;

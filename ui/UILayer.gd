@@ -192,7 +192,9 @@ func handle_game_state_ui(delta):
 	party_member_information_holder.modulate = Color(1, 1, 1, 1.0 if party_member_info_view_timer/MAX_PARTY_MEMBER_INFO_VIEW_TIME > 1.0 else party_member_info_view_timer/MAX_PARTY_MEMBER_INFO_VIEW_TIME);
 	stamina_bar.modulate = Color(1, 1, 1, 1.0 if sprint_bar_view_timer/MAX_SPRINT_TIMER_VIEW_TIME > 1.0 else sprint_bar_view_timer/MAX_SPRINT_TIMER_VIEW_TIME);
 
-func _process(delta):
+# I'm sure I can insert a call_deferred somewhere maybe.
+# This is way easier to do.
+func handle_process(delta):
 	any_open_popups = _any_popups_open();
 	if !any_popups_open():
 		if len(_popup_queue) > 0:
@@ -218,6 +220,7 @@ func _process(delta):
 						toggle_inventory();
 
 					if Input.is_action_just_pressed("game_interact_action"):
+						print(" I SEE!")
 						set_state(UI_STATE_DIALOGUE);
 						dialogue_ui.open_dialogue("testerbester.json");
 

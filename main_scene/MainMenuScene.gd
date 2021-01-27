@@ -25,13 +25,16 @@ func _process(delta):
 
 # maybe do a fancy fade out.
 
-func start_game():
+func start_fresh_game_state():
 	GameGlobals.resume();
 	GameGlobals.reload_scene(GameGlobals.MAIN_GAME_SCENE);
 	GameGlobals.reload_scene(GameGlobals.BATTLE_SCENE);
 	GameGlobals.switch_to_scene(0);
 	QuestsGlobal.reset_all_quests();
 	AudioGlobal.pause_music();
+
+func start_game():
+	start_fresh_game_state();
 	GameGlobals.get_scene(GameGlobals.MAIN_GAME_SCENE).current_level_node().play_cutscene("Introduction");
 
 func _on_StartGameButton_pressed():
@@ -98,8 +101,8 @@ func valid_save_file_names(path):
 	return result;
 
 func do_save_game_loading(save_name):
-	start_game();
-	GameGlobals.get_scene(GameGlobals.MAIN_GAME_SCENE).load_from_dictionary(Utilities.read_json_no_check("saves/" + save_name));
+	start_fresh_game_state();
+	GameGlobals.get_scene(GameGlobals.MAIN_GAME_SCENE).load_save_file(Utilities.read_json_no_check("saves/" + save_name));
 
 func _on_VBoxContainer_item_activated(index):
 	var save_files = valid_save_file_names(SAVE_PATH);

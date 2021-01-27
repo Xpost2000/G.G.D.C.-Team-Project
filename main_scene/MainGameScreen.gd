@@ -31,6 +31,10 @@ func handle_start_quest(data):
 	print("handling!");
 	QuestsGlobal.begin_quest(_generate_quest_from_name_type(data));
 
+var to_load_data = null;
+func load_save_file(data):
+	to_load_data = data;
+
 func load_from_dictionary(data):
 	print("LOAD ME");
 	var full_scene_path = "res://scenes/" + data["current_level_scene"] + ".tscn";
@@ -155,6 +159,15 @@ func _on_PlayerCharacter_request_to_open_battle(left, right):
 
 func _process(delta):
 	ui_layer.show_death(player_node.all_members_dead());
+	# manually controlling execution to prevent any issues.
+	# Cause I actually don't really know when process is called, so I'm
+	# at the very least forcing sequential execution of code so I can make
+	# sure stuff is behaving the way I'm expecting it to.
+	if to_load_data:
+		load_from_dictionary(to_load_data);
+		to_load_data = null;
+	else:
+		ui_layer.handle_process(delta);
 		
 func enable_ui():
 	ui_layer.show_all();

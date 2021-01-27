@@ -46,9 +46,11 @@ enum {BATTLE_TURN_ACTION_SKIP_TURN,
 	  BATTLE_TURN_ACTION_FLEE}
 
 func skip_turn(actor_self):
+	unhighlight_last_actor_when_present();
 	return BattleTurnAction.new(BATTLE_TURN_ACTION_SKIP_TURN, actor_self);
 
 func flee(actor_self):
+	unhighlight_last_actor_when_present();
 	return BattleTurnAction.new(BATTLE_TURN_ACTION_FLEE, actor_self);
 
 func ability(actor_self, actor_target, which_ability):
@@ -65,6 +67,7 @@ func use_item(actor_self, actor_target, which_item):
 	ability_action.actor_target = actor_target;
 	ability_action.index = which_item;
 
+	unhighlight_last_actor_when_present();
 	return ability_action;
 
 func finished_bump_animation(anim_name, animation_player, attack_action):
@@ -153,6 +156,7 @@ func attack(actor_self, actor_target, which_attack):
 
 	var animation_player = AnimationPlayer.new();
 	add_child(animation_player);
+	unhighlight_last_actor_when_present();
 	animation_player.add_animation("temporary_bump_hit", create_attack_bump_animation(actor_self, actor_target, actor_self.attacks[which_attack]));
 	animation_player.play("temporary_bump_hit");
 	animation_player.connect("animation_finished", self, "finished_bump_animation", [animation_player, attack_action]);
@@ -271,10 +275,23 @@ func handle_camera_shake(delta):
 var focused_party = null;
 var focused_party_member_index = 0;
 
+func move_focused_party_member_index_to_non_dead_in_direction(start, delta, party):
+	while true:
+		start += delta;
+		start %= len(party.party_members);
+		var member = party.party_members[start];
+		if not member.dead():
+			return start;
+
 func recalculate_party_member_index(changing_to_party):
 	var percent = float(focused_party_member_index)/(len(focused_party.party_members)-1);
-	return int((len(changing_to_party.party_members)-1) * percent);
+	var new_index =	 int((len(changing_to_party.party_members)-1) * percent);
 
+	if changing_to_party.party_members[new_index].dead():
+		return move_focused_party_member_index_to_non_dead_in_direction(new_index, 1, changing_to_party);
+	else:
+		return new_index;
+				
 const SelectionOptionsMenu = preload("res://ui/BattleSelectionOptions.tscn");
 var last_created_selection_menu = null;
 var last_shown_container = null;
@@ -322,9 +339,9 @@ func _process(delta):
 
 					if not last_created_selection_menu:
 						if Input.is_action_just_pressed("ui_up"):
-							focused_party_member_index -= 1;
+							focused_party_member_index = move_focused_party_member_index_to_non_dead_in_direction(focused_party_member_index, -1, focused_party);
 						if Input.is_action_just_pressed("ui_down"):
-							focused_party_member_index += 1;
+							focused_party_member_index = move_focused_party_member_index_to_non_dead_in_direction(focused_party_member_index, 1, focused_party);
 						if Input.is_action_just_pressed("ui_right"):
 							focused_party_member_index = recalculate_party_member_index(party_on_the_right);
 							focused_party = party_on_the_right;
@@ -399,11 +416,10 @@ func _process(delta):
 							else:
 								battle_information.decided_action = flee(active_actor);
 
-					if focused_party_member_index <= 0:
-						focused_party_member_index = 0;
-					elif focused_party_member_index >= len(focused_party.party_members):
-						focused_party_member_index = len(focused_party.party_members)-1;
 
+					if focused_party.party_members[focused_party_member_index].dead():
+						focused_party_member_index = move_focused_party_member_index_to_non_dead_in_direction(focused_party_member_index, 1, focused_party);
+						
 					highlight_actor(focused_party.party_members[focused_party_member_index]);
 				else:
 					battle_turn_widget_head_label.text = "AI THINKING...";
@@ -480,6 +496,7 @@ var last_highlighted_actor = null;
 func unhighlight_last_actor_when_present():
 	if last_highlighted_actor:
 		last_highlighted_actor.self_modulate = Color(1, 1, 1);
+		last_highlighted_actor.remove_child(last_highlighted_actor.get_node("??HIGHLIGHTNAME"));
 
 func highlight_actor(actor):
 	var actor_information = participant_side_and_index_of_actor(actor);
@@ -487,3 +504,13 @@ func highlight_actor(actor):
 	unhighlight_last_actor_when_present();
 	actor_battle_sprite.self_modulate = Color(1, 1, 0);
 	last_highlighted_actor = actor_battle_sprite;
+
+	var name_label = Label.new();
+	var frame_of_reference = actor_battle_sprite.frames.get_frame("idle", 0);
+	name_label.set_name("??HIGHLIGHTNAME");
+	name_label.text = actor.name;
+	actor_battle_sprite.add_child(name_label);
+	name_label.rect_position.x = -name_label.rect_size.x/2;
+	name_label.rect_position.y = frame_of_reference.get_size().y * -1.085;
+	name_label.add_font_override("font", load("res://fonts/font-res/game-16.tres"));
+	name_label.align = 1;

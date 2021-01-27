@@ -1,10 +1,4 @@
-[gd_scene load_steps=3 format=2]
-
-[ext_resource path="res://fonts/Alkhemikal.ttf" type="DynamicFontData" id=1]
-
-[sub_resource type="DynamicFont" id=1]
-size = 24
-font_data = ExtResource( 1 )
+[gd_scene format=2]
 
 [node name="SelectionOptions" type="Control"]
 anchor_right = 1.0
@@ -126,13 +120,3 @@ margin_left = 4.0
 margin_top = 15.0
 margin_right = 196.0
 margin_bottom = 172.0
-
-[node name="Label" type="Label" parent="Container"]
-margin_left = -64.6553
-margin_top = -27.3723
-margin_right = 144.345
-margin_bottom = -3.37231
-custom_fonts/font = SubResource( 1 )
-text = "Battle Character Name"
-align = 1
-valign = 1

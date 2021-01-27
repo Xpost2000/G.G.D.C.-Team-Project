@@ -64,8 +64,8 @@ func _on_AboutGameButton_pressed():
 					  This game by these people with their best attempt.
 					  @xpost2000, @Swaw - Gameplay Programmers
 					  
-					  @Adrianna, @B̸̨͋Ĩ̴͘R̶̈́̕D̸̯̂L̵̂̚Ö̵́̇R̷̐̔Ď̸̕, 
-					  @hunk, @missy, @amie - Artist
+					  @Adrianna, @B̸̨͋Ĩ̴͘R̶̈́̕D̸̯̂L̵̂̚Ö̵́̇R̷̐̔Ď̸̕, @tsaiyo,
+					  @hunk, @S̶̈͘E̸̽̃Ả̷̚L̶̆́Ĺ̵̏O̸̍͊R̸̀̋D̵͂͝, @amie - Artist
 
 					  @everyone - Writing and Design
 					  """);

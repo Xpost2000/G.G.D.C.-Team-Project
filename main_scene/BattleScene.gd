@@ -78,7 +78,7 @@ func finished_bump_animation(anim_name, animation_player, attack_action):
 
 func remove_particle_system_and_timer(timer, particle_system):
 	remove_child(timer);
-	remove_child(particle_system);
+	battle_layer.remove_child(particle_system);
 	timer.queue_free();
 	particle_system.queue_free();
 
@@ -104,7 +104,7 @@ func entity_take_damage(target, damage):
 		new_particle_system.direction = Vector2(DIRECTION_MAGNITUDE, 0);
 	else:
 		new_particle_system.direction = Vector2(-DIRECTION_MAGNITUDE, 0);
-	add_child(new_particle_system);
+	battle_layer.add_child(new_particle_system);
 	play_random_hit_sound();
 
 # fun....
@@ -155,7 +155,7 @@ func create_impact_particles(projectile_name, target_information, where):
 	if projetile_impact:
 		var projetile_impact_scene = projetile_impact.instance();
 		projetile_impact_scene.global_position = where;
-		add_child(projetile_impact_scene);
+		battle_layer.add_child(projetile_impact_scene);
 
 		var new_timer = Timer.new();
 		new_timer.connect("timeout", self, "remove_particle_system_and_timer", [new_timer, projetile_impact_scene]);
@@ -170,9 +170,11 @@ func create_impact_particles(projectile_name, target_information, where):
 		else:
 			projetile_impact_scene.find_node("Particles").direction = Vector2(DIRECTION_MAGNITUDE, 0);
 
+func battle_layer_remove_child(c):
+	battle_layer.remove_child(c);
 func create_attack_projectile_animation(attacker, target, projectile_name, attack):
 	var projectile_scene = load("res://game/actors/" + projectile_name + ".tscn").instance();
-	add_child(projectile_scene);
+	battle_layer.add_child(projectile_scene);
 
 	var attacker_information = participant_side_and_index_of_actor(attacker);
 	var target_information = participant_side_and_index_of_actor(target);
@@ -203,7 +205,7 @@ func create_attack_projectile_animation(attacker, target, projectile_name, attac
 	attack_bump.track_insert_key(attacker_position_track_index, 1.00, target_battle_sprite.global_position);
 	attack_bump.track_insert_key(target_color_track_index, 1.02, Color(1, 0, 0));
 	attack_bump.track_insert_key(self_method_track_index, 1.03, {"method": "entity_take_damage", "args": [target, attack.magnitude]});
-	attack_bump.track_insert_key(self_method_track_index, 1.04, {"method": "remove_child", "args": [projectile_scene]});
+	attack_bump.track_insert_key(self_method_track_index, 1.04, {"method": "battle_layer_remove_child", "args": [projectile_scene]});
 	attack_bump.track_insert_key(self_method_track_index, 1.05, {"method": "create_impact_particles", "args": [projectile_name, target_information, target_battle_sprite.global_position]});
 	attack_bump.track_insert_key(self_method_track_index, 1.02, {"method": "begin_camera_shake", "args": [0.45, 25]});
 	attack_bump.track_insert_key(target_color_track_index, 1.18, Color(1, 1, 1));
@@ -256,6 +258,8 @@ func populate_participants_with_sprites(side, party_members):
 		side.add_child(new_sprite);
 
 func begin_battle(left, right):
+	focused_party = null;
+	focused_party_member_index = 0;
 	party_on_the_left = left;
 	party_on_the_right = right;
 

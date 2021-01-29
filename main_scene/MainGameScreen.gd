@@ -104,6 +104,7 @@ func _on_BattleScreen_finished(type, a, b):
 			# b, a
 			print("forceful ejection");
 			pass;
+	GameGlobals.call_deferred("reload_scene", 2);
 
 var loaded_levels = {};
 func load_new_level_scene(name):

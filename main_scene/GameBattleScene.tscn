@@ -1,11 +1,17 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=15 format=2]
 
-[ext_resource path="res://images/battle/bkgrnds/not_as_dumpy_battle_cave_a.png" type="Texture" id=1]
+[ext_resource path="res://images/battle/bkgrnds/cave_a/layer_stalactites.png" type="Texture" id=1]
+[ext_resource path="res://images/battle/bkgrnds/cave_a/layer_floor2.png" type="Texture" id=2]
 [ext_resource path="res://fonts/Alkhemikal.ttf" type="DynamicFontData" id=3]
 [ext_resource path="res://ui/BattleTurnMeter.tscn" type="PackedScene" id=4]
 [ext_resource path="res://main_scene/BattleScene.gd" type="Script" id=5]
 [ext_resource path="res://ui/PartyMemberInformationLayoutUI.tscn" type="PackedScene" id=6]
+[ext_resource path="res://images/battle/bkgrnds/cave_a/layer_stalagmites.png" type="Texture" id=7]
+[ext_resource path="res://images/battle/bkgrnds/cave_a/layer_floor.png" type="Texture" id=8]
+[ext_resource path="res://images/battle/bkgrnds/cave_a/layer_background_mask.png" type="Texture" id=9]
 [ext_resource path="res://ui/Battlelog.gd" type="Script" id=10]
+[ext_resource path="res://images/battle/bkgrnds/cave_a/layer_background_base.png" type="Texture" id=11]
+[ext_resource path="res://icon.png" type="Texture" id=12]
 
 [sub_resource type="DynamicFont" id=1]
 font_data = ExtResource( 3 )
@@ -21,28 +27,71 @@ position = Vector2( 638, 359 )
 current = true
 smoothing_enabled = true
 
-[node name="BattleLayer" type="Node2D" parent="."]
+[node name="BattleLayer" type="YSort" parent="."]
 __meta__ = {
 "_edit_lock_": true
 }
 
-[node name="BattleBackground" type="Sprite" parent="BattleLayer"]
-position = Vector2( 647.878, 636.747 )
-scale = Vector2( 0.945873, 0.945873 )
+[node name="layer_background_mask" type="Sprite" parent="BattleLayer"]
+position = Vector2( 611.588, 351.259 )
+texture = ExtResource( 9 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="layer_stalactites" type="Sprite" parent="BattleLayer"]
+position = Vector2( 649.772, 601.36 )
 texture = ExtResource( 1 )
-offset = Vector2( 0, -350 )
+offset = Vector2( 0, -300 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="layer_stalagmites" type="Sprite" parent="BattleLayer"]
+position = Vector2( 649.357, 387.372 )
+texture = ExtResource( 7 )
+
+[node name="layer_stalagmites2" type="Sprite" parent="BattleLayer"]
+position = Vector2( 855.199, 842.79 )
+scale = Vector2( 0.804936, 0.804936 )
+texture = ExtResource( 7 )
+offset = Vector2( 0, -150 )
+
+[node name="layer_floor" type="Sprite" parent="BattleLayer"]
+position = Vector2( 638.458, 408.999 )
+texture = ExtResource( 8 )
+offset = Vector2( 0, -100 )
+
+[node name="layer_floor2" type="Sprite" parent="BattleLayer"]
+position = Vector2( 661.086, 359.732 )
+texture = ExtResource( 2 )
+
+[node name="layer_background_base" type="Sprite" parent="BattleLayer"]
+position = Vector2( 661.086, 284.791 )
+texture = ExtResource( 11 )
+__meta__ = {
+"_edit_lock_": true
+}
 
 [node name="LeftSideParticipants" type="Node2D" parent="BattleLayer"]
-position = Vector2( 131.284, 360.432 )
+position = Vector2( 329.273, 443.871 )
 __meta__ = {
 "_edit_group_": true
 }
 
+[node name="Sprite" type="Sprite" parent="BattleLayer/LeftSideParticipants"]
+position = Vector2( 0, 26 )
+texture = ExtResource( 12 )
+
 [node name="RightSideParticipants" type="Node2D" parent="BattleLayer"]
-position = Vector2( 1163.66, 291.441 )
+position = Vector2( 999.612, 418.75 )
 __meta__ = {
 "_edit_group_": true
 }
+
+[node name="icon" type="Sprite" parent="BattleLayer/RightSideParticipants"]
+position = Vector2( -3.35719, 14.5631 )
+texture = ExtResource( 12 )
 
 [node name="BattleUILayer" type="CanvasLayer" parent="."]
 

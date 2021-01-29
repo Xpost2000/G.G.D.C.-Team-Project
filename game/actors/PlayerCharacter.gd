@@ -32,7 +32,7 @@ func _ready():
 	protag.load_battle_portrait("sekijo_test");
 	protag.attacks.push_back(PartyMember.PartyMemberAttack.new("Quick Slash", 45, 1.0));
 	var deutag = add_party_member_default("Mr. Deuteragonist");
-	deutag.attacks.push_back(PartyMember.PartyMemberAttack.new("Watergun!", 56, 1.0));
+	deutag.attacks.push_back(PartyMember.PartyMemberAttack.new("Watergun!", 56, 1.0, PartyMember.ATTACK_VISUAL_WATER_GUN));
 	deutag.load_battle_portrait("sekiro_test");
 	inventory = [["healing_grass", 15],
 				 ["healing_pod", 5]];

@@ -1,11 +1,17 @@
 # TODO metadata for AI usage.
+
+# not necessarily ATTACKS, just for now.
+enum {ATTACK_VISUAL_PHYSICAL_BUMP,
+	  ATTACK_VISUAL_WATER_GUN}
 class PartyMemberAttack:
-	func _init(name, magnitude, accuracy):
+	func _init(name, magnitude, accuracy, visual_id=ATTACK_VISUAL_PHYSICAL_BUMP):
 		self.name = name;
 		self.magnitude = magnitude;
 		self.accuracy = accuracy;
+		self.visual_id = visual_id;
 
 	var name: String;
+	var visual_id: int;
 	var type: int;
 	var magnitude: int;
 	# 0 - 1.0
@@ -19,7 +25,7 @@ class PartyMemberAttack:
 enum {ABILITY_TYPE_NONE}
 # TODO metadata for AI usage.
 class PartyMemberAbility:
-	func _init(name, description, magnitude, accuracy, cost):
+	func _init(name, description, magnitude, accuracy, cost, visual_id=ATTACK_VISUAL_WATER_GUN):
 		self.name = name;
 		self.description = description;
 		self.magnitude = magnitude;
@@ -31,6 +37,7 @@ class PartyMemberAbility:
 	var type: int;
 	var cost: int;
 	var magnitude: int;
+	var visual_id: int;
 	# 0 - 1.0
 	var accuracy: float;
 

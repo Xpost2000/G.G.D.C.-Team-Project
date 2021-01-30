@@ -1,9 +1,30 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://main_scene/LoaderScene.gd" type="Script" id=1]
+[ext_resource path="res://fonts/Alkhemikal.ttf" type="DynamicFontData" id=2]
+
+[sub_resource type="DynamicFont" id=1]
+size = 48
+font_data = ExtResource( 2 )
 
 [node name="LoaderScene" type="Node2D"]
 script = ExtResource( 1 )
 __meta__ = {
 "_editor_description_": "Due to the unusual architecture of this game, I have to use this."
+}
+
+[node name="Disclaimer" type="Label" parent="."]
+margin_right = 1279.0
+margin_bottom = 454.0
+custom_fonts/font = SubResource( 1 )
+text = "DISCLAIMER!
+
+THIS IS INCOMPLETE AND LOOKS PRETTY TERRIBLE
+
+APOLOGIES IF THE QUALITY OFFENDS YOU!
+"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
 }

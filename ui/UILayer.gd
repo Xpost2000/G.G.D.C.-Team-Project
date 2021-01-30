@@ -209,20 +209,19 @@ func handle_process(delta):
 					toggle_pause();
 
 				if allow_think:
-					if Input.is_action_just_pressed("ui_page_up"):
-						get_parent().write_save_game();
-						add_popup("Saved game!");
+					# if Input.is_action_just_pressed("ui_page_up"):
+					#	get_parent().write_save_game();
+					#	add_popup("Saved game!");
+					# if Input.is_action_just_pressed("ui_page_down"):
+					#	toggle_shop("shop_files/test_stock.json");
 
-					if Input.is_action_just_pressed("ui_page_down"):
-						toggle_shop("shop_files/test_stock.json");
+					# if Input.is_action_just_pressed("game_action_open_inventory"):
+					#	toggle_inventory();
 
-					if Input.is_action_just_pressed("game_action_open_inventory"):
-						toggle_inventory();
-
-					if Input.is_action_just_pressed("game_interact_action"):
-						print(" I SEE!")
-						set_state(UI_STATE_DIALOGUE);
-						dialogue_ui.open_dialogue("testerbester.json");
+					# if Input.is_action_just_pressed("game_interact_action"):
+					#	print(" I SEE!")
+					#	set_state(UI_STATE_DIALOGUE);
+					#	dialogue_ui.open_dialogue("testerbester.json");
 
 					if Input.is_action_pressed("game_action_show_info"):
 						party_member_info_view_timer = MAX_PARTY_MEMBER_INFO_VIEW_TIME + MAX_PARTY_MEMBER_VIEW_TIME_PADDING;

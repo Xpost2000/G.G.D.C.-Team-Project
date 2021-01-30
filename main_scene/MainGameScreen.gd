@@ -158,8 +158,7 @@ func _open_battle(left, right):
 func _on_PlayerCharacter_request_to_open_battle(left, right):
 	call_deferred("_open_battle", left, right);
 
-func _process(delta):
-	ui_layer.show_death(player_node.all_members_dead());
+func _process(delta):	
 	# manually controlling execution to prevent any issues.
 	# Cause I actually don't really know when process is called, so I'm
 	# at the very least forcing sequential execution of code so I can make
@@ -168,7 +167,10 @@ func _process(delta):
 		load_from_dictionary(to_load_data);
 		to_load_data = null;
 	else:
+		# if player_node:
+		ui_layer.show_death(player_node.all_members_dead());
 		ui_layer.handle_process(delta);
+
 		
 func enable_ui():
 	ui_layer.show_all();

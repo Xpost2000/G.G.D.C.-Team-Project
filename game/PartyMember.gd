@@ -2,13 +2,15 @@
 
 # not necessarily ATTACKS, just for now.
 enum {ATTACK_VISUAL_PHYSICAL_BUMP,
-	  ATTACK_VISUAL_WATER_GUN}
+	  ATTACK_VISUAL_WATER_GUN,
+	  ATTACK_VISUAL_HEALING}
 class PartyMemberAttack:
-	func _init(name, magnitude, accuracy, visual_id=ATTACK_VISUAL_PHYSICAL_BUMP):
+	func _init(name, magnitude, accuracy, cost=0, visual_id=ATTACK_VISUAL_PHYSICAL_BUMP):
 		self.name = name;
 		self.magnitude = magnitude;
 		self.accuracy = accuracy;
 		self.visual_id = visual_id;
+		self.cost = cost;
 
 	var name: String;
 	var visual_id: int;
@@ -16,21 +18,24 @@ class PartyMemberAttack:
 	var magnitude: int;
 	# 0 - 1.0
 	var accuracy: float;
+	var cost: int;
 
 	func get_icon_texture():
 		return null;
 	func get_item_list_string():
 		return self.name;
 
-enum {ABILITY_TYPE_NONE}
+enum {ABILITY_TYPE_NONE, ABILITY_TYPE_HEAL, ABILITY_TYPE_BUFF_STRENGTH}
 # TODO metadata for AI usage.
 class PartyMemberAbility:
-	func _init(name, description, magnitude, accuracy, cost, visual_id=ATTACK_VISUAL_WATER_GUN):
+	func _init(name, description, magnitude, accuracy, cost, type, visual_id=ATTACK_VISUAL_WATER_GUN):
 		self.name = name;
 		self.description = description;
 		self.magnitude = magnitude;
 		self.accuracy = accuracy;
 		self.cost = cost;
+		self.type = type;
+		self.visual_id = visual_id;
 
 	var name: String;
 	var description: String;
@@ -151,4 +156,14 @@ func take_damage(amount):
 	health -= amount;
 
 func handle_ability(ability):
-	print("TOIDOASOIDIOSDIOSADIOASDIOSADOISAOID");
+	match ability.type:
+		ABILITY_TYPE_NONE:
+			print("? How did this happen");
+			pass;
+		ABILITY_TYPE_HEAL:
+			print("Heal");
+			pass;
+		ABILITY_TYPE_BUFF_STRENGTH:
+			print("Strength buff for n turns?")
+			pass;
+		

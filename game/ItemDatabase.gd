@@ -57,6 +57,11 @@ func _ready():
 											 "images/inventory-icons/dumpy_sword.png", 
 											 "images/inventory-icons/previews/preview_golden_pantaloons.png",
 											 5000);
+	items_dictionary["test_lantern"] = Item.new("Augite of Souls", 
+											 "An iredescent stone fueled by souls. Changes color depending on the nature of nearby souls. Crafted by Geri, known for his magic handicrafts, and close acquaintance with Sage Freke the Visionary. Widely carried by travelers, who depend on its ease of use and light weight.", 
+											 "images/inventory-icons/aos-des-ico.png", 
+											 "images/inventory-icons/previews/aos-des.png",
+												200);
 	items_dictionary["healing_grass"] = Item.new("Healing Grass",
 												 "A basic healing item",
 												 "images/inventory-icons/dumpy_sword.png", 

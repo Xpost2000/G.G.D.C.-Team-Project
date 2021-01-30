@@ -1,11 +1,10 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://ui_themes/buttons_for_paperbg.tres" type="Theme" id=1]
 [ext_resource path="res://fonts/Alkhemikal.ttf" type="DynamicFontData" id=2]
 [ext_resource path="res://ui/Inventory.gd" type="Script" id=3]
 [ext_resource path="res://ui/ItemPreview.gd" type="Script" id=4]
 [ext_resource path="res://images/ui/ui_paper.png" type="Texture" id=5]
-[ext_resource path="res://images/light_blob.png" type="Texture" id=6]
 [ext_resource path="res://images/ui/ui_teal.png" type="Texture" id=7]
 
 [sub_resource type="DynamicFont" id=1]
@@ -88,21 +87,12 @@ Right????
 Sell Value: $???
 Type: ???
 [/color]"
-text = "This is an item of great renown, or something. Pretty sure I found this in a dumpster, but I guess no one actually has to know that right?
-
-Right????
-
-
-Sell Value: $???
-Type: ???
-"
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="ItemPreviewSprite" type="Sprite" parent="ItemPreview"]
 position = Vector2( 206.66, 188.295 )
-texture = ExtResource( 6 )
 
 [node name="ItemName" type="Label" parent="ItemPreview"]
 margin_left = 16.991
@@ -111,7 +101,6 @@ margin_right = 387.991
 margin_bottom = 68.6628
 custom_fonts/font = SubResource( 2 )
 custom_colors/font_color = Color( 0.780392, 0.780392, 0.780392, 1 )
-text = "Dingleberry"
 align = 1
 __meta__ = {
 "_edit_use_anchors_": false

@@ -16,5 +16,5 @@ func _process(delta):
 	else:
 		show_disclaimer_timer += delta;
 
-	if disclaimer_label.visible_characters == len(disclaimer_label.text):
+	if disclaimer_label.visible_characters == len(disclaimer_label.text) or Input.is_action_just_pressed("ui_cancel"):
 		GameGlobals.switch_to_scene(1);

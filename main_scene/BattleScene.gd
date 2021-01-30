@@ -53,23 +53,6 @@ func flee(actor_self):
 	unhighlight_last_actor_when_present();
 	return BattleTurnAction.new(BATTLE_TURN_ACTION_FLEE, actor_self);
 
-func ability(actor_self, actor_target, which_ability):
-	var ability_action = BattleTurnAction.new(BATTLE_TURN_ACTION_DO_ABILITY,
-											  actor_self);
-	ability_action.actor_target = actor_target;
-	ability_action.index = which_ability;
-
-	return ability_action;
-
-func use_item(actor_self, actor_target, which_item):
-	var ability_action = BattleTurnAction.new(BATTLE_TURN_ACTION_USE_ITEM,
-											  actor_self);
-	ability_action.actor_target = actor_target;
-	ability_action.index = which_item;
-
-	unhighlight_last_actor_when_present();
-	return ability_action;
-
 func finished_bump_animation(anim_name, animation_player, attack_action):
 	remove_child(animation_player);
 	animation_player.queue_free();
@@ -84,6 +67,9 @@ func remove_particle_system_and_timer(timer, particle_system):
 
 # wait wtf was this?
 const DIRECTION_MAGNITUDE = 1.56;
+
+func entity_handle_ability(target, ability):
+	target.handle_ability(ability);
 
 func entity_take_damage(target, damage):
 	print("PREPARE TO DIE");
@@ -136,7 +122,10 @@ func create_attack_bump_animation(attacker, target, attack):
 	attack_bump.track_insert_key(attacker_position_track_index, 0.98, target_battle_sprite.global_position);
 	attack_bump.track_insert_key(target_color_track_index, 1.02, Color(1, 0, 0));
 	# Did I have to make another track to have same time?
-	attack_bump.track_insert_key(self_method_track_index, 1.03, {"method": "entity_take_damage", "args": [target, attack.magnitude]});
+	if attack is PartyMember.PartyMemberAttack:
+		attack_bump.track_insert_key(self_method_track_index, 1.03, {"method": "entity_take_damage", "args": [target, attack.magnitude]});
+	elif attack is PartyMember.PartyMemberAbility:
+		attack_bump.track_insert_key(self_method_track_index, 1.03, {"method": "entity_handle_ability", "args": [target, attack]});
 	attack_bump.track_insert_key(self_method_track_index, 1.02, {"method": "begin_camera_shake", "args": [0.45, 25]});
 	# s
 	attack_bump.track_insert_key(attacker_position_track_index, 1.18, position_right_before_attack);
@@ -188,10 +177,8 @@ func create_attack_projectile_animation(attacker, target, projectile_name, attac
 	var attacker_position_track_index = attack_bump.add_track(0);
 
 	projectile_scene.global_position = attacker_battle_sprite.global_position;
-	if attacker_information[0] == left_side_participants.get_children():
-		projectile_scene.find_node("ParticleTrail").direction = Vector2(-DIRECTION_MAGNITUDE, 0);
-	else:
-		projectile_scene.find_node("ParticleTrail").direction = Vector2(DIRECTION_MAGNITUDE, 0);
+
+	projectile_scene.find_node("ParticleTrail").direction = (attacker_battle_sprite.global_position - target_battle_sprite.global_position).normalized();
 
 	attack_bump.track_set_path(target_color_track_index, String(target_battle_sprite.get_path()) + ":self_modulate");
 	attack_bump.track_set_path(attacker_position_track_index, String(projectile_scene.get_path()) + ":global_position");
@@ -201,25 +188,49 @@ func create_attack_projectile_animation(attacker, target, projectile_name, attac
 	attack_bump.track_set_interpolation_type(target_color_track_index, Animation.INTERPOLATION_CUBIC);
 	attack_bump.track_insert_key(target_color_track_index, 0, Color(1, 1, 1));
 	attack_bump.track_insert_key(attacker_position_track_index, 0, attacker_battle_sprite.global_position);
-	attack_bump.track_insert_key(target_color_track_index, 0.89, Color(1, 1, 1));
 	attack_bump.track_insert_key(attacker_position_track_index, 1.00, target_battle_sprite.global_position);
-	attack_bump.track_insert_key(target_color_track_index, 1.02, Color(1, 0, 0));
-	attack_bump.track_insert_key(self_method_track_index, 1.03, {"method": "entity_take_damage", "args": [target, attack.magnitude]});
+	if attack is PartyMember.PartyMemberAttack:
+		attack_bump.track_insert_key(target_color_track_index, 0.89, Color(1, 1, 1));
+		attack_bump.track_insert_key(target_color_track_index, 1.02, Color(1, 0, 0));
+		attack_bump.track_insert_key(self_method_track_index, 1.03, {"method": "entity_take_damage", "args": [target, attack.magnitude]});
+		attack_bump.track_insert_key(self_method_track_index, 1.02, {"method": "begin_camera_shake", "args": [0.45, 25]});
+	elif attack is PartyMember.PartyMemberAbility:
+		attack_bump.track_insert_key(self_method_track_index, 1.03, {"method": "entity_handle_ability", "args": [target, attack]});
 	attack_bump.track_insert_key(self_method_track_index, 1.04, {"method": "battle_layer_remove_child", "args": [projectile_scene]});
 	attack_bump.track_insert_key(self_method_track_index, 1.05, {"method": "create_impact_particles", "args": [projectile_name, target_information, target_battle_sprite.global_position]});
-	attack_bump.track_insert_key(self_method_track_index, 1.02, {"method": "begin_camera_shake", "args": [0.45, 25]});
 	attack_bump.track_insert_key(target_color_track_index, 1.18, Color(1, 1, 1));
 	attack_bump.value_track_set_update_mode(target_color_track_index, Animation.UPDATE_CONTINUOUS);
 	attack_bump.value_track_set_update_mode(attacker_position_track_index, Animation.UPDATE_CONTINUOUS);
 
 	return attack_bump;
 
-func create_attack_animation(actor_self, actor_target, attack_being_done):
+func create_attack_targeted_effect_animation(attacker, target, action):
+	match action.visual_id:
+		PartyMember.ATTACK_VISUAL_HEALING:
+			return create_attack_projectile_animation(attacker, target, "HealingTargettedProjectile", action);
+			pass;
+
+# The visual id will expect a different "attack_being_done".
+# This can potentially error out if you're not careful
+func create_action_animation(actor_self, actor_target, attack_being_done):
 	match attack_being_done.visual_id:
 		PartyMember.ATTACK_VISUAL_PHYSICAL_BUMP:
 			return create_attack_bump_animation(actor_self, actor_target, attack_being_done);
 		PartyMember.ATTACK_VISUAL_WATER_GUN:
 			return create_attack_projectile_animation(actor_self, actor_target, "WaterGunProjectile", attack_being_done);
+		_:
+			return create_attack_targeted_effect_animation(actor_self, actor_target, attack_being_done);
+	return null;
+
+func do_action_animation(actor_self, actor_target, action, action_datum):
+	var animation_player = AnimationPlayer.new();
+	add_child(animation_player);
+
+	animation_player.add_animation("attack",
+								   create_action_animation(actor_self, actor_target, action_datum));
+	animation_player.play("attack");
+	animation_player.connect("animation_finished", self, "finished_bump_animation", [animation_player, action]);
+	
 
 func attack(actor_self, actor_target, which_attack):
 	var attack_action = BattleTurnAction.new(BATTLE_TURN_ACTION_DO_ATTACK,
@@ -227,21 +238,33 @@ func attack(actor_self, actor_target, which_attack):
 	attack_action.actor_target = actor_target;
 	attack_action.index = which_attack;
 
-	populate_participants_with_sprites(left_side_participants, party_on_the_left.party_members);
-
-	var animation_player = AnimationPlayer.new();
-	add_child(animation_player);
 	unhighlight_last_actor_when_present();
-	var attack_being_done = actor_self.attacks[which_attack];
 
-	animation_player.add_animation("attack",
-								   create_attack_animation(actor_self, actor_target, attack_being_done));
-	animation_player.play("attack");
-	animation_player.connect("animation_finished", self, "finished_bump_animation", [animation_player, attack_action]);
+	var attack_being_done = actor_self.attacks[which_attack];
+	do_action_animation(actor_self, actor_target, attack_action, attack_being_done);
 
 	battle_log_widget.push_message(actor_self.name + " performs " + attack_being_done.name);
-
 	return attack_action;
+
+func ability(actor_self, actor_target, which_ability):
+	var ability_action = BattleTurnAction.new(BATTLE_TURN_ACTION_DO_ABILITY,
+											  actor_self);
+	ability_action.actor_target = actor_target;
+	ability_action.index = which_ability;
+
+	var ability_being_done = actor_self.abilities[which_ability];
+	do_action_animation(actor_self, actor_target, ability_action, ability_being_done);
+
+	return ability_action;
+
+func use_item(actor_self, actor_target, which_item):
+	var ability_action = BattleTurnAction.new(BATTLE_TURN_ACTION_USE_ITEM,
+											  actor_self);
+	ability_action.actor_target = actor_target;
+	ability_action.index = which_item;
+
+	unhighlight_last_actor_when_present();
+	return ability_action;
 
 var battle_information = BattleTurnStatus.new();
 
@@ -558,15 +581,14 @@ func _process(delta):
 					item_to_use[1] -= 1;
 					ItemDatabase.apply_item_to(turn_action.actor_target, item_to_use[0]);
 				BATTLE_TURN_ACTION_DO_ATTACK: battle_turn_widget_head_label.text = "ATTACKING!";
-				BATTLE_TURN_ACTION_DO_ABILITY: 
-					battle_turn_widget_head_label.text = "ABILITY!";
-					battle_log_widget.push_message("using ability");
+				BATTLE_TURN_ACTION_DO_ABILITY: battle_turn_widget_head_label.text = "ABILITY!";
+					# battle_log_widget.push_message("using ability");
 					# TODO figure out how I would do animation based on this.
-					var selected_ability = current_actor.abilities[turn_action.index];
-					battle_log_widget.push_message(current_actor.name + " performs " + selected_ability.name);
+					# var selected_ability = current_actor.abilities[turn_action.index];
+					# battle_log_widget.push_message(current_actor.name + " performs " + selected_ability.name);
 					# insert plays animation!
 					# TODO randomized ability hit chance or whatevers. (unless it's like a friendly)
-					target_actor.handle_ability(selected_ability);
+					# target_actor.handle_ability(selected_ability);
 				BATTLE_TURN_ACTION_FLEE: 
 					battle_turn_widget_head_label.text = "COWARD!";
 					# this would emit a signal...

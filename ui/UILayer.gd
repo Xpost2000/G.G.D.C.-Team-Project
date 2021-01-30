@@ -209,9 +209,9 @@ func handle_process(delta):
 					toggle_pause();
 
 				if allow_think:
-					# if Input.is_action_just_pressed("ui_page_up"):
-					#	get_parent().write_save_game();
-					#	add_popup("Saved game!");
+					if Input.is_action_just_pressed("ui_page_up"):
+						get_parent().write_save_game();
+						add_popup("Saved game!");
 					# if Input.is_action_just_pressed("ui_page_down"):
 					#	toggle_shop("shop_files/test_stock.json");
 

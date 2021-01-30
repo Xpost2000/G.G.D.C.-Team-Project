@@ -62,8 +62,6 @@ func write_save_game():
 	Utilities.write_entire_file_from_string("saves/save.game_save", JSON.print(serialize_as_dictionary()));
 
 func _ready():
-	var battle_screen = GameGlobals.get_scene(2);
-	battle_screen.connect("combat_finished", self, "_on_BattleScreen_finished");
 	randomize();
 
 	for handlable_response in ["add_item", "start_quest"]:
@@ -184,6 +182,10 @@ func _process(delta):
 		load_from_dictionary(to_load_data);
 		to_load_data = null;
 	else:
+		# I do this here because I reinstantiate the battle scene...
+		# so I'm going to try to reconnect every frame, which is bad.
+		var battle_screen = GameGlobals.get_scene(2);
+		battle_screen.connect("combat_finished", self, "_on_BattleScreen_finished");
 		# if player_node:
 		ui_layer.show_death(player_node.all_members_dead());
 		ui_layer.handle_process(delta);

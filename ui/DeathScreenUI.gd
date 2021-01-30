@@ -8,6 +8,8 @@ func _on_Restart_pressed():
 	QuestsGlobal.reset_all_quests();
 	AudioGlobal.pause_music();
 
+	GameGlobals.get_scene(GameGlobals.MAIN_GAME_SCENE).current_level_node().play_cutscene("Introduction");
+
 func _on_Menu_pressed():
 	GameGlobals.switch_to_scene(1);
 

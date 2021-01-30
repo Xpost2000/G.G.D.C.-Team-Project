@@ -16,6 +16,7 @@ enum {
 signal combat_finished(combat_finished_information);
 
 const BloodParticleSystemPrefab = preload("res://game/misc_entities/BloodParticleSystem.tscn");
+const GibbedBloodParticleSystemPrefab = preload("res://game/misc_entities/GibbedBloodParticleSystem.tscn");
 
 onready var battle_layer = $BattleLayer;
 onready var battle_ui_layer = $BattleUILayer;
@@ -57,7 +58,7 @@ func finished_bump_animation(anim_name, animation_player, attack_action):
 	remove_child(animation_player);
 	animation_player.queue_free();
 	attack_action.marked_done = true;
-	print("play animation")
+	print("FINISHED ATTACK!")
 
 func remove_particle_system_and_timer(timer, particle_system):
 	remove_child(timer);
@@ -70,14 +71,36 @@ const DIRECTION_MAGNITUDE = 1.56;
 
 func entity_handle_ability(target, ability):
 	target.handle_ability(ability);
+	
+# this only exists for the log widget...
+func push_message(msg):
+	battle_log_widget.push_message(msg);
 
 func entity_take_damage(target, damage):
-	print("PREPARE TO DIE");
-	target.take_damage(damage);
-	# TODO, probably don't make a new instance each time.
 	var new_particle_system = BloodParticleSystemPrefab.instance();
 	var target_information = participant_side_and_index_of_actor(target);
 	var target_battle_sprite = target_information[0][target_information[1]];
+
+	var initial_health = target.health;
+	target.take_damage(damage);
+	if target.dead() and (damage > (target.max_health / 2)):
+		print("gib time!");
+
+		var new_gibbed_particle_system = GibbedBloodParticleSystemPrefab.instance();
+		new_gibbed_particle_system.global_position = target_battle_sprite.global_position;
+		new_gibbed_particle_system.emitting = true;
+		new_gibbed_particle_system.one_shot = true;
+		battle_layer.add_child(new_gibbed_particle_system);
+
+		var new_other_timer = Timer.new();
+		new_other_timer.connect("timeout", self, "remove_particle_system_and_timer", [new_other_timer, new_gibbed_particle_system]);
+		add_child(new_other_timer);
+		new_other_timer.wait_time = 10; # a good enough time based on my settings.
+		new_other_timer.start();
+
+		target_information[2].party_members.erase(target);
+		populate_participants_with_sprites(target_information[3], target_information[2].party_members);
+	# TODO, probably don't make a new instance each time.
 	new_particle_system.global_position = target_battle_sprite.global_position;
 	new_particle_system.emitting = true;
 	new_particle_system.one_shot = true;
@@ -118,15 +141,21 @@ func create_attack_bump_animation(attacker, target, attack):
 	var position_right_before_attack = target_battle_sprite.global_position - (direction_between_target_and_attacker * 45);
 	attack_bump.track_insert_key(attacker_position_track_index, 0.5, position_right_before_attack);
 	attack_bump.track_insert_key(attacker_position_track_index, 0.9, position_right_before_attack);
-	attack_bump.track_insert_key(target_color_track_index, 0.89, Color(1, 1, 1));
 	attack_bump.track_insert_key(attacker_position_track_index, 0.98, target_battle_sprite.global_position);
-	attack_bump.track_insert_key(target_color_track_index, 1.02, Color(1, 0, 0));
 	# Did I have to make another track to have same time?
 	if attack is PartyMember.PartyMemberAttack:
-		attack_bump.track_insert_key(self_method_track_index, 1.03, {"method": "entity_take_damage", "args": [target, attack.magnitude]});
+		var roll_percent = randf();
+
+		if roll_percent <= attack.accuracy:
+			attack_bump.track_insert_key(target_color_track_index, 0.89, Color(1, 1, 1));
+			attack_bump.track_insert_key(target_color_track_index, 1.02, Color(1, 0, 0));
+			attack_bump.track_insert_key(self_method_track_index, 1.03, {"method": "entity_take_damage", "args": [target, attack.magnitude]});
+			attack_bump.track_insert_key(self_method_track_index, 1.02, {"method": "begin_camera_shake", "args": [0.45, 25]});
+		else:
+			attack_bump.track_insert_key(self_method_track_index, 1.03, {"method": "push_message", "args": ["Attack missed!"]});
+			# attack_action.marked_done = true;
 	elif attack is PartyMember.PartyMemberAbility:
 		attack_bump.track_insert_key(self_method_track_index, 1.03, {"method": "entity_handle_ability", "args": [target, attack]});
-	attack_bump.track_insert_key(self_method_track_index, 1.02, {"method": "begin_camera_shake", "args": [0.45, 25]});
 	# s
 	attack_bump.track_insert_key(attacker_position_track_index, 1.18, position_right_before_attack);
 	attack_bump.track_insert_key(target_color_track_index, 1.18, Color(1, 1, 1));
@@ -188,16 +217,25 @@ func create_attack_projectile_animation(attacker, target, projectile_name, attac
 	attack_bump.track_set_interpolation_type(target_color_track_index, Animation.INTERPOLATION_CUBIC);
 	attack_bump.track_insert_key(target_color_track_index, 0, Color(1, 1, 1));
 	attack_bump.track_insert_key(attacker_position_track_index, 0, attacker_battle_sprite.global_position);
-	attack_bump.track_insert_key(attacker_position_track_index, 1.00, target_battle_sprite.global_position);
 	if attack is PartyMember.PartyMemberAttack:
-		attack_bump.track_insert_key(target_color_track_index, 0.89, Color(1, 1, 1));
-		attack_bump.track_insert_key(target_color_track_index, 1.02, Color(1, 0, 0));
-		attack_bump.track_insert_key(self_method_track_index, 1.03, {"method": "entity_take_damage", "args": [target, attack.magnitude]});
-		attack_bump.track_insert_key(self_method_track_index, 1.02, {"method": "begin_camera_shake", "args": [0.45, 25]});
+		var roll_percent = randf();
+
+		if roll_percent <= attack.accuracy:
+			attack_bump.track_insert_key(target_color_track_index, 0.89, Color(1, 1, 1));
+			attack_bump.track_insert_key(target_color_track_index, 1.02, Color(1, 0, 0));
+			attack_bump.track_insert_key(self_method_track_index, 1.03, {"method": "entity_take_damage", "args": [target, attack.magnitude]});
+			attack_bump.track_insert_key(self_method_track_index, 1.02, {"method": "begin_camera_shake", "args": [0.45, 25]});
+			attack_bump.track_insert_key(attacker_position_track_index, 1.00, target_battle_sprite.global_position);
+			attack_bump.track_insert_key(self_method_track_index, 1.04, {"method": "battle_layer_remove_child", "args": [projectile_scene]});
+			attack_bump.track_insert_key(self_method_track_index, 1.05, {"method": "create_impact_particles", "args": [projectile_name, target_information, target_battle_sprite.global_position]});
+		else:
+			attack_bump.length = 3.3;
+			attack_bump.track_insert_key(attacker_position_track_index, 3.3, target_battle_sprite.global_position + (target_battle_sprite.global_position - attacker_battle_sprite.global_position).normalized() * 150);
+			attack_bump.track_insert_key(self_method_track_index, 1.03, {"method": "push_message", "args": ["Attack missed!"]});
+			attack_bump.track_insert_key(self_method_track_index, 3.3, {"method": "battle_layer_remove_child", "args": [projectile_scene]});
 	elif attack is PartyMember.PartyMemberAbility:
 		attack_bump.track_insert_key(self_method_track_index, 1.03, {"method": "entity_handle_ability", "args": [target, attack]});
-	attack_bump.track_insert_key(self_method_track_index, 1.04, {"method": "battle_layer_remove_child", "args": [projectile_scene]});
-	attack_bump.track_insert_key(self_method_track_index, 1.05, {"method": "create_impact_particles", "args": [projectile_name, target_information, target_battle_sprite.global_position]});
+		attack_bump.track_insert_key(self_method_track_index, 1.04, {"method": "battle_layer_remove_child", "args": [projectile_scene]});
 	attack_bump.track_insert_key(target_color_track_index, 1.18, Color(1, 1, 1));
 	attack_bump.value_track_set_update_mode(target_color_track_index, Animation.UPDATE_CONTINUOUS);
 	attack_bump.value_track_set_update_mode(attacker_position_track_index, Animation.UPDATE_CONTINUOUS);
@@ -218,6 +256,8 @@ func create_action_animation(actor_self, actor_target, attack_being_done):
 			return create_attack_bump_animation(actor_self, actor_target, attack_being_done);
 		PartyMember.ATTACK_VISUAL_WATER_GUN:
 			return create_attack_projectile_animation(actor_self, actor_target, "WaterGunProjectile", attack_being_done);
+		PartyMember.ATTACK_VISUAL_HOLY_FLAME:
+			return create_attack_projectile_animation(actor_self, actor_target, "HolyFlameProjectile", attack_being_done);
 		_:
 			return create_attack_targeted_effect_animation(actor_self, actor_target, attack_being_done);
 	return null;
@@ -226,12 +266,10 @@ func do_action_animation(actor_self, actor_target, action, action_datum):
 	var animation_player = AnimationPlayer.new();
 	add_child(animation_player);
 
-	animation_player.add_animation("attack",
-								   create_action_animation(actor_self, actor_target, action_datum));
+	animation_player.add_animation("attack", create_action_animation(actor_self, actor_target, action_datum));
 	animation_player.play("attack");
 	animation_player.connect("animation_finished", self, "finished_bump_animation", [animation_player, action]);
 	
-
 func attack(actor_self, actor_target, which_attack):
 	var attack_action = BattleTurnAction.new(BATTLE_TURN_ACTION_DO_ATTACK,
 											 actor_self);
@@ -255,6 +293,7 @@ func ability(actor_self, actor_target, which_ability):
 	var ability_being_done = actor_self.abilities[which_ability];
 	do_action_animation(actor_self, actor_target, ability_action, ability_being_done);
 
+	battle_log_widget.push_message(actor_self.name + " performs " + ability_being_done.name);
 	return ability_action;
 
 func use_item(actor_self, actor_target, which_item):
@@ -345,11 +384,12 @@ func get_party_from_side(side):
 		BATTLE_SIDE_RIGHT: return party_on_the_right;
 	return null;
 	
+# This is actually misleading since I crammed more things for lazy reasons
 func participant_side_and_index_of_actor(actor):
 	if actor in party_on_the_right.party_members:
-		return [right_side_participants.get_children(), party_on_the_right.party_members.find(actor)];
+		return [right_side_participants.get_children(), party_on_the_right.party_members.find(actor), party_on_the_right, right_side_participants];
 	elif actor in party_on_the_left.party_members:
-		return [left_side_participants.get_children(), party_on_the_left.party_members.find(actor)];
+		return [left_side_participants.get_children(), party_on_the_left.party_members.find(actor), party_on_the_left, left_side_participants];
 
 func whose_side_is_active(active_actor):
 	if active_actor in party_on_the_right.party_members:
@@ -378,7 +418,6 @@ func finish_battle(reason, winner, loser):
 func report_inventory_of_active_party():
 	var active_actor = battle_information.active_actor();
 	var active_party = get_party_pairs(whose_side_is_active(active_actor))[0];
-	# inventory_ui.update_based_on_entity(active_party, active_party.inventory);
 
 var camera_shake_timer_length = 0;
 var camera_shake_timer = 0;
@@ -448,6 +487,15 @@ func perform_action(selected_item_index, action_type):
 
 	if last_created_selection_menu:
 		last_created_selection_menu.queue_free();
+
+func ai_think_balanced(actor_self, enemy_party):
+	var attack_index = actor_self.random_attack_index();
+
+	if attack_index != -1:
+		var target = enemy_party.random_living_party_member();
+		return attack(actor_self, target, attack_index);
+	else:
+		return skip_turn(actor_self);
 	
 func _process(delta):
 	if party_on_the_left and party_on_the_right:
@@ -549,15 +597,7 @@ func _process(delta):
 				else:
 					battle_turn_widget_head_label.text = "AI THINKING...";
 					if artificial_thinking_time >= ARTIFICIAL_THINKING_TIME_MAX:
-						var attack_index = active_actor.random_attack_index();
-
-						if attack_index != -1:
-							battle_information.decided_action = attack(active_actor,
-																	   parties[OPPOSING_SIDE_INDEX].first_alive_party_member(),
-																	   attack_index);
-						else:
-							battle_information.decided_action = skip_turn(active_actor);
-
+						battle_information.decided_action = ai_think_balanced(active_actor, parties[OPPOSING_SIDE_INDEX]);
 						artificial_thinking_time = 0;
 						print("beep boop robot thoughts");
 					else:
@@ -580,15 +620,10 @@ func _process(delta):
 					var item_to_use = parties[0].inventory[turn_action.index];
 					item_to_use[1] -= 1;
 					ItemDatabase.apply_item_to(turn_action.actor_target, item_to_use[0]);
-				BATTLE_TURN_ACTION_DO_ATTACK: battle_turn_widget_head_label.text = "ATTACKING!";
-				BATTLE_TURN_ACTION_DO_ABILITY: battle_turn_widget_head_label.text = "ABILITY!";
-					# battle_log_widget.push_message("using ability");
-					# TODO figure out how I would do animation based on this.
-					# var selected_ability = current_actor.abilities[turn_action.index];
-					# battle_log_widget.push_message(current_actor.name + " performs " + selected_ability.name);
-					# insert plays animation!
-					# TODO randomized ability hit chance or whatevers. (unless it's like a friendly)
-					# target_actor.handle_ability(selected_ability);
+				BATTLE_TURN_ACTION_DO_ATTACK:
+					battle_turn_widget_head_label.text = "ATTACKING!";
+				BATTLE_TURN_ACTION_DO_ABILITY:
+					battle_turn_widget_head_label.text = "ABILITY!";
 				BATTLE_TURN_ACTION_FLEE: 
 					battle_turn_widget_head_label.text = "COWARD!";
 					# this would emit a signal...
@@ -632,7 +667,7 @@ func highlight_actor(actor):
 	var name_label = Label.new();
 	var frame_of_reference = actor_battle_sprite.frames.get_frame("idle", 0);
 	name_label.set_name("??HIGHLIGHTNAME");
-	name_label.text = actor.name;
+	name_label.text = actor.name + " HP: " + str(actor.health) + " MP: " + str(actor.mana_points);
 	actor_battle_sprite.add_child(name_label);
 	name_label.rect_position.x = -name_label.rect_size.x/2;
 	name_label.rect_position.y = frame_of_reference.get_size().y * -1.085;

@@ -5,7 +5,7 @@ func _ready():
 	var father = add_party_member_default("The Father");
 	father.load_battle_portrait("isshin_test");
 	father.load_battle_sprite("res://scratchboard/sprites/TheFatherBattleSprite.tscn"); 
-	father.attacks.push_back(PartyMember.PartyMemberAttack.new("Judgement!", 99, 1.0, 0, PartyMember.ATTACK_VISUAL_HOLY_FLAME));
+	father.attacks.push_back(PartyMember.PartyMemberAttack.new("Judgement!", 991823, 1.0, 0, PartyMember.ATTACK_VISUAL_HOLY_FLAME));
 
 	var son = add_party_member_default("The Son");
 	son.load_battle_sprite("res://scratchboard/sprites/TheSonBattleSprite.tscn");

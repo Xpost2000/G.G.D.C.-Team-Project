@@ -35,7 +35,7 @@ func _ready():
 	protag.attacks.push_back(PartyMember.PartyMemberAttack.new("All In!", 99999, 0.1, 100));
 
 	var deutag = add_party_member_default("Mr. Deuteragonist");
-	deutag.attacks.push_back(PartyMember.PartyMemberAttack.new("Watergun!", 56, 1.0, PartyMember.ATTACK_VISUAL_WATER_GUN));
+	deutag.attacks.push_back(PartyMember.PartyMemberAttack.new("Watergun!", 56, 1.0, 0, PartyMember.ATTACK_VISUAL_WATER_GUN));
 	deutag.attacks.push_back(PartyMember.PartyMemberAttack.new("Ultra Water Cannon", 9999, 0.1, 100, PartyMember.ATTACK_VISUAL_WATER_GUN));
 	deutag.attacks.push_back(PartyMember.PartyMemberAttack.new("Weak Slash", 10, 1.0));
 	deutag.abilities.push_back(PartyMember.PartyMemberAbility.new("Heal!", "You could use some patching up anyways...", 35, 1.0, 15, PartyMember.ABILITY_TYPE_HEAL, PartyMember.ATTACK_VISUAL_HEALING));

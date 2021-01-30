@@ -3,6 +3,7 @@
 # not necessarily ATTACKS, just for now.
 enum {ATTACK_VISUAL_PHYSICAL_BUMP,
 	  ATTACK_VISUAL_WATER_GUN,
+	  ATTACK_VISUAL_HOLY_FLAME,
 	  ATTACK_VISUAL_HEALING}
 class PartyMemberAttack:
 	func _init(name, magnitude, accuracy, cost=0, visual_id=ATTACK_VISUAL_PHYSICAL_BUMP):
@@ -161,7 +162,7 @@ func handle_ability(ability):
 			print("? How did this happen");
 			pass;
 		ABILITY_TYPE_HEAL:
-			print("Heal");
+			health += ability.magnitude;
 			pass;
 		ABILITY_TYPE_BUFF_STRENGTH:
 			print("Strength buff for n turns?")

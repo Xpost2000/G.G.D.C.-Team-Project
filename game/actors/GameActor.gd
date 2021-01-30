@@ -93,6 +93,13 @@ func get_party_member(index):
 	# later I'll do checking.
 	return party_members[index];
 
+func random_living_party_member():
+	while true:
+		var index = randi() % len(party_members);
+		var party_member = party_members[index];
+		if not party_member.dead():
+			return party_member;
+
 func index_of_first_alive_party_member(): 
 	for index in len(party_members):
 		var party_member = party_members[index];

@@ -81,6 +81,7 @@ func override_physics_process(delta):
 				sprinting && movement_result);
 	emit_signal("report_party_info_to_ui",
 				party_members, gold)
+	$Torchlight.energy = (sin(float(OS.get_ticks_msec() / 1000.0) * 5 + 15)+1) * 0.10 + 0.60;
 
 const LevelTransitionClass = preload("res://game/LevelTransition.gd");
 

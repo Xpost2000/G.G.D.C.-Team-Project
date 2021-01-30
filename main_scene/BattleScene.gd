@@ -257,6 +257,20 @@ func populate_participants_with_sprites(side, party_members):
 		y_cursor += new_sprite.frames.get_frame("idle", 0).get_size().y * 1.56;
 		side.add_child(new_sprite);
 
+const DimmerRect = preload("res://ui/DimmerRect.gd");
+func create_fade_dimmer(color, hang_time=0):
+	var new_fade_dimmer = DimmerRect.new();
+
+	new_fade_dimmer.disabled = false;
+	new_fade_dimmer.rect_size = Vector2(1280, 720);
+	new_fade_dimmer.color = color
+	new_fade_dimmer.hang_max_time = hang_time;
+
+	return new_fade_dimmer;
+func delete_dimmer(dimmer):
+	battle_ui_layer.remove_child(dimmer);
+	dimmer.queue_free();
+
 func begin_battle(left, right):
 	focused_party = null;
 	focused_party_member_index = 0;
@@ -274,6 +288,14 @@ func begin_battle(left, right):
 	populate_participants_with_sprites(right_side_participants, party_on_the_right.party_members);
 
 	focused_party = party_on_the_left;
+
+	var new_fade_dimmer = create_fade_dimmer(Color(0, 0, 0, 0), 0.35);
+	new_fade_dimmer.hang_time = 0.20;
+
+	new_fade_dimmer.begin_fade_out();
+	battle_ui_layer.add_child(new_fade_dimmer);
+
+	new_fade_dimmer.connect("finished", self, "delete_dimmer", [new_fade_dimmer]);
 
 
 # Technically... This doesn't matter to me... What I really care about

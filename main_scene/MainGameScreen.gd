@@ -150,10 +150,27 @@ func _on_UILayer_notify_finished_level_load_related_fading():
 	var loaded_scene = load_new_level_scene(full_scene_path);
 	setup_new_level_scene(player, level_transition, loaded_scene);
 
-func _open_battle(left, right):
-	print("starting fight")
+func _begin_fight(left, right, tween, panner_rect):
 	GameGlobals.switch_to_scene(2);
 	GameGlobals.battle_screen.begin_battle(left, right);
+	remove_child(tween);
+	tween.queue_free();
+	ui_layer.remove_child(panner_rect);
+	panner_rect.queue_free();
+	
+func _open_battle(left, right):
+	print("starting fight")
+	var tween = Tween.new();
+	var panner_rect = ColorRect.new();
+	panner_rect.color = Color(0, 0, 0, 1);
+	panner_rect.rect_size = Vector2(1280, 720);
+	panner_rect.rect_position = Vector2.ZERO;
+	tween.interpolate_property(panner_rect, "rect_position:x", -1280, 0, (1280.0/1280.0),
+							   Tween.TRANS_LINEAR, Tween.EASE_IN_OUT);
+	add_child(tween);
+	ui_layer.add_child(panner_rect);
+	tween.connect("tween_all_completed", self, "_begin_fight", [left, right, tween, panner_rect]);
+	tween.start();
 
 func _on_PlayerCharacter_request_to_open_battle(left, right):
 	call_deferred("_open_battle", left, right);

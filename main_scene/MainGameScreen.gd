@@ -7,6 +7,7 @@ onready var game_layer = $GameLayer;
 onready var ui_layer = $UILayer;
 onready var level_information = $GameLayer/LevelInformation;
 onready var player_node = $GameLayer/PersistentThings/PlayerCharacter;
+onready var camera = $GameLayer/PersistentThings/MainGameCamera;
 
 func current_level_node():
 	return level_information.get_children()[0];
@@ -78,6 +79,7 @@ enum {
 	COMBAT_FINISHED_REASON_FORCED # There are no winners or losers.
 	}
 func _on_BattleScreen_finished(type, a, b):
+	AudioGlobal.pause_music();
 	match type:
 		COMBAT_FINISHED_REASON_FLEE:
 			print("cowardly flee");
@@ -151,15 +153,15 @@ func _on_UILayer_notify_finished_level_load_related_fading():
 	var loaded_scene = load_new_level_scene(full_scene_path);
 	setup_new_level_scene(player, level_transition, loaded_scene);
 
-func _begin_fight(left, right, tween, panner_rect):
+func _begin_fight(left, right, tween, panner_rect, music):
 	GameGlobals.switch_to_scene(2);
-	GameGlobals.battle_screen.begin_battle(left, right);
+	GameGlobals.battle_screen.begin_battle(left, right, music);
 	remove_child(tween);
 	tween.queue_free();
 	ui_layer.remove_child(panner_rect);
 	panner_rect.queue_free();
 	
-func _open_battle(left, right):
+func _open_battle(left, right, music=null):
 	print("starting fight")
 	var tween = Tween.new();
 	var panner_rect = ColorRect.new();
@@ -170,7 +172,7 @@ func _open_battle(left, right):
 							   Tween.TRANS_LINEAR, Tween.EASE_IN_OUT);
 	add_child(tween);
 	ui_layer.add_child(panner_rect);
-	tween.connect("tween_all_completed", self, "_begin_fight", [left, right, tween, panner_rect]);
+	tween.connect("tween_all_completed", self, "_begin_fight", [left, right, tween, panner_rect, music]);
 	tween.start();
 
 func _on_PlayerCharacter_request_to_open_battle(left, right):

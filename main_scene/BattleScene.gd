@@ -333,7 +333,8 @@ func delete_dimmer(dimmer):
 	battle_ui_layer.remove_child(dimmer);
 	dimmer.queue_free();
 
-func begin_battle(left, right):
+var music_track = null;
+func begin_battle(left, right, music=null):
 	focused_party = null;
 	focused_party_member_index = 0;
 	party_on_the_left = left;
@@ -358,6 +359,7 @@ func begin_battle(left, right):
 	battle_ui_layer.add_child(new_fade_dimmer);
 
 	new_fade_dimmer.connect("finished", self, "delete_dimmer", [new_fade_dimmer]);
+	music_track = music;
 
 
 # Technically... This doesn't matter to me... What I really care about
@@ -498,6 +500,8 @@ func ai_think_balanced(actor_self, enemy_party):
 		return skip_turn(actor_self);
 	
 func _process(delta):
+	if music_track:
+		AudioGlobal.looped_play_music(music_track);
 	if party_on_the_left and party_on_the_right:
 		if !battle_information.decided_action:
 			var active_actor = battle_information.active_actor();

@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/battle_dragon.ogg-95ab80969d3666df0811c7242aa0c0c8.oggstr"
+
+[deps]
+
+source_file="res://snd/bg2soundtrack/battle_dragon.ogg"
+dest_files=[ "res://.import/battle_dragon.ogg-95ab80969d3666df0811c7242aa0c0c8.oggstr" ]
+
+[params]
+
+loop=true
+loop_offset=0

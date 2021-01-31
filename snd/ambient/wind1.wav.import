@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/wind1.wav-7671d774d0b8a70b17f2373081df19c0.sample"
+
+[deps]
+
+source_file="res://snd/ambient/wind1.wav"
+dest_files=[ "res://.import/wind1.wav-7671d774d0b8a70b17f2373081df19c0.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=false
+compress/mode=0

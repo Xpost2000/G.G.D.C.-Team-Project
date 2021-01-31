@@ -5,10 +5,10 @@
 [ext_resource path="res://scenes/LevelDemo2.gd" type="Script" id=5]
 [ext_resource path="res://scenes/DemoTileset.tres" type="TileSet" id=6]
 
-[sub_resource type="CircleShape2D" id=2]
+[sub_resource type="CircleShape2D" id=1]
 radius = 82.4217
 
-[sub_resource type="RectangleShape2D" id=3]
+[sub_resource type="RectangleShape2D" id=2]
 extents = Vector2( 51.0503, 194.92 )
 
 [node name="LevelDemo2" type="YSort"]
@@ -38,7 +38,15 @@ scene_to_transition_to = "LevelDemo"
 landmark_node = "EntranceToDemo2"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Entities/ExitToDemo1"]
-shape = SubResource( 2 )
+shape = SubResource( 1 )
+
+[node name="ExitToDemo2" parent="Entities" instance=ExtResource( 3 )]
+position = Vector2( 1236.03, 2128.24 )
+scene_to_transition_to = "DomainOfTheDragon"
+landmark_node = "Entrance"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Entities/ExitToDemo2"]
+shape = SubResource( 1 )
 
 [node name="TransitionPlaceholder" parent="Entities" instance=ExtResource( 3 )]
 position = Vector2( 4362.54, 959.333 )
@@ -46,7 +54,7 @@ scene_to_transition_to = "CultHideout"
 landmark_node = "Entrance"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Entities/TransitionPlaceholder"]
-shape = SubResource( 2 )
+shape = SubResource( 1 )
 
 [node name="JesusTest" parent="Entities" groups=[
 "Actors",
@@ -70,7 +78,7 @@ __meta__ = {
 }
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Entities/NimDoorLock"]
-shape = SubResource( 3 )
+shape = SubResource( 2 )
 
 [node name="Props" type="Node2D" parent="."]
 __meta__ = {

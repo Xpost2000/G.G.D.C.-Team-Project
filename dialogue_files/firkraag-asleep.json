@@ -1,0 +1,52 @@
+{
+    "start": {
+        "speaker": {
+            "type" : "ManuallySpecified",
+            "speaker" : "...",
+            "portrait": "testerbester"
+        },
+        "text": "Here lies a sleeping dragon...",
+        "choices": [
+            {
+                "text": "*Prod it...*",
+                "next": "initiate_fight"
+            },
+            {
+                "text": "*Leave it alone*",
+                "next": "dread"
+            }
+        ]
+    },
+    "initiate_fight": {
+        "speaker": {
+            "type" : "ManuallySpecified",
+            "speaker" : "...",
+            "portrait": "testerbester"
+        },
+        "text": "The dragon's eye snaps open! This spells certain doom for you!",
+        "next": "prepare"
+    },
+    "prepare": {
+        "speaker": {
+            "type" : "ManuallySpecified",
+            "speaker" : "Firkraag",
+            "portrait": "testerbester"
+        },
+        "text": "It is... As they say, your funeral.",
+        "choices": [
+            {
+                "text": "*Ready yourself!*",
+                "actions": [["fire_id", "FightDragon"]]
+            }
+        ]
+    },
+    "dread": {
+        "speaker": {
+            "type" : "ManuallySpecified",
+            "speaker" : "...",
+            "portrait": "testerbester"
+        },
+        "text": "There's an overwhelming since of dread... You decide to best not disturb... But how do you get out?",
+    }
+}
+

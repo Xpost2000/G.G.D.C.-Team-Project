@@ -1,11 +1,33 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=15 format=2]
 
 [ext_resource path="res://scenes/DemoTileset.tres" type="TileSet" id=1]
 [ext_resource path="res://images/light_blob.png" type="Texture" id=2]
-[ext_resource path="res://icon.png" type="Texture" id=3]
+[ext_resource path="res://game/LevelTransition.tscn" type="PackedScene" id=3]
+[ext_resource path="res://images/sleeping_firkraag.png" type="Texture" id=4]
+[ext_resource path="res://images/gore_pile.png" type="Texture" id=5]
+[ext_resource path="res://images/decorative_maybe_fungi.png" type="Texture" id=6]
+[ext_resource path="res://images/dragon_hoard.png" type="Texture" id=7]
+[ext_resource path="res://game/actors/BossFightFirkraag.tscn" type="PackedScene" id=8]
+[ext_resource path="res://scenes/DomainOfTheDragon.gd" type="Script" id=9]
+
+[sub_resource type="RectangleShape2D" id=2]
+extents = Vector2( 47.9188, 32.6774 )
+
+[sub_resource type="RectangleShape2D" id=3]
+extents = Vector2( 68.6912, 26.5874 )
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 43.7979, 9.31657 )
+
+[sub_resource type="RectangleShape2D" id=4]
+extents = Vector2( 1246.2, 867.434 )
+
+[sub_resource type="CircleShape2D" id=5]
+radius = 66.4071
 
 [node name="DomainOfTheDragon" type="CanvasModulate"]
-color = Color( 0.262745, 0.227451, 0.219608, 0.631373 )
+color = Color( 0.235294, 0.235294, 0.235294, 1 )
+script = ExtResource( 9 )
 
 [node name="Tilesets" type="Node2D" parent="."]
 
@@ -23,12 +45,181 @@ texture = ExtResource( 2 )
 color = Color( 0.611765, 0.0745098, 0.0745098, 1 )
 energy = 0.85
 shadow_enabled = true
+__meta__ = {
+"_edit_lock_": true
+}
 
-[node name="Entrance" type="Sprite" parent="Entities"]
+[node name="Entrance" type="Node2D" parent="Entities"]
+visible = false
 position = Vector2( 1176.88, 1317.61 )
 scale = Vector2( -2.49359, 1.25993 )
-texture = ExtResource( 3 )
+
+[node name="HealingItemHoard" type="Sprite" parent="Entities"]
+position = Vector2( 2246.32, 1707.11 )
+scale = Vector2( 3, 3 )
+texture = ExtResource( 7 )
+
+[node name="Area2D" type="Area2D" parent="Entities/HealingItemHoard"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Entities/HealingItemHoard/Area2D"]
+position = Vector2( -58.8627, 0 )
+shape = SubResource( 2 )
+
+[node name="dragon_hoard" type="Sprite" parent="Entities"]
+position = Vector2( 2064.32, 1791.11 )
+scale = Vector2( 3, 3 )
+texture = ExtResource( 7 )
+
+[node name="dragon_hoard3" type="Sprite" parent="Entities"]
+position = Vector2( 2356.32, 1787.11 )
+scale = Vector2( 3, 3 )
+texture = ExtResource( 7 )
+
+[node name="StaticBody2D" type="StaticBody2D" parent="Entities/dragon_hoard3"]
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Entities/dragon_hoard3/StaticBody2D"]
+position = Vector2( 0, -6.67087 )
+scale = Vector2( 1, 1.12931 )
+polygon = PoolVector2Array( -41.9144, -38.0782, -85.1223, -5.57324, -85.1223, 14.2469, -62.5273, 25.3461, -10.5986, 30.8958, 38.1589, 30.4993, 68.2854, 27.3281, 72.2495, 13.454, 66.6998, -13.5013, 62.3394, -26.9789, 25.0776, -34.5106 )
+
+[node name="dragon_hoard4" type="Sprite" parent="Entities"]
+position = Vector2( 2562.32, 1863.11 )
+scale = Vector2( 3, 3 )
+texture = ExtResource( 7 )
+
+[node name="dragon_hoard5" type="Sprite" parent="Entities"]
+position = Vector2( 2831.41, 2549.28 )
+scale = Vector2( 3, 3 )
+texture = ExtResource( 7 )
+
+[node name="dragon_hoard12" type="Sprite" parent="Entities"]
+position = Vector2( 2905.41, 2347.46 )
+scale = Vector2( 3, 3 )
+texture = ExtResource( 7 )
+
+[node name="dragon_hoard13" type="Sprite" parent="Entities"]
+position = Vector2( 2848.23, 2663.64 )
+scale = Vector2( 3, 3 )
+texture = ExtResource( 7 )
+
+[node name="dragon_hoard14" type="Sprite" parent="Entities"]
+position = Vector2( 2844.87, 2660.27 )
+scale = Vector2( 3, 3 )
+texture = ExtResource( 7 )
+
+[node name="dragon_hoard15" type="Sprite" parent="Entities"]
+position = Vector2( 2703.59, 2757.82 )
+scale = Vector2( 3, 3 )
+texture = ExtResource( 7 )
+
+[node name="dragon_hoard16" type="Sprite" parent="Entities"]
+position = Vector2( 2606.05, 2835.18 )
+scale = Vector2( 3, 3 )
+texture = ExtResource( 7 )
+
+[node name="dragon_hoard6" type="Sprite" parent="Entities"]
+position = Vector2( 2787.69, 2145.65 )
+scale = Vector2( 3, 3 )
+texture = ExtResource( 7 )
+
+[node name="dragon_hoard7" type="Sprite" parent="Entities"]
+position = Vector2( 2740.59, 2004.38 )
+scale = Vector2( 3, 3 )
+texture = ExtResource( 7 )
+
+[node name="dragon_hoard8" type="Sprite" parent="Entities"]
+position = Vector2( 2824.68, 2064.92 )
+scale = Vector2( 3, 3 )
+texture = ExtResource( 7 )
+
+[node name="dragon_hoard9" type="Sprite" parent="Entities"]
+position = Vector2( 2871.77, 2243.19 )
+scale = Vector2( 3, 3 )
+texture = ExtResource( 7 )
+
+[node name="dragon_hoard10" type="Sprite" parent="Entities"]
+position = Vector2( 2868.41, 2455.1 )
+scale = Vector2( 3, 3 )
+texture = ExtResource( 7 )
+
+[node name="dragon_hoard11" type="Sprite" parent="Entities"]
+position = Vector2( 2868.41, 2455.1 )
+scale = Vector2( 3, 3 )
+texture = ExtResource( 7 )
+
+[node name="SomeOtherStuffHoard" type="Sprite" parent="Entities"]
+position = Vector2( 2256.32, 1867.11 )
+scale = Vector2( 3, 3 )
+texture = ExtResource( 7 )
+
+[node name="Area2D" type="Area2D" parent="Entities/SomeOtherStuffHoard"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Entities/SomeOtherStuffHoard/Area2D"]
+position = Vector2( -14.015, 14.0149 )
+shape = SubResource( 3 )
+
+[node name="FirkraagEnt" type="Sprite" parent="Entities"]
+position = Vector2( 2195.21, 2392.26 )
+scale = Vector2( 12, 12 )
+texture = ExtResource( 4 )
+
+[node name="FightStarter" type="Area2D" parent="Entities/FirkraagEnt"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Entities/FirkraagEnt/FightStarter"]
+position = Vector2( -9.16808, 17.8634 )
+shape = SubResource( 1 )
+
+[node name="StaticBody2D" type="StaticBody2D" parent="Entities/FirkraagEnt"]
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Entities/FirkraagEnt/StaticBody2D"]
+polygon = PoolVector2Array( -50.3007, 0.978806, -34.0434, -13.0361, -12.1801, -13.3164, 6.59996, -9.39226, 18.9331, -0.983276, 37.9934, 1.25911, 50.3266, -0.142395, 56.2128, -0.702988, 56.2128, 4.903, 46.4024, 7.14539, 31.5465, 10.2287, 37.7131, 13.5922, 34.3495, 19.7588, 25.38, 22.5618, 4.91817, 24.5239, -14.4225, 23.4027, -27.5965, 20.3194, -42.4523, 16.3952, -52.5431, 11.0696, -54.5052, 7.14539 )
+
+[node name="FirkraagBossEnt" parent="Entities" instance=ExtResource( 8 )]
+position = Vector2( 2790.12, 759.499 )
+
+[node name="CameraZoomResizer" type="Area2D" parent="Entities"]
+position = Vector2( 2020.91, 2422.65 )
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="CollisionPolygon2D" type="CollisionShape2D" parent="Entities/CameraZoomResizer"]
+shape = SubResource( 4 )
+
+[node name="CameraTweener" type="Tween" parent="Entities/CameraZoomResizer"]
+
+[node name="LevelTransition" parent="Entities" instance=ExtResource( 3 )]
+position = Vector2( 1080.42, 1182.67 )
+scene_to_transition_to = "LevelDemo2"
+landmark_node = "ExitToDemo2"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Entities/LevelTransition"]
+shape = SubResource( 5 )
 
 [node name="Cutscenes" type="AnimationPlayer" parent="."]
 
 [node name="Props" type="Node2D" parent="."]
+
+[node name="gore_pile" type="Sprite" parent="Props"]
+position = Vector2( 1230.44, 1766.49 )
+texture = ExtResource( 5 )
+
+[node name="gore_pile3" type="Sprite" parent="Props"]
+position = Vector2( 1426.71, 1928.3 )
+texture = ExtResource( 5 )
+
+[node name="gore_pile5" type="Sprite" parent="Props"]
+position = Vector2( 1191.25, 1999.66 )
+texture = ExtResource( 5 )
+
+[node name="gore_pile4" type="Sprite" parent="Props"]
+position = Vector2( 1548.08, 1851.89 )
+texture = ExtResource( 5 )
+
+[node name="gore_pile2" type="Sprite" parent="Props"]
+position = Vector2( 1496.46, 1749.75 )
+texture = ExtResource( 5 )
+
+[node name="decorative_maybe_fungi" type="Sprite" parent="Props"]
+position = Vector2( 1187.27, 1634.54 )
+texture = ExtResource( 6 )

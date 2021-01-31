@@ -1,0 +1,65 @@
+{
+    "start": {
+        "speaker": {
+            "type" : "ManuallySpecified",
+            "speaker" : "Puzzle",
+            "portrait": "testerbester"
+        },
+        "text": "Think of words which end in '-GRY'. Angry and hungry are two of them. There are but three words in the common tongue... What is the third word? The word is something that one uses everyday. If thou hast listened carefully I have already told thee what it is.",
+        "choices": [
+            {
+                "text": "Ugh....",
+                "next": "wrong"
+            },
+            {
+                "text": "Tongue?",
+                "next": "finish"
+            },
+            {
+                "text": "Fungry?",
+                "next": "wrong"
+            },
+            {
+                "text": "Ears?",
+                "next": "wrong"
+            },
+            {
+                "text": "There is no such word.",
+                "next": "wrong"
+            },
+            {
+                "text": "...",
+                "next": "wrong"
+            }
+        ]
+    },
+    "finish": {
+        "speaker": {
+            "type" : "ManuallySpecified",
+            "speaker" : "Puzzle",
+            "portrait": "testerbester"
+        },
+        "text": "The Skull cackles, and fades away, being replaced by a holy cross.",
+        "choices": [
+            {
+                "text": "...",
+                "actions": [["fire_id", "PassedPuzzle1"]]
+            }
+        ]
+    },
+    "wrong": {
+        "speaker": {
+            "type" : "ManuallySpecified",
+            "speaker" : "Puzzle",
+            "portrait": "testerbester"
+        },
+        "text": "The Skull cackles, and stops glowing...",
+        "choices": [
+            {
+                "text": "...",
+                "actions": [["fire_id", "FailedPuzzle1"]]
+            }
+        ]
+    }
+}
+

@@ -4,6 +4,7 @@ extends Control
 signal add_item(data);
 signal hi_bro(data);
 signal start_quest(data);
+signal fire_id(data);
 # end of action signals
 
 var reference_to_game_scene = null;

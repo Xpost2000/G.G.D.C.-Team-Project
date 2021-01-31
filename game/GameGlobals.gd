@@ -20,17 +20,23 @@ func resume():
 onready var scene_main_game = preload("res://main_scene/MainGameScreen.tscn");
 onready var scene_main_menu = preload("res://main_scene/MainMenuScene.tscn");
 onready var scene_battle = preload("res://main_scene/GameBattleScene.tscn");
+onready var scene_normal_ending = preload("res://main_scene/NormalEnding.tscn");
+onready var scene_true_ending = preload("res://main_scene/AlternateEnding.tscn");
 
 # This could, and probably should be an array.
 var main_game_screen;
 var main_menu_screen;
 var battle_screen;
+var normal_ending_screen;
+var alternate_ending_screen;
 
 var game_variables = []; # For reasons.
 
 enum{ MAIN_GAME_SCENE,
 	  MAIN_MENU_SCENE,
 	  BATTLE_SCENE,
+	  NORMAL_ENDING_SCENE,
+	  ALTERNATE_ENDING_SCENE,
 	  GAME_SCENE_TYPE_COUNT}
 	
 # I'm not deferring this cause I don't delete the
@@ -41,6 +47,8 @@ func switch_to_scene(scene):
 		MAIN_GAME_SCENE: scene_object = main_game_screen;
 		MAIN_MENU_SCENE: scene_object = main_menu_screen;
 		BATTLE_SCENE: scene_object = battle_screen;
+		NORMAL_ENDING_SCENE: scene_object = normal_ending_screen;
+		ALTERNATE_ENDING_SCENE: scene_object = alternate_ending_screen;
 
 	if scene_object.has_method("on_enter"):
 		scene_object.on_enter();
@@ -63,6 +71,12 @@ func reload_scene(type):
 		BATTLE_SCENE:
 			old_scene = battle_screen;
 			battle_screen = scene_battle.instance();
+		NORMAL_ENDING_SCENE:
+			old_scene = normal_ending_screen;
+			normal_ending_screen = scene_normal_ending.instance();
+		ALTERNATE_ENDING_SCENE:
+			old_scene = alternate_ending_screen;
+			alternate_ending_screen = scene_true_ending.instance();
 
 	if old_scene:
 		old_scene.queue_free();
@@ -81,6 +95,14 @@ func get_scene(type):
 			if battle_screen == null:
 				reload_scene(type);
 			return battle_screen;
+		NORMAL_ENDING_SCENE:
+			if normal_ending_screen == null:
+				reload_scene(type);
+			return normal_ending_screen;
+		ALTERNATE_ENDING_SCENE:
+			if normal_ending_screen == null:
+				reload_scene(type);
+			return alternate_ending_screen;
 
 func _ready():
 	print("preloading all scenes at least once.");

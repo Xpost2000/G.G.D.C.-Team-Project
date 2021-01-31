@@ -1,0 +1,200 @@
+{
+    "start": {
+        "speaker": {
+            "type" : "NodeSpeaker",
+            "speaker" : "PlayerCharacter"
+        },
+        "text": "Hmmm... Something looks suspicious about this wall...",
+        "next": "a"
+    },
+    "a": {
+        "speaker": {
+            "type" : "ManuallySpecified",
+            "speaker" : "Puzzle",
+            "portrait": "testerbester"
+        },
+        "text": "Suddenly in your mind you are projected an image of 3 pikes and 3 disks of 3 sizes. They all rest on the leftmost pike... What will you do?",
+        "choices": [
+            {
+                "text": "Move the topmost disk to the middle.",
+                "next": "b"
+            },
+            {
+                "text": "Move the topmost disk to the right.",
+                "next": "a1"
+            },
+            {
+                "text": "*Shake off the vision.*",
+            }
+        ]
+    },
+    "a1": {
+        "speaker": {
+            "type" : "ManuallySpecified",
+            "speaker" : "Puzzle",
+            "portrait": "testerbester"
+        },
+        "text": "All but one disk resides on the leftmost pike. The last is on the rightmost.",
+        "choices": [
+            {
+                "text": "Move the topmost disk to the middle.",
+                "next": "a2"
+            },
+            {
+                "text": "Move the rightmost disk to the middle.",
+                "next": "b"
+            },
+            {
+                "text": "*Shake off the vision.*",
+            }
+        ]
+    },
+    "b": {
+        "speaker": {
+            "type" : "ManuallySpecified",
+            "speaker" : "Puzzle",
+            "portrait": "testerbester"
+        },
+        "text": "All but one disk resides on the leftmost pike. The last is in the middle.",
+        "choices": [
+            {
+                "text": "Move the middle disk to the right",
+                "next": "a1"
+            },
+            {
+                "text": "Move the leftmost disk to the right",
+                "next": "b1"
+            },
+            {
+                "text": "*Shake off the vision.*",
+            }
+        ]
+    },
+    "b1": {
+        "speaker": {
+            "type" : "ManuallySpecified",
+            "speaker" : "Puzzle",
+            "portrait": "testerbester"
+        },
+        "text": "There is a disk on each pike.",
+        "choices": [
+            {
+                "text": "Move the middle disk to the right",
+                "next": "wrong"
+            },
+            {
+                "text": "Move the middle disk to the left",
+                "next": "c"
+            },
+            {
+                "text": "*Shake off the vision.*",
+            }
+        ]
+    },
+    "c": {
+        "speaker": {
+            "type" : "ManuallySpecified",
+            "speaker" : "Puzzle",
+            "portrait": "testerbester"
+        },
+        "text": "There are two disks stacked on the leftmost pike. The last remains on the right.",
+        "choices": [
+            {
+                "text": "Move the right disk to the middle",
+                "next": "wrong"
+            },
+            {
+                "text": "Move the left disk to the middle",
+                "next": "b1"
+            },
+            {
+                "text": "*Shake off the vision.*",
+            }
+        ]
+    },
+    "a2": {
+        "speaker": {
+            "type" : "ManuallySpecified",
+            "speaker" : "Puzzle",
+            "portrait": "testerbester"
+        },
+        "text": "There is a disk on each pike.",
+        "choices": [
+            {
+                "text": "Move the right most disk onto the middle one.",
+                "next": "a3"
+            },
+            {
+                "text": "Move the middle disk to the left.",
+                "next": "a1"
+            },
+            {
+                "text": "*Shake off the vision.*",
+            }
+        ]
+    },
+    "a3": {
+        "speaker": {
+            "type" : "ManuallySpecified",
+            "speaker" : "Puzzle",
+            "portrait": "testerbester"
+        },
+        "text": "In the middle there are two disks, on the left there is only one remaining.",
+        "choices": [
+            {
+                "text": "Move the leftmost disk to the right.",
+                "next": "a4"
+            },
+            {
+                "text": "Move the middle disk to the left.",
+                "next": "wrong"
+            },
+            {
+                "text": "Move the middle disk to the right.",
+                "next": "a2"
+            },
+            {
+                "text": "*Shake off the vision.*",
+            }
+        ]
+    },
+    "a4": {
+        "speaker": {
+            "type" : "ManuallySpecified",
+            "speaker" : "Puzzle",
+            "portrait": "testerbester"
+        },
+        "text": "In the middle there are two disks, on the right there is only one remaining.",
+        "choices": [
+            {
+                "text": "Separate all three disks, and then stack them atop the one the right.",
+                "next": "finish"
+            },
+            {
+                "text": "*Shake off the vision.*",
+            }
+        ]
+    },
+    "finish": {
+        "speaker": {
+            "type" : "ManuallySpecified",
+            "speaker" : "Puzzle",
+            "portrait": "testerbester"
+        },
+        "text": "The wall clicks...",
+        "choices": [
+            {
+                "text": ".... Area is now unlocked... (You cannot return after leaving though!)",
+                "actions": [["fire_id", "PassedPuzzle1"]]
+            }
+        ]
+    },
+    "wrong": {
+        "speaker": {
+            "type" : "ManuallySpecified",
+            "speaker" : "Puzzle",
+            "portrait": "testerbester"
+        },
+        "text": "You have made too many inoptimal moves! The vision fades..."
+    }
+}

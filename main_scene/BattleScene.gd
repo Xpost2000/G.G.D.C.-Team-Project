@@ -316,7 +316,7 @@ func populate_participants_with_sprites(side, party_members):
 		var new_sprite = party_member.battle_sprite_scene.instance();
 		new_sprite.position.y = y_cursor;
 
-		y_cursor += new_sprite.frames.get_frame("idle", 0).get_size().y * 1.56;
+		y_cursor += new_sprite.frames.get_frame("idle", 0).get_size().y * 1.36;
 		side.add_child(new_sprite);
 
 const DimmerRect = preload("res://ui/DimmerRect.gd");
@@ -590,7 +590,7 @@ func _process(delta):
 								battle_information.decided_action = flee(active_actor);
 
 
-					focused_party_member_index = min(len(focused_party.party_members), max(0, focused_party_member_index));
+					focused_party_member_index = min(len(focused_party.party_members)-1, max(0, focused_party_member_index));
 					if focused_party.party_members[focused_party_member_index].dead():
 						focused_party_member_index = move_focused_party_member_index_to_non_dead_in_direction(focused_party_member_index, 1, focused_party);
 						

@@ -31,6 +31,9 @@ func handle_start_quest(data):
 	print("handling!");
 	QuestsGlobal.begin_quest(_generate_quest_from_name_type(data));
 
+func handle_fire_id(data):
+	pass;
+
 var to_load_data = null;
 func load_save_file(data):
 	to_load_data = data;
@@ -64,7 +67,7 @@ func write_save_game():
 func _ready():
 	randomize();
 
-	for handlable_response in ["add_item", "start_quest"]:
+	for handlable_response in ["add_item", "start_quest", "fire_id"]:
 		$UILayer/States/DialogueUI.connect(handlable_response,
 										   self,
 										   "handle_" + handlable_response);

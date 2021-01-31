@@ -1,0 +1,16 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://images/battle/actors/spectre/battle.png" type="Texture" id=1]
+
+[sub_resource type="SpriteFrames" id=1]
+animations = [ {
+"frames": [ ExtResource( 1 ) ],
+"loop": true,
+"name": "idle",
+"speed": 5.0
+} ]
+
+[node name="TheFatherBattleSprite" type="AnimatedSprite"]
+position = Vector2( -8.34275, -22.0248 )
+frames = SubResource( 1 )
+animation = "idle"

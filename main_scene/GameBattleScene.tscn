@@ -58,12 +58,12 @@ texture = ExtResource( 7 )
 offset = Vector2( 0, -150 )
 
 [node name="layer_floor" type="Sprite" parent="BattleLayer"]
-position = Vector2( 638.458, 408.999 )
+position = Vector2( 651.458, 389.999 )
 texture = ExtResource( 8 )
 offset = Vector2( 0, -100 )
 
 [node name="layer_floor2" type="Sprite" parent="BattleLayer"]
-position = Vector2( 661.086, 359.732 )
+position = Vector2( 596.032, 358.318 )
 texture = ExtResource( 2 )
 
 [node name="layer_background_base" type="Sprite" parent="BattleLayer"]
@@ -84,7 +84,7 @@ position = Vector2( 0, 26 )
 texture = ExtResource( 12 )
 
 [node name="RightSideParticipants" type="Node2D" parent="BattleLayer"]
-position = Vector2( 999.612, 418.75 )
+position = Vector2( 928.901, 414.507 )
 __meta__ = {
 "_edit_group_": true
 }

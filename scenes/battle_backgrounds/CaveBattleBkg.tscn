@@ -1,0 +1,51 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://images/battle/bkgrnds/cave_a/layer_stalactites.png" type="Texture" id=1]
+[ext_resource path="res://images/battle/bkgrnds/cave_a/layer_floor2.png" type="Texture" id=2]
+[ext_resource path="res://images/battle/bkgrnds/cave_a/layer_stalagmites.png" type="Texture" id=3]
+[ext_resource path="res://images/battle/bkgrnds/cave_a/layer_floor.png" type="Texture" id=4]
+[ext_resource path="res://images/battle/bkgrnds/cave_a/layer_background_mask.png" type="Texture" id=5]
+[ext_resource path="res://images/battle/bkgrnds/cave_a/layer_background_base.png" type="Texture" id=6]
+
+[node name="CaveBattleBkg" type="YSort"]
+
+[node name="layer_background_mask" type="Sprite" parent="."]
+position = Vector2( 611.588, 351.259 )
+texture = ExtResource( 5 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="layer_stalactites" type="Sprite" parent="."]
+position = Vector2( 649.772, 601.36 )
+texture = ExtResource( 1 )
+offset = Vector2( 0, -300 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="layer_stalagmites" type="Sprite" parent="."]
+position = Vector2( 649.357, 387.372 )
+texture = ExtResource( 3 )
+
+[node name="layer_stalagmites2" type="Sprite" parent="."]
+position = Vector2( 855.199, 842.79 )
+scale = Vector2( 0.804936, 0.804936 )
+texture = ExtResource( 3 )
+offset = Vector2( 0, -150 )
+
+[node name="layer_floor" type="Sprite" parent="."]
+position = Vector2( 651.458, 389.999 )
+texture = ExtResource( 4 )
+offset = Vector2( 0, -100 )
+
+[node name="layer_floor2" type="Sprite" parent="."]
+position = Vector2( 596.032, 358.318 )
+texture = ExtResource( 2 )
+
+[node name="layer_background_base" type="Sprite" parent="."]
+position = Vector2( 661.086, 284.791 )
+texture = ExtResource( 6 )
+__meta__ = {
+"_edit_lock_": true
+}

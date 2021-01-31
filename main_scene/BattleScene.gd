@@ -334,7 +334,7 @@ func delete_dimmer(dimmer):
 	dimmer.queue_free();
 
 var music_track = null;
-func begin_battle(left, right, music=null):
+func begin_battle(left, right, music=null, bkg=null):
 	focused_party = null;
 	focused_party_member_index = 0;
 	party_on_the_left = left;
@@ -349,6 +349,15 @@ func begin_battle(left, right, music=null):
 
 	populate_participants_with_sprites(left_side_participants, party_on_the_left.party_members);
 	populate_participants_with_sprites(right_side_participants, party_on_the_right.party_members);
+
+	for child in $BattleLayer/BattleBackground.get_children():
+		$BattleLayer/BattleBackground.remove_child(child);
+	if bkg == null:
+		bkg = load("res://scenes/battle_backgrounds/CaveBattleBkg.tscn").instance();
+	else:
+		bkg = load(bkg).instance();
+
+	$BattleLayer/BattleBackground.add_child(bkg);
 
 	focused_party = party_on_the_left;
 

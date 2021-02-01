@@ -257,6 +257,8 @@ func create_action_animation(actor_self, actor_target, attack_being_done):
 			return create_attack_bump_animation(actor_self, actor_target, attack_being_done);
 		PartyMember.ATTACK_VISUAL_WATER_GUN:
 			return create_attack_projectile_animation(actor_self, actor_target, "WaterGunProjectile", attack_being_done);
+		PartyMember.ATTACK_VISUAL_FLAME:
+			return create_attack_projectile_animation(actor_self, actor_target, "FlameProjectile", attack_being_done);
 		PartyMember.ATTACK_VISUAL_HOLY_FLAME:
 			return create_attack_projectile_animation(actor_self, actor_target, "HolyFlameProjectile", attack_being_done);
 		_:

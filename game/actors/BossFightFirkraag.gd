@@ -4,7 +4,7 @@ func _ready():
 	set_walking_speed(0);
 	var boss = add_party_member_default("Red Dragon (Firkraag)");
 	boss.load_battle_sprite("res://scratchboard/sprites/FirkraagBattleSprite.tscn");
-	boss.load_battle_portrait("sekijo_test");
+	boss.load_battle_portrait("firkraag");
 
 	experience_value = 27500;
 	boss.max_health = 3200;
@@ -20,12 +20,12 @@ func _ready():
 	boss.attacks.push_back(PartyMember.PartyMemberAttack.new("Dragon Claw!", 50, 0.65, 0));
 	boss.attacks.push_back(PartyMember.PartyMemberAttack.new("Dragon Claw!", 50, 0.65, 0));
 	boss.attacks.push_back(PartyMember.PartyMemberAttack.new("Dragon Claw!", 50, 0.65, 0));
-	boss.attacks.push_back(PartyMember.PartyMemberAttack.new("Flame Breath!", 59, 0.60, 0, PartyMember.ATTACK_VISUAL_HOLY_FLAME));
+	boss.attacks.push_back(PartyMember.PartyMemberAttack.new("Flame Breath!", 59, 0.60, 0, PartyMember.ATTACK_VISUAL_FLAME));
 	boss.attacks.push_back(PartyMember.PartyMemberAttack.new("Swipe!", 30, 0.8, 0));
 	boss.attacks.push_back(PartyMember.PartyMemberAttack.new("Dragon Bite!", 20, 0.7, 0));
 	boss.attacks.push_back(PartyMember.PartyMemberAttack.new("Wing Buffer!", 20, 0.7, 0));
 	boss.attacks.push_back(PartyMember.PartyMemberAttack.new("Talon Streak!", 100, 0.5, 0));
-	boss.attacks.push_back(PartyMember.PartyMemberAttack.new("Firkraag's Dragon Breath!", 100, 0.70, 0, PartyMember.ATTACK_VISUAL_HOLY_FLAME));
+	boss.attacks.push_back(PartyMember.PartyMemberAttack.new("Firkraag's Dragon Breath!", 100, 0.70, 0, PartyMember.ATTACK_VISUAL_FLAME));
 
 	inventory = [["healing_grass", 30],
 				 ["healing_pod", 30],

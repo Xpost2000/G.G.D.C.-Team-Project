@@ -8,6 +8,9 @@ func fire_id_handled(data):
 		var game_layer = get_parent().get_parent().get_parent();
 		game_layer._open_battle(game_layer.player_node, $Entities/FirkraagBossEnt, "snd/bg2soundtrack/battle_dragon.ogg", "res://scenes/battle_backgrounds/DomainOfTheDragonBattleBkg.tscn", false);
 
+	if data == "OpenEyes":
+		$Entities/FirkraagEnt.texture = load("res://images/aroused_firkraag.png");
+
 
 func open_dialogue_dragon(_asdf):
 	if _asdf.name == "InteractableArea":
@@ -49,6 +52,6 @@ func _ready():
 	$Entities/CameraZoomResizer.connect("area_exited", self, "exited_camera_zoom_zone");
 
 func _process(delta):
-	AudioGlobal.looped_play_music("snd/bg1soundtrack/ever_deeper.ogg");
+	AudioGlobal.looped_play_music("snd/bg1soundtrack/ever_deeper.ogg", true);
 	if $Entities/FirkraagBossEnt.all_members_dead():
 		$Entities/FirkraagEnt.texture = load("res://images/dead_firkraag.png");

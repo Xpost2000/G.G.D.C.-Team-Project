@@ -1,5 +1,8 @@
 extends "res://game/actors/GameActor.gd"
 
+var plot_important = 1234;
+var battle_music = "snd/bg1soundtrack/attacked_by_bounty_hunters.ogg"
+
 func cultist_grand_wizard():
 	var new_orc = add_party_member_default("The Grand Wizard");
 	new_orc.stats.strength = 80 + (randi() % 30);

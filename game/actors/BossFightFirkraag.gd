@@ -7,13 +7,13 @@ func _ready():
 	boss.load_battle_portrait("sekijo_test");
 
 	experience_value = 27500;
-	boss.max_health = 2400;
-	boss.health = 2400;
+	boss.max_health = 2730;
+	boss.health = 2730;
 
 	boss.stats.strength = 200;
 	boss.stats.dexterity = 120;
 	boss.stats.constitution = 450;
-	boss.defense = 50;
+	boss.defense = 450;
 	boss.level = 40;
 
 	# Artificially increasing the chances Firkraag will do a non KO move. Since Dragon Breath and Talon Streak are 1HKO
@@ -32,4 +32,8 @@ func _ready():
 				 ["divine_grass", 5],
 				 ["dragon_heart", 1]];
 
+	boss.hurt_sounds = ["snd/vo/FIRKRA04.WAV",
+						"snd/vo/FIRKRA05.WAV",
+						"snd/vo/FIRKRA03.WAV"];
+	boss.death_sound = "snd/vo/FIRKRA06.WAV";
 	gold = 12500;

@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/attacked_by_bounty_hunters.ogg-7006e620f5f3a16681976a39651da86a.oggstr"
+
+[deps]
+
+source_file="res://snd/bg1soundtrack/attacked_by_bounty_hunters.ogg"
+dest_files=[ "res://.import/attacked_by_bounty_hunters.ogg-7006e620f5f3a16681976a39651da86a.oggstr" ]
+
+[params]
+
+loop=true
+loop_offset=0

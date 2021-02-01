@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/stealth_in_the_bandit_camp.ogg-8c6bc04c6fc0bc06d666fb712a4d5b92.oggstr"
+
+[deps]
+
+source_file="res://snd/bg1soundtrack/stealth_in_the_bandit_camp.ogg"
+dest_files=[ "res://.import/stealth_in_the_bandit_camp.ogg-8c6bc04c6fc0bc06d666fb712a4d5b92.oggstr" ]
+
+[params]
+
+loop=true
+loop_offset=0

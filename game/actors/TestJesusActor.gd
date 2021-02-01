@@ -2,6 +2,8 @@ extends "res://game/actors/GameActor.gd"
 
 var plot_important = 1234;
 
+var battle_music = "snd/planescapesoundtrack/theme.ogg"
+
 func _ready():
 	set_walking_speed(100);
 	var father = add_party_member_default("The Father");
@@ -16,13 +18,15 @@ func _ready():
 	father.stats.strength = 150;
 	father.stats.dexterity = 40;
 	father.stats.constitution = 600;
+	father.death_sound = "snd/vo/SOLARG07.WAV";
+	father.hurt_sounds = ["snd/vo/SOLARF04.WAV"];
 
 	var son = add_party_member_default("The Son");
 	son.max_health = 2000;
-	son.health = 2000;
-	son.defense = 30;
+	son.health = 2250;
+	son.defense = 250;
 	son.level = 25;
-	son.stats.strength = 100;
+	son.stats.strength = 150;
 	son.stats.dexterity = 100;
 	son.stats.constitution = 450;
 
@@ -30,6 +34,8 @@ func _ready():
 	son.load_battle_portrait("sekijo_test");
 	son.attacks.push_back(PartyMember.PartyMemberAttack.new("Repent!", 24, 1.0, 0, PartyMember.ATTACK_VISUAL_HOLY_FLAME));
 	son.attacks.push_back(PartyMember.PartyMemberAttack.new("Sinner!", 30, 0.3, 0, PartyMember.ATTACK_VISUAL_HOLY_FLAME));
+	son.hurt_sounds = ["snd/vo/SOLARF04.WAV"];
+	son.death_sound = "snd/vo/SOLARF06.WAV";
 
 	var spirit = add_party_member_default("The Holy Spirit");
 	spirit.load_battle_sprite("res://scratchboard/sprites/TheHolySpiritBattleSprite.tscn");
@@ -44,3 +50,5 @@ func _ready():
 	spirit.health = 1000;
 	spirit.stats.strength = 400;
 	spirit.stats.dexterity = -100;
+	spirit.death_sound = "snd/vo/SOLARG07.WAV";
+	spirit.hurt_sounds = ["snd/vo/SOLARF04.WAV"];

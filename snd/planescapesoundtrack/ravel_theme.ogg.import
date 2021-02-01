@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/ravel_theme.ogg-4701b4bd3bdf3a3de3adc67b6d46f16e.oggstr"
+
+[deps]
+
+source_file="res://snd/planescapesoundtrack/ravel_theme.ogg"
+dest_files=[ "res://.import/ravel_theme.ogg-4701b4bd3bdf3a3de3adc67b6d46f16e.oggstr" ]
+
+[params]
+
+loop=true
+loop_offset=0

@@ -19,7 +19,7 @@ func _ready():
 	on_enter();
 
 func _process(delta):
-	AudioGlobal.looped_play_music(thing);
+	AudioGlobal.looped_play_music(thing, true);
 
 	if save_games_widget.is_visible() or notifier_background.is_visible():
 		if Input.is_action_just_pressed("ui_cancel"):

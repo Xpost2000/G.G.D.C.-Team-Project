@@ -75,6 +75,9 @@ var level: int;
 var experience: int;
 var experience_to_next: int;
 
+var hurt_sounds: Array;
+var death_sound: String;
+
 var stats: PartyMemberStatBlock;
 
 func _init(name, health, defense, mana=100):
@@ -163,6 +166,14 @@ func dead():
 func take_damage(amount):
 	amount -= ((defense+(stats.dexterity/2)) * 0.25);
 	health -= max(0, amount);
+
+	if health <= 0 and death_sound:
+		AudioGlobal.play_sound(death_sound);
+	elif health > 0:
+		if len(hurt_sounds) > 0:
+			var random_sound = hurt_sounds[randi() % len(hurt_sounds)];
+			print(random_sound);
+			AudioGlobal.play_sound(random_sound);
 
 func damage_amount(base):
 	base *= int((0.4 + stats.strength * 0.03) + (stats.dexterity * 0.02));

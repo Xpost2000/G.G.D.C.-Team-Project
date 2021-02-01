@@ -76,6 +76,7 @@ class DialogueScene:
 	# When this is null, just use the "neutral" mood.
 	var mood: String;
 	var voice_clip: String;
+	var music: String;
 	
 	var next_for_continue: String;
 	var choices: Array;
@@ -150,6 +151,7 @@ func load_dialogue_from_file(file_name):
 			new_scene_to_push = make_scene_linear(scene_speaker, scene_text, scene_next);
 
 		new_scene_to_push.voice_clip = Utilities.dictionary_get_optional(current_scene_dictionary, "voice", "");
+		new_scene_to_push.music = Utilities.dictionary_get_optional(current_scene_dictionary, "music", "");
 		new_scenes[scene] = new_scene_to_push;
 	return new_scenes;	
 
@@ -193,6 +195,8 @@ func goto_scene(scene):
 
 			if !current_scene_object.voice_clip.empty():
 				AudioGlobal.play_sound(current_scene_object.voice_clip, AudioGlobal.DEFAULT_MAX_VOLUME_DB, 0);
+			if !current_scene_object.music.empty():
+				AudioGlobal.play_music(current_scene_object.music);
 
 			var mood = current_scene_object.mood if !current_scene_object.mood.empty() else "neutral";
 

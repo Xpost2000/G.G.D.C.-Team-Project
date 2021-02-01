@@ -32,11 +32,11 @@ func _ready():
 	protag.max_health = 1000;
 	protag.health = 1000;
 
-	protag.stats.strength = 75;
+	protag.stats.strength = 72;
 	protag.stats.dexterity = 45;
 	protag.stats.constitution = 35;
 	protag.stats.luck = 1;
-	protag.defense = 45;
+	protag.defense = 35;
 
 	protag.max_mana_points = 120;
 	protag.mana_points = 120;
@@ -50,12 +50,12 @@ func _ready():
 	deutag.max_health = 700;
 	deutag.health = 700;
 
-	deutag.stats.strength = 50;
-	deutag.stats.dexterity = 30;
+	deutag.stats.strength = 60;
+	deutag.stats.dexterity = 50;
 	deutag.stats.intelligence = 45;
 	deutag.stats.constitution = 50;
 	deutag.stats.luck = 25;
-	deutag.defense = 35;
+	deutag.defense = 40;
 
 	deutag.max_mana_points = 300;
 	deutag.mana_points = 300;

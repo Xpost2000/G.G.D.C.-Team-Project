@@ -4,81 +4,14 @@
             "type" : "NodeSpeaker",
             "speaker" : "PlayerCharacter"
         },
-        "text": "This is a linear scene. This is referring to the fact we only go one direction... As in continue...",
+        "text": "Handling a cult huh? They really couldn't find anything more important?",
         "next": "next",
-        "voice": "copyrighted-test-content/snd/see.ogg"
     },
     "next": {
         "speaker": {
             "type" : "NodeSpeaker",
             "speaker" : "PlayerCharacter"
         },
-        "text": "This one has choices",
-        "voice": "copyrighted-test-content/snd/uninvited.ogg",
-        "choices": [
-            {
-                "text": "Wait let's grab an item!",
-                "actions": [["add_item", "test_item"]],
-                "next": "meaningless"
-            },
-            {
-                "text": "Hey... I need a favor!",
-                "actions": [["start_quest", "test_die_quest"]],
-            },
-            {
-                "text": "Let's teach you how to play the game.",
-                "actions": [["start_quest", "open_your_inventory"]],
-            },
-            {
-                "text": "AISODOISADIOSADIOASD",
-                "next": "meaningless"
-            }
-        ]
-    },
-    "meaningless": {
-        "voice": "copyrighted-test-content/snd/almalexia.ogg",
-        "speaker": {
-            "type" : "NodeSpeaker",
-            "speaker" : "PlayerCharacter"
-        },
-        "text": "In the end... It was meaningless. Free will is an illusion",
-        "next": "differ"
-    },
-    "differ": {
-        "speaker": {
-            "type" : "ManuallySpecified",
-            "speaker" : "???",
-            "portrait": "testerbester"
-        },
-        "mood": "happy",
-        "text": "Really? I don't quite think so.",
-        "next": "optimistic"
-    },
-    "optimistic": {
-        "speaker": {
-            "type" : "ManuallySpecified",
-            "speaker" : "???",
-            "portrait": "testerbester"
-        },
-        "text": "You have to be more optimistic sometimes.",
-        "next": "sorry"
-    },
-    "sorry": {
-        "speaker": {
-            "type" : "ManuallySpecified",
-            "speaker" : "???",
-            "portrait": "testerbester"
-        },
-        "text": "Dude just shut up. Let me act emo and edgy",
-        "next": "dick"
-    },
-    "dick": {
-        "speaker": {
-            "type" : "ManuallySpecified",
-            "speaker" : "???",
-            "portrait": "testerbester"
-        },
-        "text": "You don't have to be such a dick about it...",
-        "mood": "angry"
+        "text": "Pays good though, so I guess I can't complain."
     }
 }

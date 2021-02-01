@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/end_of_the_quest.ogg-38b6b51a7c0df7a5c9d27f5e615f58e6.oggstr"
+
+[deps]
+
+source_file="res://snd/bg1soundtrack/end_of_the_quest.ogg"
+dest_files=[ "res://.import/end_of_the_quest.ogg-38b6b51a7c0df7a5c9d27f5e615f58e6.oggstr" ]
+
+[params]
+
+loop=true
+loop_offset=0

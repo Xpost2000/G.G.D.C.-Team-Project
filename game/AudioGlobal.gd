@@ -81,8 +81,8 @@ func play_music(filepath, volume=DEFAULT_MAX_VOLUME_DB):
 	
 var currently_playing_music = null;
 var music_played_amount = 0;
-func looped_play_music(filepath, volume=DEFAULT_MAX_VOLUME_DB, times=-1):
-	if (!is_music_playing() or currently_playing_music != filepath):
+func looped_play_music(filepath, override=false, volume=DEFAULT_MAX_VOLUME_DB, times=-1):
+	if (!is_music_playing() or (currently_playing_music != filepath and override)):
 		if (times == -1 or music_played_amount < times):
 			currently_playing_music = filepath;
 			music_played_amount += 1;

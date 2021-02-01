@@ -5,6 +5,7 @@
             "speaker" : "Puzzle",
             "portrait": "testerbester"
         },
+        "music": "snd/planescapesoundtrack/vhailor_theme.ogg",
         "text": "Think of words which end in '-GRY'. Angry and hungry are two of them. There are but three words in the common tongue... What is the third word? The word is something that one uses everyday. If thou hast listened carefully I have already told thee what it is.",
         "choices": [
             {

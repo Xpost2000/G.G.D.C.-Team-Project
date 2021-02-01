@@ -517,8 +517,10 @@ func ai_think_balanced(actor_self, enemy_party):
 		return skip_turn(actor_self);
 	
 func _process(delta):
+	if "battle_music" in party_on_the_right:
+		music_track = party_on_the_right.battle_music;
 	if music_track:
-		AudioGlobal.looped_play_music(music_track);
+		AudioGlobal.looped_play_music(music_track, true);
 	if party_on_the_left and party_on_the_right:
 		if !battle_information.decided_action:
 			var active_actor = battle_information.active_actor();
@@ -633,6 +635,7 @@ func _process(delta):
 			var parties = get_party_pairs(whose_side_is_active(current_actor));
 
 			# fix messages.
+			var temporary_do_not_advance = false;
 			match turn_action.type:
 				BATTLE_TURN_ACTION_SKIP_TURN:
 					battle_log_widget.push_message("Skipping turn...");
@@ -647,6 +650,8 @@ func _process(delta):
 						ItemDatabase.apply_item_to(turn_action.actor_target, item_to_use[0]);
 						battle_information.decided_action.marked_done = true;
 					else:
+						battle_information.decided_action.marked_done = true;
+						temporary_do_not_advance = true;
 						battle_log_widget.push_message("Invalid item to use!");
 				BATTLE_TURN_ACTION_DO_ATTACK:
 					battle_turn_widget_head_label.text = "ATTACKING!";
@@ -666,7 +671,8 @@ func _process(delta):
 				elif party_on_the_left.all_members_dead():
 					finish_battle(COMBAT_FINISHED_REASON_DEFEAT_OF, party_on_the_right, party_on_the_left);
 
-				advance_actor();
+				if not temporary_do_not_advance:
+					advance_actor();
 
 
 		handle_camera_shake(delta);

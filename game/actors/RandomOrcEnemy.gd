@@ -40,7 +40,7 @@ func orc_unarmed():
 	new_orc.max_health = 205 + randi() % 100 + 20;
 	new_orc.health = new_orc.max_health;
 
-	new_orc.defense = 45;
+	new_orc.defense = 65;
 
 	new_orc.level = 9;
 
@@ -68,7 +68,7 @@ func orc_mage():
 	new_orc.max_health = 200 + randi() % 100;
 	new_orc.health = new_orc.max_health;
 
-	new_orc.defense = 15;
+	new_orc.defense = 55;
 
 	new_orc.level = 7;
 

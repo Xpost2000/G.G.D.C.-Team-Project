@@ -34,6 +34,7 @@ func _ready():
 
 var showed_note = false;
 func handle_process(delta):
+	AudioGlobal.looped_play_music("snd/bg1soundtrack/stealth_in_the_bandit_camp.ogg", true);
 	var cultists = [$KnightOfTheCult, $KnightOfTheCult2, $KnightOfTheCult3];
 	var all_dead = true;
 	for cultist in cultists:

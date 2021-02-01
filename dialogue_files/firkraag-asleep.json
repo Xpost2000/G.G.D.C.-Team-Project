@@ -9,6 +9,7 @@
         "choices": [
             {
                 "text": "*Prod it...*",
+                "actions": [["fire_id", "OpenEyes"]],
                 "next": "initiate_fight"
             },
             {
@@ -33,6 +34,7 @@
             "portrait": "testerbester"
         },
         "text": "It is... As they say, your funeral.",
+        "voice": "snd/dlg/FIRKRA16.WAV",
         "choices": [
             {
                 "text": "*Ready yourself!*",

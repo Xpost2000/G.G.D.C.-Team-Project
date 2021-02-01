@@ -1,7 +1,6 @@
 extends "res://scenes/SceneBase.gd"
 
 func fire_id_handled(data):
-	$Entities/SkullAltar/Area2D/CollisionShape2D.disabled = true;
 	if data == "PassedPuzzle1":
 		print("HANDLE PUZZLE PASS!");
 		$Entities/SkullAltar.texture = load("res://images/skull_altar_holy_ending.png");
@@ -9,9 +8,15 @@ func fire_id_handled(data):
 		$Entities/HolyEndingBoss/InteractableArea/Radius.disabled = false;
 		$Entities/HorrorBoss.hide();
 		$Entities/HorrorBoss/InteractableArea/Radius.disabled = true;
+		AudioGlobal.pause_music();
+
+	if data == "FailedPuzzle1":
+		$Entities/SkullAltar/Area2D/CollisionShape2D.disabled = true;
+		AudioGlobal.pause_music();
 
 	if data == "PassedPuzzle2":
 		$Entities/ForceFieldA/StaticBody2D/CollisionShape2D.set_deferred("disabled", true);
+		$Entities/ForceFieldA/PuzzleZone/CollisionShape2D.set_deferred("disabled", true);
 		$Entities/ForceFieldA.hide();
 
 func open_minigame_dlg(_asdf):
@@ -76,6 +81,7 @@ var triggered_ending_setup = false;
 
 # A little dirty for endings, also it's abrupt since we don't allow anything else to happen.
 func _process(delta):
+	AudioGlobal.looped_play_music("snd/planescapesoundtrack/ravel_theme.ogg");
 	if not triggered_ending_setup:
 		if $Entities/HolyEndingBoss.all_members_dead():
 			print("holy end");

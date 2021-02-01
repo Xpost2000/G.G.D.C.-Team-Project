@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/the_beregost_night.ogg-4b0677340de06d76ec1b31a72b7bda27.oggstr"
+
+[deps]
+
+source_file="res://snd/bg1soundtrack/the_beregost_night.ogg"
+dest_files=[ "res://.import/the_beregost_night.ogg-4b0677340de06d76ec1b31a72b7bda27.oggstr" ]
+
+[params]
+
+loop=true
+loop_offset=0

@@ -508,11 +508,14 @@ func perform_action(selected_item_index, action_type):
 		last_created_selection_menu.queue_free();
 
 func ai_think_balanced(actor_self, enemy_party):
-	var attack_index = actor_self.random_attack_index();
+	if randi() % 10 < 8:
+		var attack_index = actor_self.random_attack_index();
 
-	if attack_index != -1:
-		var target = enemy_party.random_living_party_member();
-		return attack(actor_self, target, attack_index);
+		if attack_index != -1:
+			var target = enemy_party.random_living_party_member();
+			return attack(actor_self, target, attack_index);
+		else:
+			return skip_turn(actor_self);
 	else:
 		return skip_turn(actor_self);
 	

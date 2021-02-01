@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/OGRIL09.WAV-4a24903150349b2a36107a760d1ce025.sample"
+
+[deps]
+
+source_file="res://snd/vo/OGRIL09.WAV"
+dest_files=[ "res://.import/OGRIL09.WAV-4a24903150349b2a36107a760d1ce025.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=false
+compress/mode=0

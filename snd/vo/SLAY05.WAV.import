@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/SLAY05.WAV-0449cf4b48bc5a87fab0b6ca13d2d5d7.sample"
+
+[deps]
+
+source_file="res://snd/vo/SLAY05.WAV"
+dest_files=[ "res://.import/SLAY05.WAV-0449cf4b48bc5a87fab0b6ca13d2d5d7.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=false
+compress/mode=0

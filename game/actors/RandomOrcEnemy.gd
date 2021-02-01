@@ -24,6 +24,9 @@ func orc_armored():
 	new_orc.attacks.push_back(PartyMember.PartyMemberAttack.new("Sword Slash", 30, 1, 0));
 	new_orc.attacks.push_back(PartyMember.PartyMemberAttack.new("Sword Thrust", 45, 1, 0));
 
+	new_orc.hurt_sounds = ["snd/vo/OGRIL08.WAV"];
+	new_orc.death_sound = "snd/vo/OGRIL09.WAV";
+
 	return new_orc;
 	
 func orc_unarmed():
@@ -50,6 +53,9 @@ func orc_unarmed():
 	new_orc.attacks.push_back(PartyMember.PartyMemberAttack.new("Punch", 25, 1, 0));
 	new_orc.attacks.push_back(PartyMember.PartyMemberAttack.new("Strong Punch", 55, 0.50, 0));
 	new_orc.attacks.push_back(PartyMember.PartyMemberAttack.new("Clobber Combo!", 150, 0.5, 0));
+
+	new_orc.hurt_sounds = ["snd/vo/OGRIL08.WAV"];
+	new_orc.death_sound = "snd/vo/OGRIL09.WAV";
 
 	return new_orc;
 
@@ -78,6 +84,9 @@ func orc_mage():
 	new_orc.attacks.push_back(PartyMember.PartyMemberAttack.new("Punch", 15, 0.9, 0));
 	new_orc.attacks.push_back(PartyMember.PartyMemberAttack.new("Strong Punch", 25, 0.6, 0));
 	new_orc.attacks.push_back(PartyMember.PartyMemberAttack.new("Water Blast!", 30, 0.95, 0, PartyMember.ATTACK_VISUAL_WATER_GUN));
+
+	new_orc.death_sound = "snd/vo/OGREM09.WAV";
+	new_orc.hurt_sounds = ["snd/vo/OGRIL08.WAV"];
 
 	return new_orc;
 

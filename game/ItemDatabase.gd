@@ -33,9 +33,11 @@ class StrengthBoosterItemImplementation extends ItemImplementationDetails:
 		self.heal_power = power;
 
 	func apply_to(thing):
-		thing.stat.strength += self.heal_power;
-		thing.stat.dexterity += self.heal_power;
-		thing.stat.constitution += self.heal_power;
+		thing.stats.strength += self.heal_power;
+		thing.stats.dexterity += self.heal_power;
+		thing.stats.constitution += self.heal_power;
+		thing.max_health += self.heal_power;
+		thing.health += self.heal_power;
 
 	var heal_power: int;
 
@@ -117,7 +119,7 @@ func _ready():
 											   "An action figure that resembles a modron... Wait how do you even know what that is?", 
 											   "images/inventory-icons/dumpy_sword.png", 
 											   "images/inventory-icons/previews/preview_golden_pantaloons.png",
-											   0);
+											   2500);
 
 	items_dictionary["key_item"] = Item.new("Key", 
 											"An old key... Might be useful...", 

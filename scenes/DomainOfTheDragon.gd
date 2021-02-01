@@ -7,6 +7,7 @@ func fire_id_handled(data):
 		$Entities/FirkraagEnt/FightStarter/CollisionShape2D.disabled = true;
 		var game_layer = get_parent().get_parent().get_parent();
 		game_layer._open_battle(game_layer.player_node, $Entities/FirkraagBossEnt, "snd/bg2soundtrack/battle_dragon.ogg", "res://scenes/battle_backgrounds/DomainOfTheDragonBattleBkg.tscn", false);
+		$Entities/CameraZoomResizer/CameraTweener.reset_all();
 
 	if data == "OpenEyes":
 		$Entities/FirkraagEnt.texture = load("res://images/aroused_firkraag.png");
@@ -24,7 +25,8 @@ var original_zoom;
 func entered_camera_zoom_zone(area):
 	if area.name == "InteractableArea":
 		var game_layer = get_parent().get_parent().get_parent();
-		original_zoom = game_layer.camera.zoom;
+		original_zoom = Vector2(0.8, 0.8);
+		$Entities/CameraZoomResizer/CameraTweener.stop_all();
 		$Entities/CameraZoomResizer/CameraTweener.interpolate_property(
 			game_layer.camera,
 			"zoom", original_zoom, Vector2(2.5, 2.5), 1.0,
@@ -36,6 +38,7 @@ func entered_camera_zoom_zone(area):
 func exited_camera_zoom_zone(area):
 	if area.name == "InteractableArea":
 		var game_layer = get_parent().get_parent().get_parent();
+		$Entities/CameraZoomResizer/CameraTweener.stop_all();
 		$Entities/CameraZoomResizer/CameraTweener.interpolate_property(
 			game_layer.camera,
 			"zoom", game_layer.camera.zoom, original_zoom, 1.0,

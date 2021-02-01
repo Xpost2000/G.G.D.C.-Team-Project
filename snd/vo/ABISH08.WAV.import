@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/ABISH08.WAV-34638c99fc07061a61b50e11cc8fab8e.sample"
+
+[deps]
+
+source_file="res://snd/vo/ABISH08.WAV"
+dest_files=[ "res://.import/ABISH08.WAV-34638c99fc07061a61b50e11cc8fab8e.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=false
+compress/mode=0

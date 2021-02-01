@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/SOLARF06.WAV-d412efdedcbab12c3cb2daccbc9a22a4.sample"
+
+[deps]
+
+source_file="res://snd/vo/SOLARF06.WAV"
+dest_files=[ "res://.import/SOLARF06.WAV-d412efdedcbab12c3cb2daccbc9a22a4.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=false
+compress/mode=0

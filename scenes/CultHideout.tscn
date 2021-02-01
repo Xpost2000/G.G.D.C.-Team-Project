@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=16 format=2]
 
 [ext_resource path="res://images/skull_altar_active.png" type="Texture" id=1]
 [ext_resource path="res://scenes/CultHideout.gd" type="Script" id=2]
@@ -6,12 +6,25 @@
 [ext_resource path="res://game/actors/JesusTest.tscn" type="PackedScene" id=4]
 [ext_resource path="res://images/light_blob.png" type="Texture" id=5]
 [ext_resource path="res://scenes/DemoTileset.tres" type="TileSet" id=6]
+[ext_resource path="res://images/overworld/tilesets/cave/water_flat.png" type="Texture" id=7]
+[ext_resource path="res://game/actors/GrandWizardMiniBoss.tscn" type="PackedScene" id=8]
+[ext_resource path="res://game/actors/RandomCultistEnemy.tscn" type="PackedScene" id=9]
+[ext_resource path="res://images/gore_pile.png" type="Texture" id=10]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 29.7631, 13.4276 )
 
 [sub_resource type="CircleShape2D" id=2]
 radius = 44.0114
+
+[sub_resource type="RectangleShape2D" id=3]
+extents = Vector2( 32.8131, 39.3743 )
+
+[sub_resource type="RectangleShape2D" id=4]
+extents = Vector2( 37.4073, 110.727 )
+
+[sub_resource type="RectangleShape2D" id=5]
+extents = Vector2( 48.0374, 45.9985 )
 
 [node name="CultHideout" type="CanvasModulate"]
 color = Color( 0.509804, 0.376471, 0.431373, 1 )
@@ -70,7 +83,7 @@ energy = 1.24
 shadow_enabled = true
 
 [node name="Light2D2" type="Light2D" parent="Entities"]
-position = Vector2( 1442, 1304 )
+position = Vector2( 1439.33, 1306.67 )
 texture = ExtResource( 5 )
 texture_scale = 13.01
 color = Color( 0.396078, 0.380392, 0.027451, 1 )
@@ -81,9 +94,247 @@ shadow_enabled = true
 visible = false
 position = Vector2( 2856.58, -1486.62 )
 
+[node name="ForceFieldA" type="Sprite" parent="Entities"]
+position = Vector2( 1186.96, 446.012 )
+scale = Vector2( 5.17696, 1 )
+texture = ExtResource( 7 )
+
+[node name="StaticBody2D" type="StaticBody2D" parent="Entities/ForceFieldA"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Entities/ForceFieldA/StaticBody2D"]
+shape = SubResource( 3 )
+disabled = true
+
+[node name="PuzzleZone" type="Area2D" parent="Entities/ForceFieldA"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Entities/ForceFieldA/PuzzleZone"]
+shape = SubResource( 4 )
+
+[node name="ForceFieldB" type="Sprite" parent="Entities"]
+position = Vector2( 1220.25, -179.511 )
+scale = Vector2( 5.17696, 1 )
+texture = ExtResource( 7 )
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="StaticBody2D" type="StaticBody2D" parent="Entities/ForceFieldB"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Entities/ForceFieldB/StaticBody2D"]
+shape = SubResource( 5 )
+
+[node name="PuzzleZone" type="Area2D" parent="Entities/ForceFieldB"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Entities/ForceFieldB/PuzzleZone"]
+shape = SubResource( 4 )
+
+[node name="KnightOfTheCult" parent="Entities" instance=ExtResource( 8 )]
+position = Vector2( 2790.84, 54.4388 )
+
+[node name="KnightOfTheCult2" parent="Entities" instance=ExtResource( 9 )]
+position = Vector2( 2633.33, 380.14 )
+
+[node name="KnightOfTheCult3" parent="Entities" instance=ExtResource( 9 )]
+position = Vector2( 2745.46, 382.809 )
+
+[node name="KnightOfTheCult4" parent="Entities" instance=ExtResource( 9 )]
+position = Vector2( 2873.6, 388.149 )
+
+[node name="KnightOfTheCult51" parent="Entities" instance=ExtResource( 9 )]
+position = Vector2( 1222.98, -729.706 )
+
+[node name="KnightOfTheCult52" parent="Entities" instance=ExtResource( 9 )]
+position = Vector2( 1234.88, -1374.26 )
+
+[node name="KnightOfTheCult5" parent="Entities" instance=ExtResource( 9 )]
+position = Vector2( 3023.11, 393.488 )
+
+[node name="KnightOfTheCult6" parent="Entities" instance=ExtResource( 9 )]
+position = Vector2( 3124.55, 385.479 )
+
+[node name="KnightOfTheCult7" parent="Entities" instance=ExtResource( 9 )]
+position = Vector2( 3231.34, 385.479 )
+
+[node name="KnightOfTheCult8" parent="Entities" instance=ExtResource( 9 )]
+position = Vector2( 3314.1, 385.479 )
+
+[node name="KnightOfTheCult9" parent="Entities" instance=ExtResource( 9 )]
+position = Vector2( 3412.88, 388.149 )
+
+[node name="KnightOfTheCult10" parent="Entities" instance=ExtResource( 9 )]
+position = Vector2( 3423.56, 524.302 )
+
+[node name="KnightOfTheCult11" parent="Entities" instance=ExtResource( 9 )]
+position = Vector2( 3338.13, 529.642 )
+
+[node name="KnightOfTheCult12" parent="Entities" instance=ExtResource( 9 )]
+position = Vector2( 3255.37, 529.642 )
+
+[node name="KnightOfTheCult13" parent="Entities" instance=ExtResource( 9 )]
+position = Vector2( 3153.92, 532.311 )
+
+[node name="KnightOfTheCult14" parent="Entities" instance=ExtResource( 9 )]
+position = Vector2( 3015.1, 537.651 )
+
+[node name="KnightOfTheCult15" parent="Entities" instance=ExtResource( 9 )]
+position = Vector2( 2918.99, 532.311 )
+
+[node name="KnightOfTheCult16" parent="Entities" instance=ExtResource( 9 )]
+position = Vector2( 2822.88, 526.972 )
+
+[node name="KnightOfTheCult17" parent="Entities" instance=ExtResource( 9 )]
+position = Vector2( 2665.37, 526.972 )
+
+[node name="KnightOfTheCult20" parent="Entities" instance=ExtResource( 9 )]
+position = Vector2( 2660.03, 703.171 )
+
+[node name="KnightOfTheCult21" parent="Entities" instance=ExtResource( 9 )]
+position = Vector2( 2812.2, 719.189 )
+
+[node name="KnightOfTheCult22" parent="Entities" instance=ExtResource( 9 )]
+position = Vector2( 2900.3, 652.447 )
+
+[node name="KnightOfTheCult23" parent="Entities" instance=ExtResource( 9 )]
+position = Vector2( 2993.74, 737.877 )
+
+[node name="KnightOfTheCult24" parent="Entities" instance=ExtResource( 9 )]
+position = Vector2( 3119.21, 655.117 )
+
+[node name="KnightOfTheCult25" parent="Entities" instance=ExtResource( 9 )]
+position = Vector2( 3215.32, 772.583 )
+
+[node name="KnightOfTheCult26" parent="Entities" instance=ExtResource( 9 )]
+position = Vector2( 3271.39, 663.126 )
+
+[node name="KnightOfTheCult27" parent="Entities" instance=ExtResource( 9 )]
+position = Vector2( 3404.87, 764.574 )
+
+[node name="KnightOfTheCult28" parent="Entities" instance=ExtResource( 9 )]
+position = Vector2( 3447.59, 665.795 )
+
+[node name="KnightOfTheCult29" parent="Entities" instance=ExtResource( 9 )]
+position = Vector2( 3324.78, 855.343 )
+
+[node name="KnightOfTheCult30" parent="Entities" instance=ExtResource( 9 )]
+position = Vector2( 3169.94, 887.379 )
+
+[node name="KnightOfTheCult31" parent="Entities" instance=ExtResource( 9 )]
+position = Vector2( 3055.14, 884.709 )
+
+[node name="KnightOfTheCult32" parent="Entities" instance=ExtResource( 9 )]
+position = Vector2( 2884.28, 890.048 )
+
+[node name="KnightOfTheCult33" parent="Entities" instance=ExtResource( 9 )]
+position = Vector2( 2884.28, 890.048 )
+
+[node name="KnightOfTheCult34" parent="Entities" instance=ExtResource( 9 )]
+position = Vector2( 2761.48, 903.397 )
+
+[node name="KnightOfTheCult35" parent="Entities" instance=ExtResource( 9 )]
+position = Vector2( 2660.03, 874.03 )
+
+[node name="KnightOfTheCult36" parent="Entities" instance=ExtResource( 9 )]
+position = Vector2( 2571.93, 841.994 )
+
+[node name="KnightOfTheCult37" parent="Entities" instance=ExtResource( 9 )]
+position = Vector2( 2617.31, 1042.22 )
+
+[node name="KnightOfTheCult38" parent="Entities" instance=ExtResource( 9 )]
+position = Vector2( 2729.44, 1060.91 )
+
+[node name="KnightOfTheCult39" parent="Entities" instance=ExtResource( 9 )]
+position = Vector2( 2854.92, 1058.24 )
+
+[node name="KnightOfTheCult40" parent="Entities" instance=ExtResource( 9 )]
+position = Vector2( 2985.73, 1052.9 )
+
+[node name="KnightOfTheCult41" parent="Entities" instance=ExtResource( 9 )]
+position = Vector2( 3140.57, 1020.86 )
+
+[node name="KnightOfTheCult42" parent="Entities" instance=ExtResource( 9 )]
+position = Vector2( 3226, 1028.87 )
+
+[node name="KnightOfTheCult43" parent="Entities" instance=ExtResource( 9 )]
+position = Vector2( 3372.83, 1026.2 )
+
+[node name="KnightOfTheCult44" parent="Entities" instance=ExtResource( 9 )]
+position = Vector2( 3292.74, 1087.6 )
+
+[node name="KnightOfTheCult45" parent="Entities" instance=ExtResource( 9 )]
+position = Vector2( 3217.99, 1167.7 )
+
+[node name="KnightOfTheCult46" parent="Entities" instance=ExtResource( 9 )]
+position = Vector2( 3124.55, 1178.37 )
+
+[node name="KnightOfTheCult47" parent="Entities" instance=ExtResource( 9 )]
+position = Vector2( 2977.72, 1178.37 )
+
+[node name="KnightOfTheCult48" parent="Entities" instance=ExtResource( 9 )]
+position = Vector2( 2865.59, 1191.72 )
+
+[node name="KnightOfTheCult49" parent="Entities" instance=ExtResource( 9 )]
+position = Vector2( 2710.75, 1191.72 )
+
+[node name="KnightOfTheCult50" parent="Entities" instance=ExtResource( 9 )]
+position = Vector2( 2638.67, 1202.4 )
+
+[node name="KnightOfTheCult18" parent="Entities" instance=ExtResource( 9 )]
+position = Vector2( 2593.29, 609.732 )
+
+[node name="KnightOfTheCult19" parent="Entities" instance=ExtResource( 9 )]
+position = Vector2( 2740.12, 585.705 )
+
 [node name="Props" type="Node2D" parent="."]
+position = Vector2( 2396.98, -1514.38 )
 __meta__ = {
 "_editor_description_": "This is for purely cosmetic things in the background. 
 
 Sprites or otherwise non \"physics\" objects exist here."
 }
+
+[node name="Sprite" type="Sprite" parent="Props"]
+texture = ExtResource( 10 )
+
+[node name="Sprite2" type="Sprite" parent="Props"]
+position = Vector2( -111, 56 )
+texture = ExtResource( 10 )
+
+[node name="Sprite4" type="Sprite" parent="Props"]
+position = Vector2( -27, -137 )
+texture = ExtResource( 10 )
+
+[node name="Sprite5" type="Sprite" parent="Props"]
+position = Vector2( 111, -157 )
+texture = ExtResource( 10 )
+
+[node name="Sprite6" type="Sprite" parent="Props"]
+position = Vector2( 242, -209 )
+texture = ExtResource( 10 )
+
+[node name="Sprite7" type="Sprite" parent="Props"]
+position = Vector2( 461, -159 )
+texture = ExtResource( 10 )
+
+[node name="Sprite8" type="Sprite" parent="Props"]
+position = Vector2( 584, 10 )
+texture = ExtResource( 10 )
+
+[node name="Sprite9" type="Sprite" parent="Props"]
+position = Vector2( 568, 155 )
+texture = ExtResource( 10 )
+
+[node name="Sprite10" type="Sprite" parent="Props"]
+position = Vector2( 441, 208 )
+texture = ExtResource( 10 )
+
+[node name="Sprite11" type="Sprite" parent="Props"]
+position = Vector2( 250, 207 )
+texture = ExtResource( 10 )
+
+[node name="Sprite12" type="Sprite" parent="Props"]
+position = Vector2( 135, 181 )
+texture = ExtResource( 10 )
+
+[node name="Sprite3" type="Sprite" parent="Props"]
+position = Vector2( 16, 127 )
+texture = ExtResource( 10 )

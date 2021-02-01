@@ -97,4 +97,6 @@ func _ready():
 	# Optimally we'd be dealing with data from a loot list or something
 	inventory = [["healing_grass", 10],
 				 ["healing_pod", 5]];
+
+	gold = 1000 + randi() % 500;
 	pass

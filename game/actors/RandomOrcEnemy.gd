@@ -93,6 +93,10 @@ func _ready():
 
 	experience_value = 1200 * orcs_generated + (randi() % 2000);
 	# Optimally we'd be dealing with data from a loot list or something
-	inventory = [["healing_grass", 5],
-				 ["healing_pod", 1]];
+	add_item("healing_grass", 5);
+
+	inventory = [["healing_grass", 10],
+				 ["healing_pod", 5]];
+
+	gold = 200 + randi() % 500;
 	pass

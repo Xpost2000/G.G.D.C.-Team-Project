@@ -95,6 +95,7 @@ func _on_BattleScreen_finished(type, a, b):
 				player_node.award_experience(b.experience_value);
 				ui_layer.queue_popup("You gain " + str(b.experience_value) + " XP!");
 
+				player_node.gold += b.gold;
 				if len(b.inventory):
 					for item in b.inventory:
 						print("WINNER GETTING! ", item);
@@ -154,15 +155,15 @@ func _on_UILayer_notify_finished_level_load_related_fading():
 	var loaded_scene = load_new_level_scene(full_scene_path);
 	setup_new_level_scene(player, level_transition, loaded_scene);
 
-func _begin_fight(left, right, tween, panner_rect, music, bkg):
+func _begin_fight(left, right, tween, panner_rect, music, bkg, escape):
 	GameGlobals.switch_to_scene(2);
-	GameGlobals.battle_screen.begin_battle(left, right, music, bkg);
+	GameGlobals.battle_screen.begin_battle(left, right, music, bkg, escape);
 	remove_child(tween);
 	tween.queue_free();
 	ui_layer.remove_child(panner_rect);
 	panner_rect.queue_free();
 	
-func _open_battle(left, right, music=null, bkg=null):
+func _open_battle(left, right, music=null, bkg=null, escape=true):
 	print("starting fight")
 	var tween = Tween.new();
 	var panner_rect = ColorRect.new();
@@ -173,7 +174,7 @@ func _open_battle(left, right, music=null, bkg=null):
 							   Tween.TRANS_LINEAR, Tween.EASE_IN_OUT);
 	add_child(tween);
 	ui_layer.add_child(panner_rect);
-	tween.connect("tween_all_completed", self, "_begin_fight", [left, right, tween, panner_rect, music, bkg]);
+	tween.connect("tween_all_completed", self, "_begin_fight", [left, right, tween, panner_rect, music, bkg, escape]);
 	tween.start();
 
 func _on_PlayerCharacter_request_to_open_battle(left, right):

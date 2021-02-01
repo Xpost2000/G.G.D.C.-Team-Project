@@ -98,7 +98,8 @@ func play_cutscene(name):
 	$Cutscenes.play(name);
 	halt_all_entities();
 
-func _process(delta):
+func handle_process(delta):
 	pass;
-	# if has_method("handle_process"):
-	#	handle_process(delta);
+
+func _process(delta):
+	handle_process(delta);

@@ -1,10 +1,12 @@
 extends CanvasModulate; # thankfully no cutscenes required.
 
+# TODO GOLD HOARD
+
 func fire_id_handled(data):
 	if data == "FightDragon":
 		$Entities/FirkraagEnt/FightStarter/CollisionShape2D.disabled = true;
 		var game_layer = get_parent().get_parent().get_parent();
-		game_layer._open_battle(game_layer.player_node, $Entities/FirkraagBossEnt, "snd/bg2soundtrack/battle_dragon.ogg", "res://scenes/battle_backgrounds/DomainOfTheDragonBattleBkg.tscn");
+		game_layer._open_battle(game_layer.player_node, $Entities/FirkraagBossEnt, "snd/bg2soundtrack/battle_dragon.ogg", "res://scenes/battle_backgrounds/DomainOfTheDragonBattleBkg.tscn", false);
 
 
 func open_dialogue_dragon(_asdf):

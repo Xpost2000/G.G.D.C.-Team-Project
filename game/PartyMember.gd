@@ -115,9 +115,9 @@ func random_attack_index():
 		return -1;
 
 func do_levelup():
-	self.stats.strength *= 1.10;
-	self.stats.dexterity *= 1.16;
-	self.stats.constitution *= 1.16;
+	self.stats.strength *= 1.05;
+	self.stats.dexterity *= 1.10;
+	self.stats.constitution *= 1.25;
 	self.stats.willpower *= 1.16;
 	self.stats.intelligence *= 1.16;
 	# self.stats.charisma *= 1.5;
@@ -129,6 +129,7 @@ func do_levelup():
 
 	self.health = self.max_health;
 	self.mana_points = self.max_mana_points;
+	self.defense += 4;
 
 func award_experience(amount):
 	self.experience += amount;
@@ -142,7 +143,7 @@ func award_experience(amount):
 			self.experience = remainder;
 			levels_gained += 1;
 
-			self.experience_to_next *= 1.65;
+			self.experience_to_next *= 1.6;
 		else:
 			done_leveling = true;
 			print("gained ", levels_gained, " levels");

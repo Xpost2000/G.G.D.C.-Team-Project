@@ -1,0 +1,78 @@
+{
+    "start": {
+        "speaker": {
+            "type" : "ManuallySpecified",
+            "speaker" : "Puzzle",
+            "portrait": "testerbester"
+        },
+        "text": "The modron action figure resonates with the door for some reason... What do you do?",
+        "choices": [
+            {
+                "text": "Bend the left knee.",
+                "next": "a"
+            },
+            {
+                "text": "Bend the right knee.",
+                "next": "start"
+            },
+            {
+                "text": "Bend the left arm.",
+                "next": "start"
+            },
+            {
+                "text": "Bend the right arm.",
+                "next": "start"
+            },
+            {
+                "text": "Make battle sounds, and then put it away for future intergalatic battles.",
+            }
+        ]
+    },
+
+    "a": {
+        "speaker": {
+            "type" : "ManuallySpecified",
+            "speaker" : "Puzzle",
+            "portrait": "testerbester"
+        },
+        "text": "What do you do?",
+        "choices": [
+            {
+                "text": "Bend the left arm.",
+                "next": "start"
+            },
+            {
+                "text": "Bend the right arm.",
+                "next": "start"
+            },
+            {
+                "text": "Bend the left wing.",
+                "next": "finish"
+            },
+            {
+                "text": "Bend the right wing.",
+                "next": "start"
+            },
+            {
+                "text": "Make battle sounds, and then put it away for future intergalatic battles.",
+            }
+        ]
+    },
+
+
+    "finish": {
+        "speaker": {
+            "type" : "ManuallySpecified",
+            "speaker" : "Puzzle",
+            "portrait": "testerbester"
+        },
+        "text": "The Modron Cube clicks, and returns to it's standard pose. The force field dissolves...",
+        "choices": [
+            {
+                "text": "...",
+                "actions": [["fire_id", "PassedPuzzle2"]]
+            }
+        ]
+    }
+}
+

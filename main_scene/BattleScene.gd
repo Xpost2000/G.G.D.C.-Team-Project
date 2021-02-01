@@ -335,9 +335,14 @@ func delete_dimmer(dimmer):
 	dimmer.queue_free();
 
 var music_track = null;
-func begin_battle(left, right, music=null, bkg=null):
+var allow_escape = true;
+func begin_battle(left, right, music=null, bkg=null, escape=true):
+	if "plot_important" in right or "plot_important" in left:
+		escape = false;
+
 	focused_party = null;
 	focused_party_member_index = 0;
+	allow_escape = escape;
 	party_on_the_left = left;
 	party_on_the_right = right;
 
@@ -603,7 +608,8 @@ func _process(delta):
 							if last_created_selection_menu:
 								last_created_selection_menu.queue_free();
 							else:
-								battle_information.decided_action = flee(active_actor);
+								if allow_escape:
+									battle_information.decided_action = flee(active_actor);
 
 
 					focused_party_member_index = min(len(focused_party.party_members)-1, max(0, focused_party_member_index));

@@ -6,9 +6,13 @@ func fire_id_handled(data):
 		print("HANDLE PUZZLE PASS!");
 		$Entities/SkullAltar.texture = load("res://images/skull_altar_holy_ending.png");
 		$Entities/HolyEndingBoss.show();
+		$Entities/HolyEndingBoss/InteractableArea/Radius.disabled = false;
 		$Entities/HorrorBoss.hide();
-	else:
-		$Entities/SkullAltar.texture = load("res://images/skull_altar.png");
+		$Entities/HorrorBoss/InteractableArea/Radius.disabled = true;
+
+	if data == "PassedPuzzle2":
+		$Entities/ForceFieldA/StaticBody2D/CollisionShape2D.set_deferred("disabled", true);
+		$Entities/ForceFieldA.hide();
 
 func open_minigame_dlg(_asdf):
 	var game_layer = get_parent().get_parent().get_parent();
@@ -16,10 +20,43 @@ func open_minigame_dlg(_asdf):
 
 	var dialogue_ui = game_layer.get_node("UILayer/States/DialogueUI");
 	dialogue_ui.connect("fire_id", self, "fire_id_handled");
+
+func open_other_minigame_dlg(_asdf):
+	var game_layer = get_parent().get_parent().get_parent();
+	var player = game_layer.player_node;
+
+	var cool = false;
+	for item in player.inventory:
+		if item[0] == "modron_cube":
+			cool = true;
+			break;
+	if cool:
+		game_layer.emit_signal("ask_ui_to_open_dialogue", "modron.json");
+
+		var dialogue_ui = game_layer.get_node("UILayer/States/DialogueUI");
+		dialogue_ui.connect("fire_id", self, "fire_id_handled");
+
+func check_if_openable(_asdf):
+	var game_layer = get_parent().get_parent().get_parent();
+	var player = game_layer.player_node;
+
+	var cool = false;
+	for item in player.inventory:
+		if item[0] == "key_item":
+			cool = true;
+			break;
+	if cool:
+		$Entities/ForceFieldB/StaticBody2D/CollisionShape2D.set_deferred("disabled", true);
+		$Entities/ForceFieldB.hide();
 	
 func _ready():
 	# Not nim, I didn't want to make a full minigame.
 	$Entities/SkullAltar/Area2D.connect("area_entered", self, "open_minigame_dlg");
+	$Entities/ForceFieldA/PuzzleZone.connect("area_entered", self, "open_other_minigame_dlg");
+	$Entities/ForceFieldB/PuzzleZone.connect("area_entered", self, "check_if_openable");
+
+	$Entities/HolyEndingBoss/InteractableArea/Radius.disabled = true;
+	$Entities/HorrorBoss/InteractableArea/Radius.disabled = false;
 
 func create_fade_dimmer(color, hang_time=0):
 	var new_fade_dimmer = DimmerRect.new();

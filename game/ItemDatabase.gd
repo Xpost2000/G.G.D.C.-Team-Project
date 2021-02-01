@@ -77,13 +77,19 @@ func _ready():
 												 "A basic healing item",
 												 "images/inventory-icons/dumpy_sword.png", 
 												 "images/inventory-icons/previews/preview_golden_pantaloons.png",
-												 340, HealingItemImplementation.new(150));
+												 100, HealingItemImplementation.new(370));
 
 	items_dictionary["healing_pod"] = Item.new("Healing Pod",
 											   "A slightly stronger basic healing item",
 											   "images/inventory-icons/dumpy_sword.png", 
 											   "images/inventory-icons/previews/preview_golden_pantaloons.png",
-											   750, HealingItemImplementation.new(300));
+											   250, HealingItemImplementation.new(540));
+
+	items_dictionary["stimpak"] = Item.new("Stimpak",
+										   "Wait... This shouldn't be here...",
+										   "images/inventory-icons/dumpy_sword.png", 
+										   "images/inventory-icons/previews/preview_golden_pantaloons.png",
+										   450, HealingItemImplementation.new(750));
 
 	items_dictionary["divine_grass"] = Item.new("Divine Grass",
 												"Imparted blessing of an ancient goddess into a sweet grass.",
@@ -96,6 +102,28 @@ func _ready():
 												"images/inventory-icons/dumpy_sword.png", 
 												"images/inventory-icons/previews/preview_golden_pantaloons.png",
 												3500, StrengthBoosterItemImplementation.new(450));
+	items_dictionary["plot_scrap"] = Item.new("Note", 
+											  "Right, Middle, Left, Right, Left, Right, Right...", 
+											  "images/inventory-icons/dumpy_sword.png", 
+											  "images/inventory-icons/previews/preview_golden_pantaloons.png",
+											  0);
+	items_dictionary["plot_scrap1"] = Item.new("Quest Note!", 
+											   "This memo speaks of a small detachment of cultists nearby... Deal with them to the south.", 
+											   "images/inventory-icons/dumpy_sword.png", 
+											   "images/inventory-icons/previews/preview_golden_pantaloons.png",
+											   0);
+
+	items_dictionary["modron_cube"] = Item.new("Modron Toy", 
+											   "An action figure that resembles a modron... Wait how do you even know what that is?", 
+											   "images/inventory-icons/dumpy_sword.png", 
+											   "images/inventory-icons/previews/preview_golden_pantaloons.png",
+											   0);
+
+	items_dictionary["key_item"] = Item.new("Key", 
+											"An old key... Might be useful...", 
+											"images/inventory-icons/dumpy_sword.png", 
+											"images/inventory-icons/previews/preview_golden_pantaloons.png",
+											0);
 func apply_item_to(thing, item_name):
 	var item_to_apply = get_item(item_name);
 	item_to_apply.implementation.apply_to(thing);

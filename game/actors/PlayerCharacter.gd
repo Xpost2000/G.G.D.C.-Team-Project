@@ -29,32 +29,33 @@ func _ready():
 		];
 
 	var protag = add_party_member_default("Mr. Protagonist");
-	protag.max_health = 650;
-	protag.health = 650;
+	protag.max_health = 1000;
+	protag.health = 1000;
 
 	protag.stats.strength = 75;
 	protag.stats.dexterity = 45;
-	protag.stats.constitution = 30;
+	protag.stats.constitution = 35;
 	protag.stats.luck = 1;
-	protag.defense = 40;
+	protag.defense = 45;
 
 	protag.max_mana_points = 120;
 	protag.mana_points = 120;
 
 	protag.load_battle_portrait("sekijo_test");
-	protag.attacks.push_back(PartyMember.PartyMemberAttack.new("Quick Slash", 45, 1.0));
+	protag.attacks.push_back(PartyMember.PartyMemberAttack.new("Quick Slash", 50, 1.0));
 	protag.attacks.push_back(PartyMember.PartyMemberAttack.new("Power Attack!", 100, 0.75, 25));
+	protag.attacks.push_back(PartyMember.PartyMemberAttack.new("All In!", 350, 0.15, 25));
 
 	var deutag = add_party_member_default("Mr. Deuteragonist");
-	deutag.max_health = 450;
-	deutag.health = 450;
+	deutag.max_health = 700;
+	deutag.health = 700;
 
 	deutag.stats.strength = 50;
 	deutag.stats.dexterity = 30;
 	deutag.stats.intelligence = 45;
-	deutag.stats.constitution = 40;
+	deutag.stats.constitution = 50;
 	deutag.stats.luck = 25;
-	deutag.defense = 20;
+	deutag.defense = 35;
 
 	deutag.max_mana_points = 300;
 	deutag.mana_points = 300;
@@ -62,6 +63,7 @@ func _ready():
 	deutag.attacks.push_back(PartyMember.PartyMemberAttack.new("Watergun!", 56, 1.0, 0, PartyMember.ATTACK_VISUAL_WATER_GUN));
 	deutag.attacks.push_back(PartyMember.PartyMemberAttack.new("Aqua Cannon!", 80, 0.7, 0, PartyMember.ATTACK_VISUAL_WATER_GUN));
 	deutag.attacks.push_back(PartyMember.PartyMemberAttack.new("Quick Slash", 40, 1.0));
+	deutag.attacks.push_back(PartyMember.PartyMemberAttack.new("Crush!", 85, 0.90));
 	deutag.abilities.push_back(PartyMember.PartyMemberAbility.new("Heal!", "You could use some patching up anyways...", 95, 1.0, 15, PartyMember.ABILITY_TYPE_HEAL, PartyMember.ATTACK_VISUAL_HEALING));
 	deutag.abilities.push_back(PartyMember.PartyMemberAbility.new("Greater Heal!", "You could use some patching up anyways...", 200, 1.0, 55, PartyMember.ABILITY_TYPE_HEAL, PartyMember.ATTACK_VISUAL_HEALING));
 	deutag.load_battle_portrait("sekiro_test");

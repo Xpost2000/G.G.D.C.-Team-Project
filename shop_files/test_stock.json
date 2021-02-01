@@ -1,7 +1,7 @@
 [
     ["healing_grass"],
-    ["test_item"],
     ["healing_pod"],
-    ["test_item"],
-    ["healing_grass"]
+    ["stimpak"],
+    ["plot_scrap1"],
+    ["modron_cube"]
 ]

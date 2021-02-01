@@ -1,5 +1,4 @@
-extends YSort
-
+extends "res://scenes/SceneBase.gd"
 
 func fire_id_handled(data):
 	$Entities/SkullAltar/Area2D/CollisionShape2D.disabled = true;
@@ -22,7 +21,6 @@ func _ready():
 	# Not nim, I didn't want to make a full minigame.
 	$Entities/SkullAltar/Area2D.connect("area_entered", self, "open_minigame_dlg");
 
-const DimmerRect = preload("res://ui/DimmerRect.gd");
 func create_fade_dimmer(color, hang_time=0):
 	var new_fade_dimmer = DimmerRect.new();
 

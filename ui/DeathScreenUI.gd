@@ -29,6 +29,7 @@ func on_leave(to):
 func on_enter(from):
 	GameGlobals.pause();
 	show();
+	$Selections/Restart.grab_focus();
 
 func handle_process(delta):
 	pass;

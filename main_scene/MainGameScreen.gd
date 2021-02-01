@@ -97,6 +97,7 @@ func _on_BattleScreen_finished(type, a, b):
 
 				if len(b.inventory):
 					for item in b.inventory:
+						print("WINNER GETTING! ", item);
 						var obtained_item = item;
 						ui_layer.queue_popup("You get: x" + str(obtained_item[1]) + " " + ItemDatabase.get_item(obtained_item[0]).name);
 						player_node.add_item(obtained_item[0], obtained_item[1]);
@@ -194,6 +195,10 @@ func _process(delta):
 		# if player_node:
 		ui_layer.show_death(player_node.all_members_dead());
 		ui_layer.handle_process(delta);
+
+		# CHEAT TURN OFF
+		if Input.is_action_just_pressed("ui_page_down"):
+			player_node.award_experience(1500);
 
 		
 func enable_ui():

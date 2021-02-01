@@ -1,7 +1,8 @@
 [gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://game/misc_entities/EnemySpawner.gd" type="Script" id=1]
-[ext_resource path="res://game/actors/JesusTest.tscn" type="PackedScene" id=2]
+[ext_resource path="res://game/actors/RandomOrcEnemy.tscn" type="PackedScene" id=2]
+
 
 [node name="EnemySpawner" type="Node2D"]
 position = Vector2( 253.238, 56.5655 )

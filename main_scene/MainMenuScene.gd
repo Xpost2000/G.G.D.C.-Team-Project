@@ -12,6 +12,8 @@ var thing = "copyrighted-test-content/snd/012.ogg";
 
 func on_enter():
 	$ContainerBackground/ButtonsContainer/StartGameButton.call_deferred("grab_focus");
+	$SaveGamesWidget.hide();
+	$NotifierBackground.hide();
 
 func _ready():
 	on_enter();

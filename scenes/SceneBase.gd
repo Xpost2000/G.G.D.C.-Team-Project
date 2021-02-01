@@ -1,5 +1,6 @@
 # This file soley exists to facilitate cutscenes, and maybe some other important thingies.
-extends YSort;
+# extends YSort;
+extends CanvasModulate;
 onready var main_game_scene = GameGlobals.get_scene(GameGlobals.MAIN_GAME_SCENE);
 
 func _set_cutscene_start(_animation_name, cutscene):

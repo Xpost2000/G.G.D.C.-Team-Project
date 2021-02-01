@@ -24,7 +24,18 @@ class HealingItemImplementation extends ItemImplementationDetails:
 
 	func apply_to(thing):
 		thing.health += self.heal_power;
-		print("healing item");
+		thing.health = min(thing.health, thing.max_health);
+
+	var heal_power: int;
+
+class StrengthBoosterItemImplementation extends ItemImplementationDetails:
+	func _init(power):
+		self.heal_power = power;
+
+	func apply_to(thing):
+		thing.stat.strength += self.heal_power;
+		thing.stat.dexterity += self.heal_power;
+		thing.stat.constitution += self.heal_power;
 
 	var heal_power: int;
 
@@ -66,13 +77,25 @@ func _ready():
 												 "A basic healing item",
 												 "images/inventory-icons/dumpy_sword.png", 
 												 "images/inventory-icons/previews/preview_golden_pantaloons.png",
-												 100, HealingItemImplementation.new(15));
+												 340, HealingItemImplementation.new(150));
 
 	items_dictionary["healing_pod"] = Item.new("Healing Pod",
 											   "A slightly stronger basic healing item",
 											   "images/inventory-icons/dumpy_sword.png", 
 											   "images/inventory-icons/previews/preview_golden_pantaloons.png",
-											   250, HealingItemImplementation.new(30));
+											   750, HealingItemImplementation.new(300));
+
+	items_dictionary["divine_grass"] = Item.new("Divine Grass",
+												"Imparted blessing of an ancient goddess into a sweet grass.",
+												"images/inventory-icons/dumpy_sword.png", 
+												"images/inventory-icons/previews/preview_golden_pantaloons.png",
+												3500, HealingItemImplementation.new(9999));
+
+	items_dictionary["dragon_heart"] = Item.new("Heart of A Red Dragon",
+												"The heart of Firkraag. A great red dragon.",
+												"images/inventory-icons/dumpy_sword.png", 
+												"images/inventory-icons/previews/preview_golden_pantaloons.png",
+												3500, StrengthBoosterItemImplementation.new(450));
 func apply_item_to(thing, item_name):
 	var item_to_apply = get_item(item_name);
 	item_to_apply.implementation.apply_to(thing);

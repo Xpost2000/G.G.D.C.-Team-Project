@@ -57,7 +57,7 @@ tracks/1/keys = {
 } ]
 }
 
-[node name="LevelDemo" type="YSort"]
+[node name="LevelDemo" type="CanvasModulate"]
 script = ExtResource( 5 )
 
 [node name="Tilesets" type="Node2D" parent="."]
@@ -105,4 +105,14 @@ __meta__ = {
 "_editor_description_": "This is for purely cosmetic things in the background. 
 
 Sprites or otherwise non \"physics\" objects exist here."
+}
+
+[node name="ColorRect" type="ColorRect" parent="Props"]
+margin_left = 627.0
+margin_top = -851.0
+margin_right = 1578.0
+margin_bottom = -451.0
+color = Color( 0.054902, 0.0196078, 0.0196078, 0.552941 )
+__meta__ = {
+"_edit_use_anchors_": false
 }

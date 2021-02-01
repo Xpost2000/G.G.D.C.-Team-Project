@@ -23,8 +23,7 @@ var marked_done = false;
 func done():
 	match type:
 		BATTLE_TURN_ACTION_SKIP_TURN: return true;
-		BATTLE_TURN_ACTION_USE_ITEM: pass;
+		BATTLE_TURN_ACTION_USE_ITEM: return marked_done;
 		BATTLE_TURN_ACTION_DO_ATTACK: return marked_done; 
-		BATTLE_TURN_ACTION_DO_ABILITY: pass;
-		BATTLE_TURN_ACTION_FLEE: pass;
-	return true;
+		BATTLE_TURN_ACTION_DO_ABILITY: return marked_done;
+		BATTLE_TURN_ACTION_FLEE: return true;

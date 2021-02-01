@@ -82,8 +82,9 @@ func entity_take_damage(target, damage):
 	var target_battle_sprite = target_information[0][target_information[1]];
 
 	var initial_health = target.health;
+	battle_log_widget.push_message(target.name + " takes " + str(damage) + " damage!");
 	target.take_damage(damage);
-	if target.dead() and (damage > (target.max_health / 2)):
+	if (target in party_on_the_right.party_members) and target.dead() and (damage > (target.max_health / 2)):
 		print("gib time!");
 
 		var new_gibbed_particle_system = GibbedBloodParticleSystemPrefab.instance();
@@ -149,7 +150,7 @@ func create_attack_bump_animation(attacker, target, attack):
 		if roll_percent <= attack.accuracy:
 			attack_bump.track_insert_key(target_color_track_index, 0.89, Color(1, 1, 1));
 			attack_bump.track_insert_key(target_color_track_index, 1.02, Color(1, 0, 0));
-			attack_bump.track_insert_key(self_method_track_index, 1.03, {"method": "entity_take_damage", "args": [target, attack.magnitude]});
+			attack_bump.track_insert_key(self_method_track_index, 1.03, {"method": "entity_take_damage", "args": [target, attacker.damage_amount(attack.magnitude)]});
 			attack_bump.track_insert_key(self_method_track_index, 1.02, {"method": "begin_camera_shake", "args": [0.45, 25]});
 		else:
 			attack_bump.track_insert_key(self_method_track_index, 1.03, {"method": "push_message", "args": ["Attack missed!"]});
@@ -223,7 +224,7 @@ func create_attack_projectile_animation(attacker, target, projectile_name, attac
 		if roll_percent <= attack.accuracy:
 			attack_bump.track_insert_key(target_color_track_index, 0.89, Color(1, 1, 1));
 			attack_bump.track_insert_key(target_color_track_index, 1.02, Color(1, 0, 0));
-			attack_bump.track_insert_key(self_method_track_index, 1.03, {"method": "entity_take_damage", "args": [target, attack.magnitude]});
+			attack_bump.track_insert_key(self_method_track_index, 1.03, {"method": "entity_take_damage", "args": [target, attacker.damage_amount(attack.magnitude)]});
 			attack_bump.track_insert_key(self_method_track_index, 1.02, {"method": "begin_camera_shake", "args": [0.45, 25]});
 			attack_bump.track_insert_key(attacker_position_track_index, 1.00, target_battle_sprite.global_position);
 			attack_bump.track_insert_key(self_method_track_index, 1.04, {"method": "battle_layer_remove_child", "args": [projectile_scene]});
@@ -358,7 +359,6 @@ func begin_battle(left, right, music=null, bkg=null):
 		bkg = load(bkg).instance();
 
 	$BattleLayer/BattleBackground.add_child(bkg);
-
 	focused_party = party_on_the_left;
 
 	var new_fade_dimmer = create_fade_dimmer(Color(0, 0, 0, 0), 0.35);
@@ -455,11 +455,14 @@ func move_focused_party_member_index_to_non_dead_in_direction(start, delta, part
 		start += delta;
 		start %= len(party.party_members);
 		var member = party.party_members[start];
-		if not member.dead():
+
+		# This is a stupid assumption, since the player is always on the left.
+		# this is like a last minute change
+		if (party == party_on_the_left) or not member.dead():
 			return start;
 
 func recalculate_party_member_index(changing_to_party):
-	var percent = float(focused_party_member_index)/(len(focused_party.party_members)-1);
+	var percent = float(focused_party_member_index)/(len(focused_party.party_members));
 	var new_index =	 int((len(changing_to_party.party_members)-1) * percent);
 
 	if changing_to_party.party_members[new_index].dead():
@@ -632,8 +635,13 @@ func _process(delta):
 					battle_log_widget.push_message("Using item");
 
 					var item_to_use = parties[0].inventory[turn_action.index];
-					item_to_use[1] -= 1;
-					ItemDatabase.apply_item_to(turn_action.actor_target, item_to_use[0]);
+					var item_info = ItemDatabase.get_item(item_to_use[0]);
+					if not (item_info.implementation is ItemDatabase.MiscItemImplementation):
+						item_to_use[1] -= 1;
+						ItemDatabase.apply_item_to(turn_action.actor_target, item_to_use[0]);
+						battle_information.decided_action.marked_done = true;
+					else:
+						battle_log_widget.push_message("Invalid item to use!");
 				BATTLE_TURN_ACTION_DO_ATTACK:
 					battle_turn_widget_head_label.text = "ATTACKING!";
 				BATTLE_TURN_ACTION_DO_ABILITY:

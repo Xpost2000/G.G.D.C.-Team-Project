@@ -1,7 +1,8 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=8 format=2]
 
+[ext_resource path="res://game/actors/RandomOrcEnemy.tscn" type="PackedScene" id=1]
+[ext_resource path="res://game/actors/RandomStrongOrcEnemy.tscn" type="PackedScene" id=2]
 [ext_resource path="res://game/LevelTransition.tscn" type="PackedScene" id=3]
-[ext_resource path="res://game/actors/JesusTest.tscn" type="PackedScene" id=4]
 [ext_resource path="res://scenes/LevelDemo2.gd" type="Script" id=5]
 [ext_resource path="res://scenes/DemoTileset.tres" type="TileSet" id=6]
 
@@ -11,7 +12,8 @@ radius = 82.4217
 [sub_resource type="RectangleShape2D" id=2]
 extents = Vector2( 51.0503, 194.92 )
 
-[node name="LevelDemo2" type="YSort"]
+[node name="LevelDemo2" type="CanvasModulate"]
+color = Color( 0.380392, 0.380392, 0.521569, 1 )
 script = ExtResource( 5 )
 
 [node name="Tilesets" type="Node2D" parent="."]
@@ -56,21 +58,6 @@ landmark_node = "Entrance"
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Entities/TransitionPlaceholder"]
 shape = SubResource( 1 )
 
-[node name="JesusTest" parent="Entities" groups=[
-"Actors",
-] instance=ExtResource( 4 )]
-position = Vector2( 1124.67, -25.5429 )
-
-[node name="JesusTest2" parent="Entities" groups=[
-"Actors",
-] instance=ExtResource( 4 )]
-position = Vector2( 922.44, -244.746 )
-
-[node name="JesusTest3" parent="Entities" groups=[
-"Actors",
-] instance=ExtResource( 4 )]
-position = Vector2( 993.151, 390.236 )
-
 [node name="NimDoorLock" type="Area2D" parent="Entities"]
 position = Vector2( 4305.4, 961.205 )
 __meta__ = {
@@ -79,6 +66,51 @@ __meta__ = {
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Entities/NimDoorLock"]
 shape = SubResource( 2 )
+
+[node name="Orc" parent="Entities" instance=ExtResource( 1 )]
+position = Vector2( 2149.95, 484.505 )
+
+[node name="Orc4" parent="Entities" instance=ExtResource( 1 )]
+position = Vector2( 2033.57, 303.348 )
+
+[node name="Orc5" parent="Entities" instance=ExtResource( 1 )]
+position = Vector2( 2369.85, 92.9033 )
+
+[node name="Orc6" parent="Entities" instance=ExtResource( 1 )]
+position = Vector2( 2125.84, 112.456 )
+
+[node name="Orc2" parent="Entities" instance=ExtResource( 1 )]
+position = Vector2( 2437.77, 353.475 )
+
+[node name="Orc7" parent="Entities" instance=ExtResource( 1 )]
+position = Vector2( 2636.84, 1217.78 )
+
+[node name="Orc8" parent="Entities" instance=ExtResource( 1 )]
+position = Vector2( 2160.59, 1227.86 )
+
+[node name="Orc15" parent="Entities" instance=ExtResource( 1 )]
+position = Vector2( 1490.7, 1043.72 )
+
+[node name="Orc13" parent="Entities" instance=ExtResource( 1 )]
+position = Vector2( 2105.15, 1757.03 )
+
+[node name="Orc14" parent="Entities" instance=ExtResource( 1 )]
+position = Vector2( 2422.65, 1714.19 )
+
+[node name="Orc9" parent="Entities" instance=ExtResource( 1 )]
+position = Vector2( 2243.74, 1006.11 )
+
+[node name="Orc3" parent="Entities" instance=ExtResource( 1 )]
+position = Vector2( 1914.31, 119.604 )
+
+[node name="Orc10" parent="Entities" instance=ExtResource( 2 )]
+position = Vector2( 1198.46, 1291.87 )
+
+[node name="Orc11" parent="Entities" instance=ExtResource( 2 )]
+position = Vector2( 1649.51, 1226.36 )
+
+[node name="Orc12" parent="Entities" instance=ExtResource( 2 )]
+position = Vector2( 1654.55, 1679.93 )
 
 [node name="Props" type="Node2D" parent="."]
 __meta__ = {

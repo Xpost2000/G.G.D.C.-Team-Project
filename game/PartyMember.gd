@@ -115,14 +115,20 @@ func random_attack_index():
 		return -1;
 
 func do_levelup():
-	self.stats.strength *= 1.5;
-	self.stats.dexterity *= 1.5;
-	self.stats.constitution *= 1.5;
-	self.stats.willpower *= 1.5;
-	self.stats.intelligence *= 1.5;
-	self.stats.charisma *= 1.5;
-	self.stats.luck *= 1.5;
+	self.stats.strength *= 1.10;
+	self.stats.dexterity *= 1.16;
+	self.stats.constitution *= 1.16;
+	self.stats.willpower *= 1.16;
+	self.stats.intelligence *= 1.16;
+	# self.stats.charisma *= 1.5;
+	self.stats.luck += 2;
 	self.level += 1;
+
+	self.max_health += int(self.stats.constitution * 0.20 + 10) + (self.level);
+	self.max_mana_points += int(self.stats.intelligence * 0.20);
+
+	self.health = self.max_health;
+	self.mana_points = self.max_mana_points;
 
 func award_experience(amount):
 	self.experience += amount;
@@ -136,7 +142,7 @@ func award_experience(amount):
 			self.experience = remainder;
 			levels_gained += 1;
 
-			self.experience_to_next *= 1.55;
+			self.experience_to_next *= 1.65;
 		else:
 			done_leveling = true;
 			print("gained ", levels_gained, " levels");
@@ -154,7 +160,13 @@ func dead():
 	return health <= 0;
 
 func take_damage(amount):
-	health -= amount;
+	amount -= ((defense+(stats.dexterity/2)) * 0.25);
+	health -= max(0, amount);
+
+func damage_amount(base):
+	base *= int((0.4 + stats.strength * 0.03) + (stats.dexterity * 0.02));
+	base += randi() % int(30+(stats.strength*0.5));
+	return base;
 
 func handle_ability(ability):
 	match ability.type:

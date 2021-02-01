@@ -161,6 +161,9 @@ func _physics_process(delta):
 		# print("MOVE!");
 		execute_actions(delta);
 
+	if all_members_dead():
+		hide();
+
 func _process(delta):
 	if can_think():
 		override_process(delta);

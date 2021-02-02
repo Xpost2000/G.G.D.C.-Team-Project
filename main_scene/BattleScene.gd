@@ -144,7 +144,7 @@ func create_attack_bump_animation(attacker, target, attack):
 	attack_bump.track_insert_key(attacker_position_track_index, 0.9, position_right_before_attack);
 	attack_bump.track_insert_key(attacker_position_track_index, 0.98, target_battle_sprite.global_position);
 	# Did I have to make another track to have same time?
-	if attack is PartyMember.PartyMemberAttack:
+	if attack is PartyMemberAttack:
 		var roll_percent = randf();
 
 		if roll_percent <= attack.accuracy:
@@ -155,7 +155,7 @@ func create_attack_bump_animation(attacker, target, attack):
 		else:
 			attack_bump.track_insert_key(self_method_track_index, 1.03, {"method": "push_message", "args": ["Attack missed!"]});
 			# attack_action.marked_done = true;
-	elif attack is PartyMember.PartyMemberAbility:
+	elif attack is PartyMemberAbility:
 		attack_bump.track_insert_key(self_method_track_index, 1.03, {"method": "entity_handle_ability", "args": [target, attack]});
 	# s
 	attack_bump.track_insert_key(attacker_position_track_index, 1.18, position_right_before_attack);
@@ -218,7 +218,7 @@ func create_attack_projectile_animation(attacker, target, projectile_name, attac
 	attack_bump.track_set_interpolation_type(target_color_track_index, Animation.INTERPOLATION_CUBIC);
 	attack_bump.track_insert_key(target_color_track_index, 0, Color(1, 1, 1));
 	attack_bump.track_insert_key(attacker_position_track_index, 0, attacker_battle_sprite.global_position);
-	if attack is PartyMember.PartyMemberAttack:
+	if attack is PartyMemberAttack:
 		var roll_percent = randf();
 
 		if roll_percent <= attack.accuracy:
@@ -234,7 +234,7 @@ func create_attack_projectile_animation(attacker, target, projectile_name, attac
 			attack_bump.track_insert_key(attacker_position_track_index, 2.2, target_battle_sprite.global_position + (target_battle_sprite.global_position - attacker_battle_sprite.global_position).normalized() * 150);
 			attack_bump.track_insert_key(self_method_track_index, 1.03, {"method": "push_message", "args": ["Attack missed!"]});
 			attack_bump.track_insert_key(self_method_track_index, 3.3, {"method": "battle_layer_remove_child", "args": [projectile_scene]});
-	elif attack is PartyMember.PartyMemberAbility:
+	elif attack is PartyMemberAbility:
 		attack_bump.track_insert_key(self_method_track_index, 1.03, {"method": "entity_handle_ability", "args": [target, attack]});
 		attack_bump.track_insert_key(self_method_track_index, 1.04, {"method": "battle_layer_remove_child", "args": [projectile_scene]});
 	attack_bump.track_insert_key(target_color_track_index, 1.18, Color(1, 1, 1));
@@ -245,7 +245,7 @@ func create_attack_projectile_animation(attacker, target, projectile_name, attac
 
 func create_attack_targeted_effect_animation(attacker, target, action):
 	match action.visual_id:
-		PartyMember.ATTACK_VISUAL_HEALING:
+		PartyMemberAbility.AbilityVisualId.HEALING:
 			return create_attack_projectile_animation(attacker, target, "HealingTargettedProjectile", action);
 			pass;
 
@@ -253,13 +253,13 @@ func create_attack_targeted_effect_animation(attacker, target, action):
 # This can potentially error out if you're not careful
 func create_action_animation(actor_self, actor_target, attack_being_done):
 	match attack_being_done.visual_id:
-		PartyMember.ATTACK_VISUAL_PHYSICAL_BUMP:
+		PartyMemberAttack.AttackVisualId.PHYSICAL_BUMP:
 			return create_attack_bump_animation(actor_self, actor_target, attack_being_done);
-		PartyMember.ATTACK_VISUAL_WATER_GUN:
+		PartyMemberAttack.AttackVisualId.WATER_GUN:
 			return create_attack_projectile_animation(actor_self, actor_target, "WaterGunProjectile", attack_being_done);
-		PartyMember.ATTACK_VISUAL_FLAME:
+		PartyMemberAttack.AttackVisualId.FLAME:
 			return create_attack_projectile_animation(actor_self, actor_target, "FlameProjectile", attack_being_done);
-		PartyMember.ATTACK_VISUAL_HOLY_FLAME:
+		PartyMemberAttack.AttackVisualId.HOLY_FLAME:
 			return create_attack_projectile_animation(actor_self, actor_target, "HolyFlameProjectile", attack_being_done);
 		_:
 			return create_attack_targeted_effect_animation(actor_self, actor_target, attack_being_done);

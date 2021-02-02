@@ -13,6 +13,7 @@ onready var stamina_regeneration_cooldown_timer: float = 0.0;
 onready var sprinting_stamina: float = SPRINTING_STAMINA_MAX;
 
 const PartyMember = preload("res://game/PartyMember.gd");
+const PartyMemberAttack = preload("res://game/PartyMemberAttack.gd");
 
 var SPRINTING_SPEED: float = 512;
 export(int) var WALKING_SPEED: float = SPRINTING_SPEED/2 setget set_walking_speed;

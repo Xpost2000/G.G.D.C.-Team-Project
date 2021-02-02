@@ -1,38 +1,10 @@
 extends Resource;
 class_name PartyMember
-# TODO metadata for AI usage.
-
-# not necessarily ATTACKS, just for now.
-enum {ATTACK_VISUAL_PHYSICAL_BUMP,
-	  ATTACK_VISUAL_WATER_GUN,
-	  ATTACK_VISUAL_HOLY_FLAME,
-	  ATTACK_VISUAL_FLAME,
-	  ATTACK_VISUAL_HEALING}
-class PartyMemberAttack:
-	func _init(name, magnitude, accuracy, cost=0, visual_id=ATTACK_VISUAL_PHYSICAL_BUMP):
-		self.name = name;
-		self.magnitude = magnitude;
-		self.accuracy = accuracy;
-		self.visual_id = visual_id;
-		self.cost = cost;
-
-	var name: String;
-	var visual_id: int;
-	var type: int;
-	var magnitude: int;
-	# 0 - 1.0
-	var accuracy: float;
-	var cost: int;
-
-	func get_icon_texture():
-		return null;
-	func get_item_list_string():
-		return self.name;
 
 enum {ABILITY_TYPE_NONE, ABILITY_TYPE_HEAL, ABILITY_TYPE_BUFF_STRENGTH}
 # TODO metadata for AI usage.
 class PartyMemberAbility:
-	func _init(name, description, magnitude, accuracy, cost, type, visual_id=ATTACK_VISUAL_WATER_GUN):
+	func _init(name, description, magnitude, accuracy, cost, type, visual_id=0):
 		self.name = name;
 		self.description = description;
 		self.magnitude = magnitude;

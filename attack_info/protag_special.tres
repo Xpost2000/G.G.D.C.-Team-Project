@@ -1,0 +1,12 @@
+[gd_resource type="Resource" load_steps=2 format=2]
+
+[ext_resource path="res://game/PartyMemberAttack.gd" type="Script" id=1]
+
+[resource]
+script = ExtResource( 1 )
+name = "All In!"
+visual_id = 0
+type = 0
+magnitude = 350
+accuracy = 0.25
+cost = 50

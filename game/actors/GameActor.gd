@@ -1,27 +1,29 @@
+tool
+
 extends KinematicBody2D
 signal handle_party_member_level_ups(members);
 
 # for some tutorial quests maybe?
 signal opened_inventory;
 
-const SPRINTING_STAMINA_MAX = 75;
-const STAMINA_REGENERATION_COOLDOWN_TIME = 1.66; # seconds
+export(int) var SPRINTING_STAMINA_MAX = 75;
+export(float) var STAMINA_REGENERATION_COOLDOWN_TIME = 1.66; # seconds
 
-var stamina_regeneration_cooldown_timer = 0.0;
-var sprinting_stamina = SPRINTING_STAMINA_MAX;
+onready var stamina_regeneration_cooldown_timer = 0.0;
+onready var sprinting_stamina = SPRINTING_STAMINA_MAX;
 
 const PartyMember = preload("res://game/PartyMember.gd");
 
 var SPRINTING_SPEED = 512;
-var WALKING_SPEED = SPRINTING_SPEED/2;
+export(int) var WALKING_SPEED = SPRINTING_SPEED/2 setget set_walking_speed;
 
 func set_walking_speed(walking_speed):
 	WALKING_SPEED = walking_speed;
-	SPRINTING_SPEED = WALKING_SPEED * 2;
+	SPRINTING_SPEED = walking_speed * 2;
 
 func set_sprinting_speed(sprinting_speed):
 	SPRINTING_SPEED = sprinting_speed;
-	WALKING_SPEED = SPRINTING_SPEED / 2;
+	WALKING_SPEED = sprinting_speed / 2;
 
 var party_members = [];
 var inventory = [];
@@ -154,19 +156,21 @@ func disable_think():
 	allow_manual_processing = false;
 
 func _physics_process(delta):
-	if can_think():
-		override_physics_process(delta);
-	else:
-		# in the case of AI, this will be identical behavior for them...
-		# print("MOVE!");
-		execute_actions(delta);
+	if not Engine.editor_hint:
+		if can_think():
+			override_physics_process(delta);
+		else:
+			# in the case of AI, this will be identical behavior for them...
+			# print("MOVE!");
+			execute_actions(delta);
 
-	if all_members_dead():
-		hide();
+		if all_members_dead():
+			hide();
 
 func _process(delta):
-	if can_think():
-		override_process(delta);
+	if not Engine.editor_hint:
+		if can_think():
+			override_process(delta);
 
 # TODO put this in another file!
 const TIME_UNTIL_NEXT_THINK = 6.0;
@@ -250,3 +254,7 @@ func override_process(delta):
 		think_timer = 0;
 
 	think_timer += delta;
+
+func _ready():
+	if Engine.editor_hint:
+		print("This should be in the editor");

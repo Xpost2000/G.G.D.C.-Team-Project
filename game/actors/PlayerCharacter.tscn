@@ -13,6 +13,8 @@ radius = 35.8132
 position = Vector2( 285.174, -13.652 )
 scale = Vector2( 3, 3 )
 script = ExtResource( 1 )
+SPRINTING_STAMINA_MAX = 150
+WALKING_SPEED = 256
 
 [node name="CharacterSprite" type="Sprite" parent="."]
 position = Vector2( 0.575272, 0.590172 )

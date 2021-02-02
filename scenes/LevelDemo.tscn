@@ -86,16 +86,6 @@ landmark_node = "ExitToDemo1"
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Entities/EntranceToDemo2"]
 shape = SubResource( 1 )
 
-[node name="PotentialQuestLocation" type="Node2D" parent="Entities" groups=[
-"QUEST_LOCATION",
-]]
-position = Vector2( 256.979, 333.196 )
-
-[node name="PotentialQuestLocation2" type="Node2D" parent="Entities" groups=[
-"QUEST_LOCATION",
-]]
-position = Vector2( 1061.5, 172.834 )
-
 [node name="Cutscenes" type="AnimationPlayer" parent="."]
 anims/Introduction = SubResource( 2 )
 

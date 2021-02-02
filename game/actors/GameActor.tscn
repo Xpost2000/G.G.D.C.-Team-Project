@@ -2,7 +2,6 @@
 
 [ext_resource path="res://game/actors/GameActor.gd" type="Script" id=1]
 
-
 [node name="GameActor" type="KinematicBody2D"]
 position = Vector2( 0.178703, -0.0903587 )
 scale = Vector2( 3, 3 )
@@ -10,3 +9,6 @@ script = ExtResource( 1 )
 __meta__ = {
 "_edit_group_": true
 }
+STAMINA_REGENERATION_COOLDOWN_TIME = 1
+SPRINTING_SPEED = 256
+WALKING_SPEED = 128

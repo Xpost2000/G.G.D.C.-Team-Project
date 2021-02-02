@@ -1,29 +1,23 @@
-var strength: int;
-var dexterity: int;
-var constitution: int;
-var willpower: int;
-var intelligence: int;
-var charisma: int;
-var luck: int;
+extends Resource;
 
-func _init():
-	self.dexterity = 10;
-	self.constitution = 10;
-	self.willpower = 10;
-	self.intelligence = 10;
-	self.charisma = 10;
-	self.luck = 10;
+export(int) var strength = 10;
+export(int) var dexterity = 10;
+export(int) var constitution = 10;
+export(int) var willpower = 10;
+export(int) var intelligence = 10;
+export(int) var charisma = 10;
+export(int) var luck = 10;
 
-func duplicate():
-	var dup = get_script().new();
-	dup.strength = self.strength;
-	dup.dexterity = self.dexterity;
-	dup.constitution = self.constitution;
-	dup.willpower = self.willpower;
-	dup.intelligence = self.intelligence;
-	dup.charisma = self.charisma;
-	dup.luck = self.luck;
-	return dup;
+#func duplicate():
+#	var dup = get_script().new();
+#	dup.strength = self.strength;
+#	dup.dexterity = self.dexterity;
+#	dup.constitution = self.constitution;
+#	dup.willpower = self.willpower;
+#	dup.intelligence = self.intelligence;
+#	dup.charisma = self.charisma;
+#	dup.luck = self.luck;
+#	return dup;
 
 func _make_new_label(text):
 	var new_label = Label.new();

@@ -36,7 +36,7 @@ func _ready():
 	boss.hurt_sounds = ["snd/vo/SLAY01.WAV",
 						"snd/vo/SLAY05.WAV",
 						"snd/vo/SNAKE06.WAV",
-						"snd/vo/ABISH08.WAV"
+						"snd/vo/ABISH08.WAV",
 						"snd/vo/SLAY06.WAV"];
 
 	var spectre_b = add_party_member_default("Spectre");

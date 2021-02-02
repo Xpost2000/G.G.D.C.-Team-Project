@@ -24,12 +24,6 @@ var sprites = [
 		load("res://images/overworld/actors/protag/left.png")
 ];
 # temporary lazy
-
-func _ready():
-	inventory = [["test_lantern", 1],
-				 ["healing_grass", 15],
-				 ["healing_pod", 15]];
-
 func movement_direction_vector():
 	var movement_direction = Vector2.ZERO;
 

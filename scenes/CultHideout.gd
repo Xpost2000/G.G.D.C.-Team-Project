@@ -81,7 +81,7 @@ var triggered_ending_setup = false;
 
 # A little dirty for endings, also it's abrupt since we don't allow anything else to happen.
 func _process(delta):
-	AudioGlobal.looped_play_music("snd/planescapesoundtrack/ravel_theme.ogg");
+	AudioGlobal.looped_play_music("snd/planescapesoundtrack/ravel_theme.ogg", true);
 	if not triggered_ending_setup:
 		if $Entities/HolyEndingBoss.all_members_dead():
 			print("holy end");

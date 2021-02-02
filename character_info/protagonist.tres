@@ -1,4 +1,4 @@
-[gd_resource type="Resource" load_steps=9 format=2]
+[gd_resource type="Resource" load_steps=10 format=2]
 
 [ext_resource path="res://game/PartyMemberStatBlock.gd" type="Script" id=1]
 [ext_resource path="res://images/party-icons/main_character_icon.png" type="Texture" id=2]
@@ -7,6 +7,7 @@
 [ext_resource path="res://attack_info/quick_slash_protag.tres" type="Resource" id=5]
 [ext_resource path="res://attack_info/power_attack_protag.tres" type="Resource" id=6]
 [ext_resource path="res://attack_info/protag_special.tres" type="Resource" id=7]
+[ext_resource path="res://scratchboard/sprites/ProtagonistBattleSprite.tscn" type="PackedScene" id=8]
 
 [sub_resource type="Resource" id=1]
 resource_local_to_scene = true
@@ -23,6 +24,7 @@ luck = 1
 script = ExtResource( 3 )
 party_icon = ExtResource( 2 )
 portrait_battle_icon = ExtResource( 4 )
+battle_sprite_scene = ExtResource( 8 )
 name = "Mr. Protagonist"
 max_health = 1000
 max_mana_points = 120

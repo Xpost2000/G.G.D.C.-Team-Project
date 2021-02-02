@@ -5,7 +5,7 @@ const PartyMemberStatBlock = preload("res://game/PartyMemberStatBlock.gd");
 
 export(Texture) var party_icon: Texture = load("res://images/party-icons/unknown_character_icon.png");
 export(Texture) var portrait_battle_icon: Texture = load("res://images/party-icons/unknown_character_turn_portrait.png");
-var battle_sprite_scene: Resource;
+export(PackedScene) var battle_sprite_scene: PackedScene;
 
 export(String) var name: String;
 

@@ -1,4 +1,4 @@
-[gd_resource type="Resource" load_steps=13 format=2]
+[gd_resource type="Resource" load_steps=14 format=2]
 
 [ext_resource path="res://game/PartyMember.gd" type="Script" id=1]
 [ext_resource path="res://images/party-icons/main_character_icon.png" type="Texture" id=2]
@@ -9,6 +9,7 @@
 [ext_resource path="res://attack_info/deutag_special.tres" type="Resource" id=7]
 [ext_resource path="res://attack_info/deutag_watergun.tres" type="Resource" id=8]
 [ext_resource path="res://game/PartyMemberAbility.gd" type="Script" id=9]
+[ext_resource path="res://scratchboard/sprites/DeutagonistBattleSprite.tscn" type="PackedScene" id=10]
 
 [sub_resource type="Resource" id=1]
 resource_local_to_scene = true
@@ -46,6 +47,7 @@ luck = 25
 script = ExtResource( 1 )
 party_icon = ExtResource( 2 )
 portrait_battle_icon = ExtResource( 3 )
+battle_sprite_scene = ExtResource( 10 )
 name = "Mr. Deutagonist"
 max_health = 700
 max_mana_points = 300

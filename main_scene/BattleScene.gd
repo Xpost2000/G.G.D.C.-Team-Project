@@ -231,7 +231,7 @@ func create_attack_projectile_animation(attacker, target, projectile_name, attac
 			attack_bump.track_insert_key(self_method_track_index, 1.05, {"method": "create_impact_particles", "args": [projectile_name, target_information, target_battle_sprite.global_position]});
 		else:
 			attack_bump.length = 3.3;
-			attack_bump.track_insert_key(attacker_position_track_index, 2.2, target_battle_sprite.global_position + (target_battle_sprite.global_position - attacker_battle_sprite.global_position).normalized() * 150);
+			attack_bump.track_insert_key(attacker_position_track_index, 2.2, target_battle_sprite.global_position + (target_battle_sprite.global_position - attacker_battle_sprite.global_position).normalized() * 480);
 			attack_bump.track_insert_key(self_method_track_index, 1.03, {"method": "push_message", "args": ["Attack missed!"]});
 			attack_bump.track_insert_key(self_method_track_index, 3.3, {"method": "battle_layer_remove_child", "args": [projectile_scene]});
 	elif attack is PartyMemberAbility:

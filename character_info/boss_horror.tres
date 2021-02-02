@@ -1,0 +1,77 @@
+[gd_resource type="Resource" load_steps=12 format=2]
+
+[ext_resource path="res://game/PartyMemberStatBlock.gd" type="Script" id=1]
+[ext_resource path="res://game/PartyMember.gd" type="Script" id=2]
+[ext_resource path="res://game/PartyMemberAttack.gd" type="Script" id=3]
+[ext_resource path="res://images/battle/portraits/isshin_test_turn_portrait.png" type="Texture" id=4]
+[ext_resource path="res://scratchboard/sprites/HorrorBattleSprite.tscn" type="PackedScene" id=5]
+
+[sub_resource type="Resource" id=1]
+script = ExtResource( 3 )
+name = "Haunt"
+visual_id = 2
+type = 0
+magnitude = 35
+accuracy = 0.7
+cost = 0
+
+[sub_resource type="Resource" id=2]
+script = ExtResource( 3 )
+name = "Apathy"
+visual_id = 2
+type = 0
+magnitude = 38
+accuracy = 0.6
+cost = 0
+
+[sub_resource type="Resource" id=3]
+script = ExtResource( 3 )
+name = "Tail Swipe"
+visual_id = 0
+type = 0
+magnitude = 12
+accuracy = 1.0
+cost = 0
+
+[sub_resource type="Resource" id=4]
+script = ExtResource( 3 )
+name = "Insanity"
+visual_id = 2
+type = 0
+magnitude = 27
+accuracy = 0.6
+cost = 0
+
+[sub_resource type="Resource" id=5]
+script = ExtResource( 3 )
+name = "Torment"
+visual_id = 2
+type = 0
+magnitude = 60
+accuracy = 0.2
+cost = 0
+
+[sub_resource type="Resource" id=6]
+script = ExtResource( 1 )
+strength = 270
+dexterity = 250
+constitution = 666
+willpower = 10
+intelligence = 10
+charisma = 10
+luck = 50
+
+[resource]
+script = ExtResource( 2 )
+portrait_battle_icon = ExtResource( 4 )
+battle_sprite_scene = ExtResource( 5 )
+name = "Horror"
+max_health = 2300
+max_mana_points = 100
+defense = 250
+abilities = [  ]
+attacks = [ SubResource( 1 ), SubResource( 2 ), SubResource( 3 ), SubResource( 4 ), SubResource( 5 ) ]
+level = 1
+hurt_sounds = [ "snd/vo/SLAY01.WAV", "snd/vo/SLAY05.WAV", "snd/vo/SNAKE06.WAV", "snd/vo/ABISH08.WAV", "snd/vo/SLAY06.WAV" ]
+death_sound = "snd/vo/SLAY07.WAV"
+stats = SubResource( 6 )

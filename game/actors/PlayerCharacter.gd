@@ -1,4 +1,5 @@
 extends "res://game/actors/GameActor.gd"
+const GameActor = preload("res://game/actors/GameActor.gd");
 
 onready var _stupid_sprite = $CharacterSprite;
 
@@ -83,7 +84,7 @@ func _on_InteractableArea_area_entered(area):
 		# but I'll settle for this since it takes less time.
 		if area.name == "InteractableArea":
 			var parent = area.get_parent();
-			if parent is get_script() && battle_cooldown >= BATTLE_COOLDOWN_MAX_TIME && !parent.all_members_dead():
+			if parent is GameActor && battle_cooldown >= BATTLE_COOLDOWN_MAX_TIME && !parent.all_members_dead():
 				print("Another actor.");
 				print("I humbly request a battle with this one.");
 				emit_signal("request_to_open_battle", self, parent);

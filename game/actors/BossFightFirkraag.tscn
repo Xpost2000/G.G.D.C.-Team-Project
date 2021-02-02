@@ -1,8 +1,7 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=5 format=2]
 
-[ext_resource path="res://game/actors/BossFightFirkraag.gd" type="Script" id=1]
+[ext_resource path="res://game/actors/GameActor.gd" type="Script" id=1]
 [ext_resource path="res://images/overworld/actors/horror/idle.png" type="Texture" id=2]
-[ext_resource path="res://character_info/boss_firkraag.tres" type="Resource" id=3]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 46.8262, 17.5818 )
@@ -13,10 +12,7 @@ extents = Vector2( 48.714, 75.1581 )
 [node name="Firkraag" type="KinematicBody2D"]
 position = Vector2( 593.697, -121.76 )
 script = ExtResource( 1 )
-party_members = [ ExtResource( 3 ) ]
-inventory = [ [ "healing_pod", 30 ], [ "healing_grass", 30 ], [ "divine_grass", 5 ], [ "dragon_heart", 1 ] ]
-gold = 12500
-experience_value = 27500
+WALKING_SPEED = 256.0
 
 [node name="CharacterSprite" type="Sprite" parent="."]
 position = Vector2( 4.41943, -40.4394 )

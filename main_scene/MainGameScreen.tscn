@@ -29,7 +29,7 @@ __meta__ = {
 }
 
 [node name="MainGameCamera" type="Camera2D" parent="GameLayer/PersistentThings"]
-position = Vector2( 285.174, -13.652 )
+position = Vector2( 244.811, 302.525 )
 current = true
 zoom = Vector2( 0.8, 0.8 )
 smoothing_enabled = true
@@ -37,6 +37,7 @@ smoothing_speed = 2.5
 script = ExtResource( 6 )
 
 [node name="PlayerCharacter" parent="GameLayer/PersistentThings" instance=ExtResource( 3 )]
+position = Vector2( 244.811, 302.525 )
 scale = Vector2( 1, 1 )
 
 [node name="CameraPuppet" type="RemoteTransform2D" parent="GameLayer/PersistentThings/PlayerCharacter"]

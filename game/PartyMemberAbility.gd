@@ -23,6 +23,7 @@ func make(name, description, magnitude, accuracy, cost, type, visual_id=0):
 	self.cost = cost;
 	self.type = type;
 	self.visual_id = visual_id;
+	return self;
 
 export(String) var name: String;
 export(String) var description: String;

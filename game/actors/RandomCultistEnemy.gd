@@ -21,8 +21,8 @@ func cultist():
 	new_orc.load_battle_sprite("res://scratchboard/sprites/CultistBattleSprite.tscn");
 	new_orc.load_battle_portrait("sekijo_test");
 
-	new_orc.attacks.push_back(PartyMember.PartyMemberAttack.new("Slap", 20, 1, 0));
-	new_orc.attacks.push_back(PartyMember.PartyMemberAttack.new("Kick", 25, 1, 0));
+	new_orc.attacks.push_back(PartyMemberAttack.new().make("Slap", 20, 1, 0));
+	new_orc.attacks.push_back(PartyMemberAttack.new().make("Kick", 25, 1, 0));
 
 	return new_orc;
 	
@@ -47,10 +47,10 @@ func cultist_grand_wizard():
 	new_orc.load_battle_sprite("res://scratchboard/sprites/EliteCultistBattleSprite.tscn");
 	new_orc.load_battle_portrait("sekijo_test");
 
-	new_orc.attacks.push_back(PartyMember.PartyMemberAttack.new("Punch", 45, 1, 0));
-	new_orc.attacks.push_back(PartyMember.PartyMemberAttack.new("Punch", 45, 1, 0));
-	new_orc.attacks.push_back(PartyMember.PartyMemberAttack.new("Punch", 45, 1, 0));
-	new_orc.attacks.push_back(PartyMember.PartyMemberAttack.new("Papercut!", 250, 0.2, 0));
+	new_orc.attacks.push_back(PartyMemberAttack.new().make("Punch", 45, 1, 0));
+	new_orc.attacks.push_back(PartyMemberAttack.new().make("Punch", 45, 1, 0));
+	new_orc.attacks.push_back(PartyMemberAttack.new().make("Punch", 45, 1, 0));
+	new_orc.attacks.push_back(PartyMemberAttack.new().make("Papercut!", 250, 0.2, 0));
 
 	return new_orc;
 

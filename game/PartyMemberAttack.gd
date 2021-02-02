@@ -15,6 +15,7 @@ func make(name, magnitude, accuracy, cost=0, visual_id=AttackVisualId.PHYSICAL_B
 	self.accuracy = accuracy;
 	self.visual_id = visual_id;
 	self.cost = cost;
+	return self;
 
 export(String) var name: String;
 export(AttackVisualId) var visual_id: int;

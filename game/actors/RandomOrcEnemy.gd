@@ -21,8 +21,8 @@ func orc_armored():
 	new_orc.load_battle_sprite("res://scratchboard/sprites/ArmoredOrcBattleSprite.tscn");
 	new_orc.load_battle_portrait("sekijo_test");
 
-	new_orc.attacks.push_back(PartyMember.PartyMemberAttack.new("Sword Slash", 30, 1, 0));
-	new_orc.attacks.push_back(PartyMember.PartyMemberAttack.new("Sword Thrust", 45, 1, 0));
+	new_orc.attacks.push_back(PartyMemberAttack.new().make("Sword Slash", 30, 1, 0));
+	new_orc.attacks.push_back(PartyMemberAttack.new().make("Sword Thrust", 45, 1, 0));
 
 	new_orc.hurt_sounds = ["snd/vo/OGRIL08.WAV"];
 	new_orc.death_sound = "snd/vo/OGRIL09.WAV";
@@ -50,9 +50,9 @@ func orc_unarmed():
 	new_orc.load_battle_sprite("res://scratchboard/sprites/OrcBattleSprite.tscn");
 	new_orc.load_battle_portrait("sekijo_test");
 
-	new_orc.attacks.push_back(PartyMember.PartyMemberAttack.new("Punch", 25, 1, 0));
-	new_orc.attacks.push_back(PartyMember.PartyMemberAttack.new("Strong Punch", 55, 0.50, 0));
-	new_orc.attacks.push_back(PartyMember.PartyMemberAttack.new("Clobber Combo!", 150, 0.5, 0));
+	new_orc.attacks.push_back(PartyMemberAttack.new().make("Punch", 25, 1, 0));
+	new_orc.attacks.push_back(PartyMemberAttack.new().make("Strong Punch", 55, 0.50, 0));
+	new_orc.attacks.push_back(PartyMemberAttack.new().make("Clobber Combo!", 150, 0.5, 0));
 
 	new_orc.hurt_sounds = ["snd/vo/OGRIL08.WAV"];
 	new_orc.death_sound = "snd/vo/OGRIL09.WAV";
@@ -81,9 +81,9 @@ func orc_mage():
 	new_orc.load_battle_sprite("res://scratchboard/sprites/OrcBattleSprite.tscn");
 	new_orc.load_battle_portrait("sekijo_test");
 
-	new_orc.attacks.push_back(PartyMember.PartyMemberAttack.new("Punch", 15, 0.9, 0));
-	new_orc.attacks.push_back(PartyMember.PartyMemberAttack.new("Strong Punch", 25, 0.6, 0));
-	new_orc.attacks.push_back(PartyMember.PartyMemberAttack.new("Water Blast!", 30, 0.95, 0, PartyMember.ATTACK_VISUAL_WATER_GUN));
+	new_orc.attacks.push_back(PartyMemberAttack.new().make("Punch", 15, 0.9, 0));
+	new_orc.attacks.push_back(PartyMemberAttack.new().make("Strong Punch", 25, 0.6, 0));
+	new_orc.attacks.push_back(PartyMemberAttack.new().make("Water Blast!", 30, 0.95, 0, PartyMemberAttack.AttackVisualId.WATER_GUN));
 
 	new_orc.death_sound = "snd/vo/OGREM09.WAV";
 	new_orc.hurt_sounds = ["snd/vo/OGRIL08.WAV"];
@@ -102,8 +102,6 @@ func _ready():
 
 	experience_value = 1200 * orcs_generated + (randi() % 2000);
 	# Optimally we'd be dealing with data from a loot list or something
-	add_item("healing_grass", 5);
-
 	inventory = [["healing_grass", 10],
 				 ["healing_pod", 5]];
 

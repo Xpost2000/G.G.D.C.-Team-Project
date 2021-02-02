@@ -21,8 +21,8 @@ func orc_armored():
 	new_orc.load_battle_sprite("res://scratchboard/sprites/ArmoredOrcBattleSprite.tscn");
 	new_orc.load_battle_portrait("sekijo_test");
 
-	new_orc.attacks.push_back(PartyMember.PartyMemberAttack.new("Sword Slash", 50, 0.8, 0));
-	new_orc.attacks.push_back(PartyMember.PartyMemberAttack.new("Sword Thrust", 95, 0.7, 0));
+	new_orc.attacks.push_back(PartyMemberAttack.new().make("Sword Slash", 50, 0.8, 0));
+	new_orc.attacks.push_back(PartyMemberAttack.new().make("Sword Thrust", 95, 0.7, 0));
 
 	new_orc.hurt_sounds = ["snd/vo/OGRIL08.WAV"];
 	new_orc.death_sound = "snd/vo/OGRIL09.WAV";
@@ -50,9 +50,9 @@ func orc_unarmed():
 	new_orc.load_battle_sprite("res://scratchboard/sprites/OrcBattleSprite.tscn");
 	new_orc.load_battle_portrait("sekijo_test");
 
-	new_orc.attacks.push_back(PartyMember.PartyMemberAttack.new("Punch", 45, 0.8, 0));
-	new_orc.attacks.push_back(PartyMember.PartyMemberAttack.new("Strong Punch", 75, 0.50, 0));
-	new_orc.attacks.push_back(PartyMember.PartyMemberAttack.new("Clobber Combo!", 350, 0.3, 0));
+	new_orc.attacks.push_back(PartyMemberAttack.new().make("Punch", 45, 0.8, 0));
+	new_orc.attacks.push_back(PartyMemberAttack.new().make("Strong Punch", 75, 0.50, 0));
+	new_orc.attacks.push_back(PartyMemberAttack.new().make("Clobber Combo!", 350, 0.3, 0));
 
 	new_orc.hurt_sounds = ["snd/vo/OGRIL08.WAV"];
 	new_orc.death_sound = "snd/vo/OGRIL09.WAV";
@@ -81,9 +81,9 @@ func orc_mage():
 	new_orc.load_battle_sprite("res://scratchboard/sprites/OrcBattleSprite.tscn");
 	new_orc.load_battle_portrait("sekijo_test");
 
-	new_orc.attacks.push_back(PartyMember.PartyMemberAttack.new("Punch", 25, 0.9, 0));
-	new_orc.attacks.push_back(PartyMember.PartyMemberAttack.new("Strong Punch", 45, 0.6, 0));
-	new_orc.attacks.push_back(PartyMember.PartyMemberAttack.new("Water Blast!", 50, 0.95, 0, PartyMember.ATTACK_VISUAL_WATER_GUN));
+	new_orc.attacks.push_back(PartyMemberAttack.new().make("Punch", 25, 0.9, 0));
+	new_orc.attacks.push_back(PartyMemberAttack.new().make("Strong Punch", 45, 0.6, 0));
+	new_orc.attacks.push_back(PartyMemberAttack.new().make("Water Blast!", 50, 0.95, 0, PartyMemberAttack.AttackVisualId.WATER_GUN));
 	new_orc.death_sound = "snd/vo/OGREM09.WAV";
 
 	new_orc.hurt_sounds = ["snd/vo/OGRIL08.WAV"];

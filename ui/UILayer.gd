@@ -232,7 +232,8 @@ func handle_process(delta):
 
 		# gah.
 		if len(_popup_queue) > 0:
-			$Popups.get_children()[0].connect("finished", self, "add_popup", [_popup_queue.pop_front()]);
+			if !$Popups.get_children()[0].is_connected("finished", GameGlobals, "add_popup"):
+				$Popups.get_children()[0].connect("finished", self, "add_popup", [_popup_queue.pop_front()]);
 		else:
 			if !$Popups.get_children()[0].is_connected("finished", GameGlobals, "resume"):
 				if current_state == UI_STATE_GAME:

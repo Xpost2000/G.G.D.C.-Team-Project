@@ -259,8 +259,14 @@ func override_process(delta):
 
 	think_timer += delta;
 
+func initialize():
+	pass;
+
 func _ready():
-	var new_inventory = inventory.duplicate();
+	var new_inventory = inventory.duplicate(true);
+	var new_party_members = party_members.duplicate(true);
 	inventory = new_inventory;
+	party_members = new_party_members;
 	if Engine.editor_hint:
 		print("This should be in the editor");
+	initialize();

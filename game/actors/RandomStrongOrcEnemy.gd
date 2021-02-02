@@ -90,7 +90,7 @@ func orc_mage():
 
 	return new_orc;
 
-func _ready():
+func initialize():
 	set_walking_speed(50);
 	var orcs_generated = (randi() % 4) + 1;
 

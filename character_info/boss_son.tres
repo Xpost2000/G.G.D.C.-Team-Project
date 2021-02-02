@@ -1,0 +1,50 @@
+[gd_resource type="Resource" load_steps=9 format=2]
+
+[ext_resource path="res://game/PartyMemberStatBlock.gd" type="Script" id=1]
+[ext_resource path="res://game/PartyMember.gd" type="Script" id=2]
+[ext_resource path="res://game/PartyMemberAttack.gd" type="Script" id=3]
+[ext_resource path="res://images/battle/portraits/unknown_character_turn_portrait.png" type="Texture" id=4]
+[ext_resource path="res://scratchboard/sprites/TheSonBattleSprite.tscn" type="PackedScene" id=5]
+
+[sub_resource type="Resource" id=3]
+script = ExtResource( 3 )
+name = "Repent!"
+visual_id = 2
+type = 0
+magnitude = 24
+accuracy = 1.0
+cost = 0
+
+[sub_resource type="Resource" id=4]
+script = ExtResource( 3 )
+name = "Sinner!"
+visual_id = 2
+type = 0
+magnitude = 35
+accuracy = 0.3
+cost = 0
+
+[sub_resource type="Resource" id=5]
+script = ExtResource( 1 )
+strength = 150
+dexterity = 100
+constitution = 450
+willpower = 10
+intelligence = 10
+charisma = 9999
+luck = 10
+
+[resource]
+script = ExtResource( 2 )
+portrait_battle_icon = ExtResource( 4 )
+battle_sprite_scene = ExtResource( 5 )
+name = "The Son"
+max_health = 2250
+max_mana_points = 100
+defense = 250
+abilities = [  ]
+attacks = [ SubResource( 3 ), SubResource( 4 ) ]
+level = 1
+hurt_sounds = [ "snd/vo/SOLARF04.WAV" ]
+death_sound = "snd/vo/SOLARF06.WAV"
+stats = SubResource( 5 )

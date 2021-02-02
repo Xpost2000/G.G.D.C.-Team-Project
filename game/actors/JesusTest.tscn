@@ -1,7 +1,10 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://game/actors/TestJesusActor.gd" type="Script" id=1]
 [ext_resource path="res://images/jesus.png" type="Texture" id=2]
+[ext_resource path="res://character_info/boss_father.tres" type="Resource" id=3]
+[ext_resource path="res://character_info/boss_son.tres" type="Resource" id=4]
+[ext_resource path="res://character_info/boss_spirit.tres" type="Resource" id=5]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 46.8262, 17.5818 )
@@ -15,6 +18,7 @@ script = ExtResource( 1 )
 __meta__ = {
 "_edit_group_": true
 }
+party_members = [ ExtResource( 3 ), ExtResource( 4 ), ExtResource( 5 ) ]
 
 [node name="CharacterSprite" type="Sprite" parent="."]
 position = Vector2( -1.58739, -40.1436 )

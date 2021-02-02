@@ -179,10 +179,11 @@ func _real_add_popup(text):
 
 var _popup_queue = [];
 func queue_popup(text):
+	print("queueing ", text);
 	_popup_queue.push_back(text);
-	
+
 func add_popup(text):
-	call_deferred("_real_add_popup", text);
+	queue_popup(text);
 
 func handle_game_state_ui(delta):
 	party_member_information_holder.show();
@@ -201,9 +202,13 @@ func handle_game_state_ui(delta):
 # This is way easier to do.
 func handle_process(delta):
 	any_open_popups = _any_popups_open();
+	
+	if len(_popup_queue):
+		GameGlobals.pause();
+	
 	if !any_popups_open():
 		if len(_popup_queue) > 0:
-			add_popup(_popup_queue.pop_front());
+			call_deferred("_real_add_popup", _popup_queue.pop_front());
 		else:
 			if current_state == UI_STATE_GAME:
 				# This is hacky... But it's simple.
@@ -226,20 +231,11 @@ func handle_process(delta):
 				if states[current_state]:
 					states[current_state].handle_process(delta);
 	else:
-		# handle last popup only
-		# also yes this is weird, this calls for a refactor later.
-		GameGlobals.pause();
-
-		# gah.
-		if len(_popup_queue) > 0:
-			if !$Popups.get_children()[0].is_connected("finished", GameGlobals, "add_popup"):
-				$Popups.get_children()[0].connect("finished", self, "add_popup", [_popup_queue.pop_front()]);
-		else:
-			if !$Popups.get_children()[0].is_connected("finished", GameGlobals, "resume"):
-				if current_state == UI_STATE_GAME:
-					$Popups.get_children()[0].connect("finished", GameGlobals, "resume");
-					$Popups.get_children()[-1].handle_inputs(delta);
-					$Popups.get_children()[-1].grab_focus();
+		if !$Popups.get_children()[0].is_connected("finished", GameGlobals, "resume"):
+			if current_state == UI_STATE_GAME:
+				$Popups.get_children()[0].connect("finished", GameGlobals, "resume");
+				$Popups.get_children()[0].handle_inputs(delta);
+				$Popups.get_children()[0].grab_focus();
 
 func set_state(state):
 	if current_state != state:
@@ -279,10 +275,8 @@ func close_inventory():
 
 func toggle_pause():
 	if current_state == UI_STATE_PAUSE:
-		print("close");
 		set_state(UI_STATE_GAME);
 	else:
-		print("open");
 		set_state(UI_STATE_PAUSE);
 
 func toggle_quest_log():

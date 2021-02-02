@@ -1,4 +1,5 @@
 extends Resource;
+class_name PartyMemberStatBlock
 
 export(int) var strength: int = 10;
 export(int) var dexterity: int = 10;

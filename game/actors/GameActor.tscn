@@ -9,5 +9,3 @@ script = ExtResource( 1 )
 __meta__ = {
 "_edit_group_": true
 }
-STAMINA_REGENERATION_COOLDOWN_TIME = 1
-WALKING_SPEED = 128.0

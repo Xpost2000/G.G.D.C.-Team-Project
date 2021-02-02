@@ -53,7 +53,10 @@ func all_members_dead():
 	return true;
 
 func add_party_member_default(name):
-	var new_member = PartyMember.new(name, 100, 100)
+	var new_member = PartyMember.new();
+	new_member.name = name;
+	new_member.max_health = 100;
+	new_member.max_mana_points = 100;
 	party_members.push_back(new_member);
 	return new_member;
 

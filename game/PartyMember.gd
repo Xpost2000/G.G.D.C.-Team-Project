@@ -1,3 +1,5 @@
+extends Resource;
+class_name PartyMember
 # TODO metadata for AI usage.
 
 # not necessarily ATTACKS, just for now.
@@ -55,55 +57,42 @@ class PartyMemberAbility:
 
 const PartyMemberStatBlock = preload("res://game/PartyMemberStatBlock.gd");
 
-var party_icon: Texture;
-var portrait_battle_icon: Texture;
+export(Texture) var party_icon: Texture = load("res://images/party-icons/unknown_character_icon.png");
+export(Texture) var portrait_battle_icon: Texture = load("res://images/party-icons/unknown_character_turn_portrait.png");
 var battle_sprite_scene: Resource;
 
-var name: String;
-var health: int;
-var max_health: int;
+export(String) var name: String;
 
-var mana_points: int;
-var max_mana_points: int;
+export(int) var max_health: int = 100 setget set_new_maximum_health;
+var health: int = max_health;
 
-var defense: int;
+export(int) var max_mana_points: int = 100 setget set_new_maximum_mana;
+var mana_points: int = max_mana_points;
+
+func set_new_maximum_health(value: int):
+	max_health = value;
+	health = value;
+	
+func set_new_maximum_mana(value: int):
+	max_mana_points = value;
+	mana_points = value;
+	
+export(int) var defense: int = 10;
 
 # of their respective types...
 var abilities: Array;
-var attacks: Array;
+export(Array) var attacks: Array;
 
-var level: int;
-var experience: int;
-var experience_to_next: int;
+export(int) var level: int = 1;
+var experience: int = 0;
+var experience_to_next: int = 0;
 
 var hurt_sounds: Array;
 var death_sound: String;
 
-var stats: PartyMemberStatBlock;
-
-func _init(name, health, defense, mana=100):
-	self.name = name;
-	self.health = health;
-	self.max_health = health;
-	self.defense = defense;
-
-	self.mana_points = mana;
-	self.max_mana_points = mana;
-
-	self.level = 1;
-	self.experience = 0;
-	self.experience_to_next = 150;
-
-	self.party_icon = load("res://images/party-icons/unknown_character_icon.png");
-	self.portrait_battle_icon = load("res://images/party-icons/unknown_character_turn_portrait.png");
-	self.battle_sprite_scene = load("res://scratchboard/sprites/ProtagonistBattleSprite.tscn");
-	self.stats = PartyMemberStatBlock.new();
-
-	self.abilities = [];
-	self.attacks = [];
+export(Resource) var stats: Resource = PartyMemberStatBlock.new();
 
 func load_battle_sprite(path):
-	# TODO(jerry): path
 	self.battle_sprite_scene = load(path);
 
 func load_battle_portrait(name):

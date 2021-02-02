@@ -28,20 +28,7 @@ func _ready():
 		load("res://images/overworld/actors/protag/left.png")
 		];
 
-	var protag = add_party_member_default("Mr. Protagonist");
-	protag.max_health = 1000;
-	protag.health = 1000;
-
-	protag.stats.strength = 72;
-	protag.stats.dexterity = 45;
-	protag.stats.constitution = 35;
-	protag.stats.luck = 1;
-	protag.defense = 35;
-
-	protag.max_mana_points = 120;
-	protag.mana_points = 120;
-
-	protag.load_battle_portrait("sekijo_test");
+	var protag = add_party_member(load("res://character_info/protagonist.tres"));
 	protag.attacks.push_back(PartyMember.PartyMemberAttack.new("Quick Slash", 50, 1.0));
 	protag.attacks.push_back(PartyMember.PartyMemberAttack.new("Power Attack!", 100, 0.75, 25));
 	protag.attacks.push_back(PartyMember.PartyMemberAttack.new("All In!", 350, 0.15, 25));

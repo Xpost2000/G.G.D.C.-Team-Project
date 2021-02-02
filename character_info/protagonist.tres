@@ -1,0 +1,29 @@
+[gd_resource type="Resource" load_steps=6 format=2]
+
+[ext_resource path="res://game/PartyMemberStatBlock.gd" type="Script" id=1]
+[ext_resource path="res://images/party-icons/main_character_icon.png" type="Texture" id=2]
+[ext_resource path="res://game/PartyMember.gd" type="Script" id=3]
+[ext_resource path="res://images/battle/portraits/portrait_draft.png" type="Texture" id=4]
+
+[sub_resource type="Resource" id=1]
+resource_local_to_scene = true
+script = ExtResource( 1 )
+strength = 72
+dexterity = 45
+constitution = 35
+willpower = 10
+intelligence = 10
+charisma = 10
+luck = 1
+
+[resource]
+script = ExtResource( 3 )
+party_icon = ExtResource( 2 )
+portrait_battle_icon = ExtResource( 4 )
+name = "Mr. Protagonist"
+max_health = 1000
+max_mana_points = 120
+defense = 35
+attacks = [  ]
+level = 1
+stats = SubResource( 1 )

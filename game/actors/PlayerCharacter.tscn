@@ -1,7 +1,9 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://game/actors/PlayerCharacter.gd" type="Script" id=1]
 [ext_resource path="res://images/overworld/actors/protag/main_character_front.png" type="Texture" id=2]
+[ext_resource path="res://character_info/deutagonist.tres" type="Resource" id=3]
+[ext_resource path="res://character_info/protagonist.tres" type="Resource" id=4]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 11.1645, 5.95453 )
@@ -15,6 +17,8 @@ scale = Vector2( 3, 3 )
 script = ExtResource( 1 )
 SPRINTING_STAMINA_MAX = 150
 WALKING_SPEED = 256
+party_members = [ ExtResource( 4 ), ExtResource( 3 ) ]
+gold = 350
 
 [node name="CharacterSprite" type="Sprite" parent="."]
 position = Vector2( 0.575272, 0.590172 )

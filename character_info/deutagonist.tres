@@ -1,4 +1,4 @@
-[gd_resource type="Resource" load_steps=10 format=2]
+[gd_resource type="Resource" load_steps=13 format=2]
 
 [ext_resource path="res://game/PartyMember.gd" type="Script" id=1]
 [ext_resource path="res://images/party-icons/main_character_icon.png" type="Texture" id=2]
@@ -8,8 +8,30 @@
 [ext_resource path="res://attack_info/deutag_quick_slash.tres" type="Resource" id=6]
 [ext_resource path="res://attack_info/deutag_special.tres" type="Resource" id=7]
 [ext_resource path="res://attack_info/deutag_watergun.tres" type="Resource" id=8]
+[ext_resource path="res://game/PartyMemberAbility.gd" type="Script" id=9]
 
 [sub_resource type="Resource" id=1]
+resource_local_to_scene = true
+script = ExtResource( 9 )
+name = "Heal!"
+description = "You could use some patching up anyways"
+type = 1
+cost = 15
+magnitude = 95
+visual_id = 4
+accuracy = 1.0
+
+[sub_resource type="Resource" id=3]
+script = ExtResource( 9 )
+name = "Greater Heal!"
+description = "I'll heal you!"
+type = 1
+cost = 55
+magnitude = 200
+visual_id = 4
+accuracy = 1.0
+
+[sub_resource type="Resource" id=2]
 resource_local_to_scene = true
 script = ExtResource( 4 )
 strength = 60
@@ -24,8 +46,11 @@ luck = 25
 script = ExtResource( 1 )
 party_icon = ExtResource( 2 )
 portrait_battle_icon = ExtResource( 3 )
+name = "Mr. Deutagonist"
 max_health = 700
 max_mana_points = 300
 defense = 40
+abilities = [ SubResource( 1 ), SubResource( 3 ) ]
 attacks = [ ExtResource( 5 ), ExtResource( 6 ), ExtResource( 7 ), ExtResource( 8 ) ]
-stats = SubResource( 1 )
+level = 1
+stats = SubResource( 2 )

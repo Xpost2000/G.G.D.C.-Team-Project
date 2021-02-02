@@ -26,14 +26,9 @@ var sprites = [
 # temporary lazy
 
 func _ready():
-	var protag = add_party_member(load("res://character_info/protagonist.tres"));
-	var deutag = add_party_member(load("res://character_info/deutagonist.tres"));
-#	deutag.abilities.push_back(PartyMember.PartyMemberAbility.new("Heal!", "You could use some patching up anyways...", 95, 1.0, 15, PartyMember.ABILITY_TYPE_HEAL, PartyMember.ATTACK_VISUAL_HEALING));
-#	deutag.abilities.push_back(PartyMember.PartyMemberAbility.new("Greater Heal!", "You could use some patching up anyways...", 200, 1.0, 55, PartyMember.ABILITY_TYPE_HEAL, PartyMember.ATTACK_VISUAL_HEALING));
 	inventory = [["test_lantern", 1],
 				 ["healing_grass", 15],
 				 ["healing_pod", 15]];
-	gold = 350;
 
 func movement_direction_vector():
 	var movement_direction = Vector2.ZERO;
@@ -54,9 +49,6 @@ func movement_direction_vector():
 
 	return movement_direction.normalized();
 
-func handle_interact_key(delta):
-	pass;
-
 func override_physics_process(delta):
 	var sprinting = Input.is_action_pressed("game_sprinting_action");
 	var movement_result = false;
@@ -65,9 +57,6 @@ func override_physics_process(delta):
 										  movement_direction_vector(),
 										  delta);
 
-		if Input.is_action_just_pressed("game_interact_action"):
-			print(GameGlobals.paused());
-			handle_interact_key(delta);
 		battle_cooldown += delta;
 			
 	emit_signal("report_inventory_contents",
@@ -86,7 +75,6 @@ const LevelTransitionClass = preload("res://game/LevelTransition.gd");
 # This would be solved by a state machine, but it's too early to marry ourselves
 # to that, and it would take more time than doing this.
 var just_transitioned_from_other_level = false;
-
 
 const BATTLE_COOLDOWN_MAX_TIME = 2.0;
 var battle_cooldown = BATTLE_COOLDOWN_MAX_TIME;

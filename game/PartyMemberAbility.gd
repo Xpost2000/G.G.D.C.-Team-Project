@@ -31,7 +31,7 @@ export(int) var cost: int;
 export(int) var magnitude: int;
 export(AbilityVisualId) var visual_id: int;
 # 0 - 1.0
-var accuracy: float;
+export(float, 0.0, 1.0) var accuracy: float;
 
 func get_icon_texture():
 	return null;

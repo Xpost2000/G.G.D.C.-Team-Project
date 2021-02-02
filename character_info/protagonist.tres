@@ -27,5 +27,7 @@ name = "Mr. Protagonist"
 max_health = 1000
 max_mana_points = 120
 defense = 35
+abilities = [  ]
 attacks = [ ExtResource( 5 ), ExtResource( 6 ), ExtResource( 7 ) ]
+level = 1
 stats = SubResource( 1 )

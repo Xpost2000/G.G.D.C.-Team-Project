@@ -26,7 +26,7 @@ func set_sprinting_speed(sprinting_speed):
 	SPRINTING_SPEED = sprinting_speed;
 	WALKING_SPEED = sprinting_speed / 2;
 
-var party_members: Array = [];
+export(Array) var party_members: Array = [];
 var inventory: Array = [];
 
 export(int) var gold: int = 0;

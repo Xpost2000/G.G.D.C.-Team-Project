@@ -23,7 +23,7 @@ var sprites = [
 		load("res://images/overworld/actors/protag/right.png"),
 		load("res://images/overworld/actors/protag/left.png")
 ];
-# temporary lazy
+
 func movement_direction_vector():
 	var movement_direction = Vector2.ZERO;
 

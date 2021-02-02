@@ -1,0 +1,59 @@
+[gd_resource type="Resource" load_steps=10 format=2]
+
+[ext_resource path="res://game/PartyMemberStatBlock.gd" type="Script" id=1]
+[ext_resource path="res://game/PartyMember.gd" type="Script" id=2]
+[ext_resource path="res://game/PartyMemberAttack.gd" type="Script" id=3]
+[ext_resource path="res://images/battle/portraits/unknown_character_turn_portrait.png" type="Texture" id=4]
+[ext_resource path="res://scratchboard/sprites/EliteCultistBattleSprite.tscn" type="PackedScene" id=5]
+
+[sub_resource type="Resource" id=3]
+script = ExtResource( 3 )
+name = "Punch"
+visual_id = 0
+type = 0
+magnitude = 65
+accuracy = 0.8
+cost = 0
+
+[sub_resource type="Resource" id=5]
+script = ExtResource( 3 )
+name = "Demonic Retribution!"
+visual_id = 2
+type = 0
+magnitude = 95
+accuracy = 0.9
+cost = 0
+
+[sub_resource type="Resource" id=6]
+script = ExtResource( 3 )
+name = "Papercut!"
+visual_id = 0
+type = 0
+magnitude = 250
+accuracy = 0.2
+cost = 0
+
+[sub_resource type="Resource" id=7]
+script = ExtResource( 1 )
+strength = 110
+dexterity = 50
+constitution = 120
+willpower = 10
+intelligence = 10
+charisma = 99
+luck = 5
+
+[resource]
+script = ExtResource( 2 )
+portrait_battle_icon = ExtResource( 4 )
+battle_sprite_scene = ExtResource( 5 )
+name = "The Grand Wizard"
+max_health = 1750
+max_mana_points = 350
+defense = 45
+abilities = [  ]
+attacks = [ SubResource( 3 ), SubResource( 5 ), SubResource( 6 ) ]
+level = 9
+hurt_sounds = [  ]
+death_sound = ""
+stats = SubResource( 7 )

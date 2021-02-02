@@ -1,7 +1,8 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://game/actors/GrandWizardMiniBoss.gd" type="Script" id=1]
 [ext_resource path="res://images/overworld/actors/culter-elite/idle.png" type="Texture" id=2]
+[ext_resource path="res://character_info/mini_boss_grand_wizard.tres" type="Resource" id=3]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 20.346, 8.16959 )
@@ -12,6 +13,10 @@ extents = Vector2( 22.5201, 54.2025 )
 [node name="KnightOfTheCult" type="KinematicBody2D"]
 position = Vector2( 593.697, -121.76 )
 script = ExtResource( 1 )
+party_members = [ ExtResource( 3 ) ]
+inventory = [ [ "divine_grass", 3 ], [ "key_item", 1 ] ]
+gold = 1250
+experience_value = 15000
 
 [node name="CharacterSprite" type="Sprite" parent="."]
 position = Vector2( -0.946411, -31.318 )

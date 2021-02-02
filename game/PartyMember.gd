@@ -57,7 +57,7 @@ export(Array) var attacks: Array;
 
 export(int) var level: int = 1;
 var experience: int = 0;
-var experience_to_next: int = 0;
+var experience_to_next: int = 175;
 
 var hurt_sounds: Array;
 var death_sound: String;

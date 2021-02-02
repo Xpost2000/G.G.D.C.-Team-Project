@@ -27,7 +27,7 @@ func set_sprinting_speed(sprinting_speed):
 	WALKING_SPEED = sprinting_speed / 2;
 
 export(Array) var party_members: Array = [];
-var inventory: Array = [];
+export(Array) var inventory: Array = [];
 
 export(int) var gold: int = 0;
 export(int) var experience_value: int = 1;
@@ -260,5 +260,7 @@ func override_process(delta):
 	think_timer += delta;
 
 func _ready():
+	var new_inventory = inventory.duplicate();
+	inventory = new_inventory;
 	if Engine.editor_hint:
 		print("This should be in the editor");

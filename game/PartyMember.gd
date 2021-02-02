@@ -32,8 +32,8 @@ export(int) var level: int = 1;
 var experience: int = 0;
 var experience_to_next: int = 175;
 
-var hurt_sounds: Array;
-var death_sound: String;
+export(Array) var hurt_sounds: Array;
+export(String) var death_sound: String;
 
 export(Resource) var stats: Resource = PartyMemberStatBlock.new();
 

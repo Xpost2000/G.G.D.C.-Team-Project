@@ -103,7 +103,6 @@ texture = ExtResource( 7 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Entities/ForceFieldA/StaticBody2D"]
 shape = SubResource( 3 )
-disabled = true
 
 [node name="PuzzleZone" type="Area2D" parent="Entities/ForceFieldA"]
 

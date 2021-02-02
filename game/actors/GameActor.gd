@@ -9,13 +9,13 @@ signal opened_inventory;
 export(int) var SPRINTING_STAMINA_MAX = 75;
 export(float) var STAMINA_REGENERATION_COOLDOWN_TIME = 1.66; # seconds
 
-onready var stamina_regeneration_cooldown_timer = 0.0;
-onready var sprinting_stamina = SPRINTING_STAMINA_MAX;
+onready var stamina_regeneration_cooldown_timer: float = 0.0;
+onready var sprinting_stamina: float = SPRINTING_STAMINA_MAX;
 
 const PartyMember = preload("res://game/PartyMember.gd");
 
-var SPRINTING_SPEED = 512;
-export(int) var WALKING_SPEED = SPRINTING_SPEED/2 setget set_walking_speed;
+var SPRINTING_SPEED: float = 512;
+export(int) var WALKING_SPEED: float = SPRINTING_SPEED/2 setget set_walking_speed;
 
 func set_walking_speed(walking_speed):
 	WALKING_SPEED = walking_speed;
@@ -25,11 +25,11 @@ func set_sprinting_speed(sprinting_speed):
 	SPRINTING_SPEED = sprinting_speed;
 	WALKING_SPEED = sprinting_speed / 2;
 
-var party_members = [];
-var inventory = [];
+var party_members: Array = [];
+var inventory: Array = [];
 
-var gold = 0;
-var experience_value = 1;
+export(int) var gold: int = 0;
+export(int) var experience_value: int = 1;
 
 func update_from_dictionary_data(data):
 	global_position = Vector2(data["position"][0], data["position"][1]);

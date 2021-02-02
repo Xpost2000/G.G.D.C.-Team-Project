@@ -17,17 +17,15 @@ enum {SPRITE_DIRECTION_UP,
 	  SPRITE_DIRECTION_DOWN,
 	  SPRITE_DIRECTION_RIGHT,
 	  SPRITE_DIRECTION_LEFT}
-var sprites = null;
-# temporary lazy
-
-func _ready():
-	sprites = [
+var sprites = [
 		load("res://images/overworld/actors/protag/up.png"),
 		load("res://images/overworld/actors/protag/down.png"),
 		load("res://images/overworld/actors/protag/right.png"),
 		load("res://images/overworld/actors/protag/left.png")
-		];
+];
+# temporary lazy
 
+func _ready():
 	var protag = add_party_member(load("res://character_info/protagonist.tres"));
 	var deutag = add_party_member(load("res://character_info/deutagonist.tres"));
 #	deutag.abilities.push_back(PartyMember.PartyMemberAbility.new("Heal!", "You could use some patching up anyways...", 95, 1.0, 15, PartyMember.ABILITY_TYPE_HEAL, PartyMember.ATTACK_VISUAL_HEALING));

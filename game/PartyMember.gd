@@ -1,32 +1,6 @@
 extends Resource;
 class_name PartyMember
 
-enum {ABILITY_TYPE_NONE, ABILITY_TYPE_HEAL, ABILITY_TYPE_BUFF_STRENGTH}
-# TODO metadata for AI usage.
-class PartyMemberAbility:
-	func _init(name, description, magnitude, accuracy, cost, type, visual_id=0):
-		self.name = name;
-		self.description = description;
-		self.magnitude = magnitude;
-		self.accuracy = accuracy;
-		self.cost = cost;
-		self.type = type;
-		self.visual_id = visual_id;
-
-	var name: String;
-	var description: String;
-	var type: int;
-	var cost: int;
-	var magnitude: int;
-	var visual_id: int;
-	# 0 - 1.0
-	var accuracy: float;
-
-	func get_icon_texture():
-		return null;
-	func get_item_list_string():
-		return self.name + " :: " + self.description;
-
 const PartyMemberStatBlock = preload("res://game/PartyMemberStatBlock.gd");
 
 export(Texture) var party_icon: Texture = load("res://images/party-icons/unknown_character_icon.png");
@@ -51,8 +25,7 @@ func set_new_maximum_mana(value: int):
 	
 export(int) var defense: int = 10;
 
-# of their respective types...
-var abilities: Array;
+export(Array) var abilities: Array;
 export(Array) var attacks: Array;
 
 export(int) var level: int = 1;
@@ -142,15 +115,16 @@ func damage_amount(base):
 	base += randi() % int(30+(stats.strength*0.5));
 	return base;
 
+const PartyMemberAbility = preload("res://game/PartyMemberAbility.gd");
 func handle_ability(ability):
 	match ability.type:
-		ABILITY_TYPE_NONE:
+		PartyMemberAbility.AbilityType.NONE:
 			print("? How did this happen");
 			pass;
-		ABILITY_TYPE_HEAL:
+		PartyMemberAbility.AbilityType.HEAL:
 			health += ability.magnitude;
 			pass;
-		ABILITY_TYPE_BUFF_STRENGTH:
+		PartyMemberAbility.AbilityType.BUFF_STRENGTH:
 			print("Strength buff for n turns?")
 			pass;
 		

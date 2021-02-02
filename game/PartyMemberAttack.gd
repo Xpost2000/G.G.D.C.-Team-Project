@@ -1,7 +1,5 @@
 extends Resource
 class_name PartyMemberAttack
-
-# not necessarily ATTACKS, just for now.
 enum AttackVisualId {
 	  PHYSICAL_BUMP,
 	  WATER_GUN,
@@ -9,7 +7,8 @@ enum AttackVisualId {
 	  FLAME,
 	  HEALING
 	}
-	
+
+# not necessarily ATTACKS, just for now.
 func make(name, magnitude, accuracy, cost=0, visual_id=AttackVisualId.PHYSICAL_BUMP):
 	self.name = name;
 	self.magnitude = magnitude;

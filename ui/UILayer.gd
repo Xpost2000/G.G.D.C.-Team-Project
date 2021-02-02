@@ -50,7 +50,7 @@ onready var states = {
 var current_state = UI_STATE_GAME;
 
 var shown = true;
-# var hide_exceptions = [$States/PauseScreenUI, $States/DeathScreenUI, dialogue_ui];
+
 func show_all():
 	shown = true;
 	for child in get_children():
@@ -159,17 +159,12 @@ func _on_MainGameScreen_notify_ui_of_level_load():
 var fade_hold_timer = 0.0;
 var fade_hold_timer_max = 0.5;
 
-func _any_popups_open():
+func any_popups_open():
 	var popups = $Popups.get_children();
 	var result = false;
 	for popup in popups:
 		result = result or popup.active;
-	return result and len(popups);
-
-# this is a stupid way to "defer" the results to the next frame
-var any_open_popups = false;
-func any_popups_open():
-	return any_open_popups;
+	return result;
 
 const PopupTemplate = preload("res://ui/PopupTemplate.tscn");
 func _real_add_popup(text):
@@ -179,7 +174,6 @@ func _real_add_popup(text):
 
 var _popup_queue = [];
 func queue_popup(text):
-	print("queueing ", text);
 	_popup_queue.push_back(text);
 
 func add_popup(text):
@@ -201,17 +195,14 @@ func handle_game_state_ui(delta):
 # I'm sure I can insert a call_deferred somewhere maybe.
 # This is way easier to do.
 func handle_process(delta):
-	any_open_popups = _any_popups_open();
-	
-	if len(_popup_queue):
+	if len(_popup_queue) or any_popups_open():
 		GameGlobals.pause();
-	
+		
 	if !any_popups_open():
 		if len(_popup_queue) > 0:
 			call_deferred("_real_add_popup", _popup_queue.pop_front());
 		else:
 			if current_state == UI_STATE_GAME:
-				# This is hacky... But it's simple.
 				if shown:
 					handle_game_state_ui(delta);
 
@@ -294,10 +285,8 @@ func toggle_shop(shop_path):
 
 func toggle_inventory():
 	if current_state == UI_STATE_INVENTORY:
-		print("CLOSE");
 		close_inventory();
 	else:
-		print("SHOW");
 		show_inventory();
 
 func _on_MainGameScreen_ask_ui_to_open_dialogue(filepath):

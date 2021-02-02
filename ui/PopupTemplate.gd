@@ -1,4 +1,4 @@
-extends NinePatchRect
+extends NinePatchRect;
 signal finished;
 
 signal any_key_pressed;
@@ -16,6 +16,7 @@ func _ready():
 	box_tweener = Tween.new();
 	add_child(box_tweener);
 
+	$Text.visible_characters = 0;
 	rect_size.x = 0;
 	hide();
 
@@ -76,6 +77,16 @@ func close():
 	box_tweener.interpolate_property($Text, "rect_size",
 									 Vector2(final_width, height),
 									 Vector2(0, height),
+									 TRANSITION_TIME, Tween.TRANS_SINE,
+									 Tween.EASE_IN_OUT);
+	box_tweener.interpolate_property($Text, "visible_characters",
+									 len($Text.text),
+									 0,
+									 TRANSITION_TIME, Tween.TRANS_SINE,
+									 Tween.EASE_IN_OUT);
+	box_tweener.interpolate_property(self, "modulate",
+									 Color(1, 1, 1, 1),
+									 Color(1, 1, 1, 0),
 									 TRANSITION_TIME, Tween.TRANS_SINE,
 									 Tween.EASE_IN_OUT);
 	box_tweener.start();

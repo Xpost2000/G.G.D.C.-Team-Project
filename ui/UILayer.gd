@@ -267,6 +267,8 @@ func close_inventory():
 func toggle_pause():
 	if current_state == UI_STATE_PAUSE:
 		set_state(UI_STATE_GAME);
+		add_popup("123");
+		add_popup("345");
 	else:
 		set_state(UI_STATE_PAUSE);
 

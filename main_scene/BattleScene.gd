@@ -368,9 +368,8 @@ func begin_battle(left, right, music=null, bkg=null, escape=true):
 	$BattleLayer/BattleBackground.add_child(bkg);
 	focused_party = party_on_the_left;
 
-	var new_fade_dimmer = create_fade_dimmer(Color(0, 0, 0, 0), 0.35);
-	new_fade_dimmer.hang_time = 0.20;
-
+	var new_fade_dimmer = create_fade_dimmer(Color(0, 0, 0, 0), 0.85);
+	new_fade_dimmer.dimmer_max_time = 1.5;
 	new_fade_dimmer.begin_fade_out();
 	battle_ui_layer.add_child(new_fade_dimmer);
 

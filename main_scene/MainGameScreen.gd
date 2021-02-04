@@ -164,13 +164,14 @@ func _begin_fight(left, right, tween, panner_rect, music, bkg, escape):
 	panner_rect.queue_free();
 	
 func _open_battle(left, right, music=null, bkg=null, escape=true):
+	GameGlobals.pause();
 	print("starting fight")
 	var tween = Tween.new();
 	var panner_rect = ColorRect.new();
 	panner_rect.color = Color(0, 0, 0, 1);
 	panner_rect.rect_size = Vector2(1280, 720);
 	panner_rect.rect_position = Vector2.ZERO;
-	tween.interpolate_property(panner_rect, "rect_position:x", -1280, 0, (1280.0/1280.0),
+	tween.interpolate_property(panner_rect, "rect_position:x", -1280, 0, (1280.0/1000.0),
 							   Tween.TRANS_LINEAR, Tween.EASE_IN_OUT);
 	add_child(tween);
 	ui_layer.add_child(panner_rect);

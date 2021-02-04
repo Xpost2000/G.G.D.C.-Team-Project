@@ -237,9 +237,18 @@ func create_attack_projectile_animation(attacker, target, projectile_packed_scen
 		elif attack is PartyMemberAbility:
 			attack_bump.track_insert_key(self_method_track_index, 1.03, {"method": "entity_handle_ability", "args": [target, attack]});
 			attack_bump.track_insert_key(self_method_track_index, 1.04, {"method": "battle_layer_remove_child", "args": [projectile_scene]});
-		attack_bump.track_insert_key(target_color_track_index, 1.18, Color(1, 1, 1));
-		attack_bump.value_track_set_update_mode(target_color_track_index, Animation.UPDATE_CONTINUOUS);
-		attack_bump.value_track_set_update_mode(attacker_position_track_index, Animation.UPDATE_CONTINUOUS);
+			attack_bump.track_insert_key(self_method_track_index, 1.05, {"method": "create_impact_particles", "args": [projectile_name, target_information, target_battle_sprite.global_position]});
+		else:
+			attack_bump.length = 3.3;
+			attack_bump.track_insert_key(attacker_position_track_index, 2.2, target_battle_sprite.global_position + (target_battle_sprite.global_position - attacker_battle_sprite.global_position).normalized() * 150);
+			attack_bump.track_insert_key(self_method_track_index, 1.03, {"method": "push_message", "args": ["Attack missed!"]});
+			attack_bump.track_insert_key(self_method_track_index, 3.3, {"method": "battle_layer_remove_child", "args": [projectile_scene]});
+	elif attack is PartyMemberAbility:
+		attack_bump.track_insert_key(self_method_track_index, 1.03, {"method": "entity_handle_ability", "args": [target, attack]});
+		attack_bump.track_insert_key(self_method_track_index, 1.04, {"method": "battle_layer_remove_child", "args": [projectile_scene]});
+	attack_bump.track_insert_key(target_color_track_index, 1.18, Color(1, 1, 1));
+	attack_bump.value_track_set_update_mode(target_color_track_index, Animation.UPDATE_CONTINUOUS);
+	attack_bump.value_track_set_update_mode(attacker_position_track_index, Animation.UPDATE_CONTINUOUS);
 
 		return attack_bump;
 	else:

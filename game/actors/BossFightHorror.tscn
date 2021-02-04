@@ -37,7 +37,7 @@ intelligence = 10
 charisma = 10
 luck = 10
 
-[sub_resource type="Resource" id=4]
+[sub_resource type="Resource" id=7]
 script = ExtResource( 3 )
 portrait_battle_icon = ExtResource( 5 )
 battle_sprite_scene = ExtResource( 7 )
@@ -52,7 +52,7 @@ hurt_sounds = [ "snd/vo/SMSPID03.WAV", "snd/vo/SMSPID02.WAV" ]
 death_sound = "snd/vo/SMSPID06.WAV"
 stats = SubResource( 3 )
 
-[sub_resource type="Resource" id=5]
+[sub_resource type="Resource" id=8]
 script = ExtResource( 3 )
 portrait_battle_icon = ExtResource( 5 )
 battle_sprite_scene = ExtResource( 7 )
@@ -67,16 +67,16 @@ hurt_sounds = [ "snd/vo/SMSPID03.WAV", "snd/vo/SMSPID02.WAV" ]
 death_sound = "snd/vo/SMSPID06.WAV"
 stats = SubResource( 3 )
 
-[sub_resource type="RectangleShape2D" id=6]
+[sub_resource type="RectangleShape2D" id=5]
 extents = Vector2( 46.8262, 17.5818 )
 
-[sub_resource type="RectangleShape2D" id=7]
+[sub_resource type="RectangleShape2D" id=6]
 extents = Vector2( 48.714, 75.1581 )
 
 [node name="Horror" type="KinematicBody2D"]
 position = Vector2( 593.697, -121.76 )
 script = ExtResource( 1 )
-party_members = [ SubResource( 4 ), ExtResource( 6 ), SubResource( 5 ) ]
+party_members = [ SubResource( 7 ), ExtResource( 6 ), SubResource( 8 ) ]
 
 [node name="CharacterSprite" type="Sprite" parent="."]
 position = Vector2( 4.41943, -40.4394 )
@@ -85,10 +85,10 @@ texture = ExtResource( 2 )
 
 [node name="CollisionShape" type="CollisionShape2D" parent="."]
 position = Vector2( -1.88776, 15.102 )
-shape = SubResource( 6 )
+shape = SubResource( 5 )
 
 [node name="InteractableArea" type="Area2D" parent="."]
 
 [node name="Radius" type="CollisionShape2D" parent="InteractableArea"]
 position = Vector2( -0.943878, -37.755 )
-shape = SubResource( 7 )
+shape = SubResource( 6 )

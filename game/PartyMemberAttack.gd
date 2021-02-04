@@ -2,10 +2,7 @@ extends Resource
 class_name PartyMemberAttack
 enum AttackVisualId {
 	  PHYSICAL_BUMP,
-	  WATER_GUN,
-	  HOLY_FLAME,
-	  FLAME,
-	  HEALING
+	  PROJECTILE
 	}
 
 # not necessarily ATTACKS, just for now.
@@ -16,6 +13,9 @@ func make(name, magnitude, accuracy, cost=0, visual_id=AttackVisualId.PHYSICAL_B
 	self.visual_id = visual_id;
 	self.cost = cost;
 	return self;
+
+export(PackedScene) var projectile: PackedScene = null;
+export(PackedScene) var projectile_impact: PackedScene = null;
 
 export(String) var name: String;
 export(AttackVisualId) var visual_id: int;

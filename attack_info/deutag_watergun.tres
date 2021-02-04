@@ -1,9 +1,13 @@
-[gd_resource type="Resource" load_steps=2 format=2]
+[gd_resource type="Resource" load_steps=4 format=2]
 
 [ext_resource path="res://game/PartyMemberAttack.gd" type="Script" id=1]
+[ext_resource path="res://game/actors/WaterGunProjectile.tscn" type="PackedScene" id=2]
+[ext_resource path="res://game/actors/WaterGunProjectileParticleImpact.tscn" type="PackedScene" id=3]
 
 [resource]
 script = ExtResource( 1 )
+projectile = ExtResource( 2 )
+projectile_impact = ExtResource( 3 )
 name = "Watergun!"
 visual_id = 1
 type = 0

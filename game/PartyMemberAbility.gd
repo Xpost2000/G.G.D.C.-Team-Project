@@ -25,6 +25,9 @@ func make(name, description, magnitude, accuracy, cost, type, visual_id=0):
 	self.visual_id = visual_id;
 	return self;
 
+export(PackedScene) var projectile: PackedScene = null;
+export(PackedScene) var projectile_impact: PackedScene = null;
+
 export(String) var name: String;
 export(String) var description: String;
 export(AbilityType) var type: int;

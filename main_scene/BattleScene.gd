@@ -168,101 +168,95 @@ func create_attack_bump_animation(attacker, target, attack):
 	return attack_bump;
 
 # this is so dangerous for an uncountable amount of reasons.
-func create_impact_particles(projectile_name, target_information, where):
-	# todo fix typo
-	var projetile_impact = load("res://game/actors/" + projectile_name + "ParticleImpact.tscn");
-	if projetile_impact:
-		var projetile_impact_scene = projetile_impact.instance();
-		projetile_impact_scene.global_position = where;
-		battle_layer.add_child(projetile_impact_scene);
+func create_impact_particles(projectile_impact, target_information, where):
+	if projectile_impact:
+		var projectile_impact_scene = projectile_impact.instance();
+		projectile_impact_scene.global_position = where;
+		battle_layer.add_child(projectile_impact_scene);
 
 		var new_timer = Timer.new();
-		new_timer.connect("timeout", self, "remove_particle_system_and_timer", [new_timer, projetile_impact_scene]);
+		new_timer.connect("timeout", self, "remove_particle_system_and_timer", [new_timer, projectile_impact_scene]);
 		add_child(new_timer);
 		new_timer.wait_time = 10; # a good enough time based on my settings.
 		new_timer.start();
 
-		projetile_impact_scene.find_node("Particles").emitting = true;
-		projetile_impact_scene.find_node("Particles").one_shot = true;
+		projectile_impact_scene.find_node("Particles").emitting = true;
+		projectile_impact_scene.find_node("Particles").one_shot = true;
 		if target_information[0] == right_side_participants.get_children():
-			projetile_impact_scene.find_node("Particles").direction = Vector2(-DIRECTION_MAGNITUDE, 0);
+			projectile_impact_scene.find_node("Particles").direction = Vector2(-DIRECTION_MAGNITUDE, 0);
 		else:
-			projetile_impact_scene.find_node("Particles").direction = Vector2(DIRECTION_MAGNITUDE, 0);
+			projectile_impact_scene.find_node("Particles").direction = Vector2(DIRECTION_MAGNITUDE, 0);
 
 func battle_layer_remove_child(c):
 	battle_layer.remove_child(c);
-func create_attack_projectile_animation(attacker, target, projectile_name, attack):
-	var projectile_scene = load("res://game/actors/" + projectile_name + ".tscn").instance();
-	battle_layer.add_child(projectile_scene);
+func create_attack_projectile_animation(attacker, target, projectile_packed_scene, projectile_impact_scene, attack):
+	if projectile_packed_scene:
+		var projectile_scene = projectile_packed_scene.instance();
+		battle_layer.add_child(projectile_scene);
 
-	var attacker_information = participant_side_and_index_of_actor(attacker);
-	var target_information = participant_side_and_index_of_actor(target);
-	var attacker_battle_sprite = attacker_information[0][attacker_information[1]];
-	var target_battle_sprite = target_information[0][target_information[1]];
+		var attacker_information = participant_side_and_index_of_actor(attacker);
+		var target_information = participant_side_and_index_of_actor(target);
+		var attacker_battle_sprite = attacker_information[0][attacker_information[1]];
+		var target_battle_sprite = target_information[0][target_information[1]];
 
-	var attack_bump = Animation.new();
-	attack_bump.length = 1.3;
-	var target_color_track_index = attack_bump.add_track(0);
-	var self_method_track_index = attack_bump.add_track(2);
-	var attacker_position_track_index = attack_bump.add_track(0);
+		var attack_bump = Animation.new();
+		attack_bump.length = 1.3;
+		var target_color_track_index = attack_bump.add_track(0);
+		var self_method_track_index = attack_bump.add_track(2);
+		var attacker_position_track_index = attack_bump.add_track(0);
 
-	projectile_scene.global_position = attacker_battle_sprite.global_position;
+		projectile_scene.global_position = attacker_battle_sprite.global_position;
 
-	projectile_scene.find_node("ParticleTrail").direction = (attacker_battle_sprite.global_position - target_battle_sprite.global_position).normalized();
+		projectile_scene.find_node("ParticleTrail").direction = (attacker_battle_sprite.global_position - target_battle_sprite.global_position).normalized();
 
-	attack_bump.track_set_path(target_color_track_index, String(target_battle_sprite.get_path()) + ":self_modulate");
-	attack_bump.track_set_path(attacker_position_track_index, String(projectile_scene.get_path()) + ":global_position");
-	attack_bump.track_set_path(self_method_track_index, String(self.get_path()));
+		attack_bump.track_set_path(target_color_track_index, String(target_battle_sprite.get_path()) + ":self_modulate");
+		attack_bump.track_set_path(attacker_position_track_index, String(projectile_scene.get_path()) + ":global_position");
+		attack_bump.track_set_path(self_method_track_index, String(self.get_path()));
 
-	attack_bump.track_set_interpolation_type(attacker_position_track_index, Animation.INTERPOLATION_LINEAR);
-	attack_bump.track_set_interpolation_type(target_color_track_index, Animation.INTERPOLATION_CUBIC);
-	attack_bump.track_insert_key(target_color_track_index, 0, Color(1, 1, 1));
-	attack_bump.track_insert_key(attacker_position_track_index, 0, attacker_battle_sprite.global_position);
-	if attack is PartyMemberAttack:
-		var roll_percent = randf();
+		attack_bump.track_set_interpolation_type(attacker_position_track_index, Animation.INTERPOLATION_LINEAR);
+		attack_bump.track_set_interpolation_type(target_color_track_index, Animation.INTERPOLATION_CUBIC);
+		attack_bump.track_insert_key(target_color_track_index, 0, Color(1, 1, 1));
+		attack_bump.track_insert_key(attacker_position_track_index, 0, attacker_battle_sprite.global_position);
+		if attack is PartyMemberAttack:
+			var roll_percent = randf();
 
-		if roll_percent <= attack.accuracy:
-			attack_bump.track_insert_key(target_color_track_index, 0.89, Color(1, 1, 1));
-			attack_bump.track_insert_key(target_color_track_index, 1.02, Color(1, 0, 0));
-			attack_bump.track_insert_key(self_method_track_index, 1.03, {"method": "entity_take_damage", "args": [target, attacker.damage_amount(attack.magnitude)]});
-			attack_bump.track_insert_key(self_method_track_index, 1.02, {"method": "begin_camera_shake", "args": [0.45, 25]});
-			attack_bump.track_insert_key(attacker_position_track_index, 1.00, target_battle_sprite.global_position);
+			if roll_percent <= attack.accuracy:
+				attack_bump.track_insert_key(target_color_track_index, 0.89, Color(1, 1, 1));
+				attack_bump.track_insert_key(target_color_track_index, 1.02, Color(1, 0, 0));
+				attack_bump.track_insert_key(self_method_track_index, 1.03, {"method": "entity_take_damage", "args": [target, attacker.damage_amount(attack.magnitude)]});
+				attack_bump.track_insert_key(self_method_track_index, 1.02, {"method": "begin_camera_shake", "args": [0.45, 25]});
+				attack_bump.track_insert_key(attacker_position_track_index, 1.00, target_battle_sprite.global_position);
+				attack_bump.track_insert_key(self_method_track_index, 1.04, {"method": "battle_layer_remove_child", "args": [projectile_scene]});
+				if projectile_impact_scene:
+					attack_bump.track_insert_key(self_method_track_index, 1.05, {"method": "create_impact_particles", "args": [projectile_impact_scene, target_information, target_battle_sprite.global_position]});
+			else:
+				attack_bump.length = 3.3;
+				attack_bump.track_insert_key(attacker_position_track_index, 2.2, target_battle_sprite.global_position + (target_battle_sprite.global_position - attacker_battle_sprite.global_position).normalized() * 480);
+				attack_bump.track_insert_key(self_method_track_index, 1.03, {"method": "push_message", "args": ["Attack missed!"]});
+				attack_bump.track_insert_key(self_method_track_index, 3.3, {"method": "battle_layer_remove_child", "args": [projectile_scene]});
+		elif attack is PartyMemberAbility:
+			attack_bump.track_insert_key(self_method_track_index, 1.03, {"method": "entity_handle_ability", "args": [target, attack]});
 			attack_bump.track_insert_key(self_method_track_index, 1.04, {"method": "battle_layer_remove_child", "args": [projectile_scene]});
-			attack_bump.track_insert_key(self_method_track_index, 1.05, {"method": "create_impact_particles", "args": [projectile_name, target_information, target_battle_sprite.global_position]});
-		else:
-			attack_bump.length = 3.3;
-			attack_bump.track_insert_key(attacker_position_track_index, 2.2, target_battle_sprite.global_position + (target_battle_sprite.global_position - attacker_battle_sprite.global_position).normalized() * 480);
-			attack_bump.track_insert_key(self_method_track_index, 1.03, {"method": "push_message", "args": ["Attack missed!"]});
-			attack_bump.track_insert_key(self_method_track_index, 3.3, {"method": "battle_layer_remove_child", "args": [projectile_scene]});
-	elif attack is PartyMemberAbility:
-		attack_bump.track_insert_key(self_method_track_index, 1.03, {"method": "entity_handle_ability", "args": [target, attack]});
-		attack_bump.track_insert_key(self_method_track_index, 1.04, {"method": "battle_layer_remove_child", "args": [projectile_scene]});
-	attack_bump.track_insert_key(target_color_track_index, 1.18, Color(1, 1, 1));
-	attack_bump.value_track_set_update_mode(target_color_track_index, Animation.UPDATE_CONTINUOUS);
-	attack_bump.value_track_set_update_mode(attacker_position_track_index, Animation.UPDATE_CONTINUOUS);
+		attack_bump.track_insert_key(target_color_track_index, 1.18, Color(1, 1, 1));
+		attack_bump.value_track_set_update_mode(target_color_track_index, Animation.UPDATE_CONTINUOUS);
+		attack_bump.value_track_set_update_mode(attacker_position_track_index, Animation.UPDATE_CONTINUOUS);
 
-	return attack_bump;
+		return attack_bump;
+	else:
+		return create_attack_bump_animation(attacker, target, attack);
 
 func create_attack_targeted_effect_animation(attacker, target, action):
 	match action.visual_id:
 		PartyMemberAbility.AbilityVisualId.HEALING:
-			return create_attack_projectile_animation(attacker, target, "HealingTargettedProjectile", action);
+			return create_attack_projectile_animation(attacker, target, action.projectile, action.projectile_impact, action);
 			pass;
 
-# The visual id will expect a different "attack_being_done".
-# This can potentially error out if you're not careful
 func create_action_animation(actor_self, actor_target, attack_being_done):
 	match attack_being_done.visual_id:
 		PartyMemberAttack.AttackVisualId.PHYSICAL_BUMP:
 			return create_attack_bump_animation(actor_self, actor_target, attack_being_done);
-		PartyMemberAttack.AttackVisualId.WATER_GUN:
-			return create_attack_projectile_animation(actor_self, actor_target, "WaterGunProjectile", attack_being_done);
-		PartyMemberAttack.AttackVisualId.FLAME:
-			return create_attack_projectile_animation(actor_self, actor_target, "FlameProjectile", attack_being_done);
-		PartyMemberAttack.AttackVisualId.HOLY_FLAME:
-			return create_attack_projectile_animation(actor_self, actor_target, "HolyFlameProjectile", attack_being_done);
-		_:
-			return create_attack_targeted_effect_animation(actor_self, actor_target, attack_being_done);
+		PartyMemberAttack.AttackVisualId.PROJECTILE:
+			return create_attack_projectile_animation(actor_self, actor_target, attack_being_done.projectile, attack_being_done.projectile_impact, attack_being_done);
 	return null;
 
 func do_action_animation(actor_self, actor_target, action, action_datum):

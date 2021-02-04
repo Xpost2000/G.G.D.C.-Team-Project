@@ -6,7 +6,7 @@
 [ext_resource path="res://scratchboard/sprites/TheFatherBattleSprite.tscn" type="PackedScene" id=4]
 [ext_resource path="res://game/PartyMemberAttack.gd" type="Script" id=5]
 
-[sub_resource type="Resource" id=2]
+[sub_resource type="Resource" id=1]
 script = ExtResource( 5 )
 name = "Judgement!"
 visual_id = 2
@@ -15,7 +15,7 @@ magnitude = 991823
 accuracy = 0.1
 cost = 0
 
-[sub_resource type="Resource" id=3]
+[sub_resource type="Resource" id=2]
 script = ExtResource( 5 )
 name = "Penance."
 visual_id = 2
@@ -24,7 +24,7 @@ magnitude = 25
 accuracy = 0.8
 cost = 0
 
-[sub_resource type="Resource" id=4]
+[sub_resource type="Resource" id=3]
 script = ExtResource( 5 )
 name = "Testament."
 visual_id = 2
@@ -33,7 +33,7 @@ magnitude = 25
 accuracy = 1.0
 cost = 0
 
-[sub_resource type="Resource" id=1]
+[sub_resource type="Resource" id=4]
 script = ExtResource( 1 )
 strength = 150
 dexterity = 40
@@ -52,8 +52,8 @@ max_health = 1200
 max_mana_points = 500
 defense = 10
 abilities = [  ]
-attacks = [ SubResource( 2 ), SubResource( 3 ), SubResource( 4 ) ]
+attacks = [ SubResource( 1 ), SubResource( 2 ), SubResource( 3 ) ]
 level = 0
 hurt_sounds = [ "snd/vo/SOLARF04.WAV" ]
 death_sound = "snd/vo/SOLARG07.WAV"
-stats = SubResource( 1 )
+stats = SubResource( 4 )

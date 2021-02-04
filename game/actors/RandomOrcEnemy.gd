@@ -83,7 +83,7 @@ func orc_mage():
 
 	new_orc.attacks.push_back(PartyMemberAttack.new().make("Punch", 15, 0.9, 0));
 	new_orc.attacks.push_back(PartyMemberAttack.new().make("Strong Punch", 25, 0.6, 0));
-	new_orc.attacks.push_back(PartyMemberAttack.new().make("Water Blast!", 30, 0.95, 0, PartyMemberAttack.AttackVisualId.WATER_GUN));
+	new_orc.attacks.push_back(PartyMemberAttack.new().make("Water Blast!", 30, 0.95, 0, PartyMemberAttack.AttackVisualId.PROJECTILE));
 
 	new_orc.death_sound = "snd/vo/OGREM09.WAV";
 	new_orc.hurt_sounds = ["snd/vo/OGRIL08.WAV"];

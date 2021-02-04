@@ -5,7 +5,7 @@
 [ext_resource path="res://images/battle/portraits/sekiro_test_turn_portrait.png" type="Texture" id=3]
 [ext_resource path="res://scratchboard/sprites/TheHolySpiritBattleSprite.tscn" type="PackedScene" id=4]
 
-[sub_resource type="Resource" id=4]
+[sub_resource type="Resource" id=1]
 script = ExtResource( 2 )
 name = "Holy Flame."
 visual_id = 2
@@ -14,7 +14,7 @@ magnitude = 25
 accuracy = 1.0
 cost = 0
 
-[sub_resource type="Resource" id=5]
+[sub_resource type="Resource" id=2]
 script = ExtResource( 2 )
 name = "Soul Rend."
 visual_id = 2
@@ -32,7 +32,7 @@ max_health = 1000
 max_mana_points = 5
 defense = 120
 abilities = [  ]
-attacks = [ SubResource( 4 ), SubResource( 5 ) ]
+attacks = [ SubResource( 1 ), SubResource( 2 ) ]
 level = 1
 hurt_sounds = [ "snd/vo/SOLARG07.WAV" ]
 death_sound = "snd/vo/SOLARF04.WAV"

@@ -5,6 +5,8 @@
 [ext_resource path="res://character_info/deutagonist.tres" type="Resource" id=3]
 [ext_resource path="res://character_info/protagonist.tres" type="Resource" id=4]
 
+
+
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 11.1645, 5.95453 )
 

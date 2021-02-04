@@ -173,6 +173,24 @@ func _process(delta):
 	if not Engine.editor_hint:
 		if can_think():
 			override_process(delta);
+		
+		var sprite = get_node("CharacterSprite");
+		var collision_shape = get_node("CollisionShape");
+		var interactable_area_radius = get_node("InteractableArea/Radius");
+		if all_members_dead():	
+			if sprite:
+				sprite.hide();
+			if collision_shape:
+				collision_shape.disabled = true;
+			if interactable_area_radius:
+				interactable_area_radius.disabled = true;
+		else:
+			if sprite:
+				sprite.show();
+			if collision_shape:
+				collision_shape.disabled = false;
+			if interactable_area_radius:
+				interactable_area_radius.disabled = false;
 
 # TODO put this in another file!
 const TIME_UNTIL_NEXT_THINK = 6.0;

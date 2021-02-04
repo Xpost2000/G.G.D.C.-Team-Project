@@ -1,4 +1,4 @@
-[gd_resource type="Resource" load_steps=13 format=2]
+[gd_resource type="Resource" load_steps=14 format=2]
 
 [ext_resource path="res://game/PartyMember.gd" type="Script" id=1]
 [ext_resource path="res://images/battle/portraits/firkraag_turn_portrait.png" type="Texture" id=2]
@@ -11,6 +11,7 @@
 [ext_resource path="res://attack_info/firkraag_wing_buffet.tres" type="Resource" id=9]
 [ext_resource path="res://attack_info/firkraag_dragon_bite.tres" type="Resource" id=10]
 [ext_resource path="res://attack_info/firkraag_talon_streak.tres" type="Resource" id=11]
+[ext_resource path="res://images/party-icons/unknown_character_icon.png" type="Texture" id=12]
 
 [sub_resource type="Resource" id=1]
 resource_local_to_scene = true
@@ -25,6 +26,7 @@ luck = 10
 
 [resource]
 script = ExtResource( 1 )
+party_icon = ExtResource( 12 )
 portrait_battle_icon = ExtResource( 2 )
 battle_sprite_scene = ExtResource( 3 )
 name = "Red Dragon Firkraag"

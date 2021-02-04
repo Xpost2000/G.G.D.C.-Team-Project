@@ -1,3 +1,5 @@
+tool
+
 extends Resource
 class_name PartyMemberAttack
 enum AttackVisualId {
@@ -14,7 +16,16 @@ func make(name, magnitude, accuracy, cost=0, visual_id=AttackVisualId.PHYSICAL_B
 	self.cost = cost;
 	return self;
 
-export(PackedScene) var projectile: PackedScene = null;
+# I hope this actually works since it would be convenient to not set it yourself.
+func set_projectile_scene(scene):
+	if scene:
+		self.visual_id = AttackVisualId.PROJECTILE;
+		projectile = scene;
+	else:
+		self.visual_id = AttackVisualId.PHYSICAL_BUMP;
+		projectile = null;
+
+export(PackedScene) var projectile: PackedScene = null setget set_projectile_scene;
 export(PackedScene) var projectile_impact: PackedScene = null;
 
 export(String) var name: String;

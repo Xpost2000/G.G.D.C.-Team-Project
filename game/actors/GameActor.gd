@@ -1,5 +1,3 @@
-tool
-
 extends KinematicBody2D
 signal handle_party_member_level_ups(members);
 

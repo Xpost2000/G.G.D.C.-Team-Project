@@ -1,15 +1,19 @@
-[gd_resource type="Resource" load_steps=10 format=2]
+[gd_resource type="Resource" load_steps=12 format=2]
 
 [ext_resource path="res://game/PartyMemberStatBlock.gd" type="Script" id=1]
 [ext_resource path="res://game/PartyMember.gd" type="Script" id=2]
 [ext_resource path="res://images/battle/portraits/isshin_test_turn_portrait.png" type="Texture" id=3]
 [ext_resource path="res://scratchboard/sprites/TheFatherBattleSprite.tscn" type="PackedScene" id=4]
 [ext_resource path="res://game/PartyMemberAttack.gd" type="Script" id=5]
+[ext_resource path="res://game/actors/HolyFlameProjectile.tscn" type="PackedScene" id=6]
+[ext_resource path="res://game/actors/HolyFlameProjectileParticleImpact.tscn" type="PackedScene" id=7]
 
 [sub_resource type="Resource" id=1]
 script = ExtResource( 5 )
+projectile = ExtResource( 6 )
+projectile_impact = ExtResource( 7 )
 name = "Judgement!"
-visual_id = 2
+visual_id = 1
 type = 0
 magnitude = 991823
 accuracy = 0.1
@@ -17,8 +21,10 @@ cost = 0
 
 [sub_resource type="Resource" id=2]
 script = ExtResource( 5 )
+projectile = ExtResource( 6 )
+projectile_impact = ExtResource( 7 )
 name = "Penance."
-visual_id = 2
+visual_id = 1
 type = 0
 magnitude = 25
 accuracy = 0.8
@@ -26,8 +32,10 @@ cost = 0
 
 [sub_resource type="Resource" id=3]
 script = ExtResource( 5 )
+projectile = ExtResource( 6 )
+projectile_impact = ExtResource( 7 )
 name = "Testament."
-visual_id = 2
+visual_id = 1
 type = 0
 magnitude = 25
 accuracy = 1.0

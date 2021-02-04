@@ -1,15 +1,21 @@
-[gd_resource type="Resource" load_steps=12 format=2]
+[gd_resource type="Resource" load_steps=16 format=2]
 
 [ext_resource path="res://game/PartyMemberStatBlock.gd" type="Script" id=1]
 [ext_resource path="res://game/PartyMember.gd" type="Script" id=2]
 [ext_resource path="res://game/PartyMemberAttack.gd" type="Script" id=3]
 [ext_resource path="res://images/battle/portraits/isshin_test_turn_portrait.png" type="Texture" id=4]
 [ext_resource path="res://scratchboard/sprites/HorrorBattleSprite.tscn" type="PackedScene" id=5]
+[ext_resource path="res://game/actors/FlameProjectile.tscn" type="PackedScene" id=6]
+[ext_resource path="res://game/actors/FlameProjectileParticleImpact.tscn" type="PackedScene" id=7]
+[ext_resource path="res://game/actors/HolyFlameProjectile.tscn" type="PackedScene" id=8]
+[ext_resource path="res://game/actors/HolyFlameProjectileParticleImpact.tscn" type="PackedScene" id=9]
 
 [sub_resource type="Resource" id=1]
 script = ExtResource( 3 )
+projectile = ExtResource( 8 )
+projectile_impact = ExtResource( 7 )
 name = "Haunt"
-visual_id = 2
+visual_id = 1
 type = 0
 magnitude = 35
 accuracy = 0.7
@@ -17,8 +23,10 @@ cost = 0
 
 [sub_resource type="Resource" id=2]
 script = ExtResource( 3 )
+projectile = ExtResource( 8 )
+projectile_impact = ExtResource( 9 )
 name = "Apathy"
-visual_id = 2
+visual_id = 1
 type = 0
 magnitude = 38
 accuracy = 0.6
@@ -35,8 +43,10 @@ cost = 0
 
 [sub_resource type="Resource" id=4]
 script = ExtResource( 3 )
+projectile = ExtResource( 6 )
+projectile_impact = ExtResource( 7 )
 name = "Insanity"
-visual_id = 2
+visual_id = 1
 type = 0
 magnitude = 27
 accuracy = 0.6
@@ -44,8 +54,10 @@ cost = 0
 
 [sub_resource type="Resource" id=5]
 script = ExtResource( 3 )
+projectile = ExtResource( 6 )
+projectile_impact = ExtResource( 7 )
 name = "Torment"
-visual_id = 2
+visual_id = 1
 type = 0
 magnitude = 60
 accuracy = 0.2

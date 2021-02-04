@@ -1,15 +1,19 @@
-[gd_resource type="Resource" load_steps=9 format=2]
+[gd_resource type="Resource" load_steps=11 format=2]
 
 [ext_resource path="res://game/PartyMember.gd" type="Script" id=1]
 [ext_resource path="res://game/PartyMemberAttack.gd" type="Script" id=2]
 [ext_resource path="res://images/battle/portraits/genichiro_test_turn_portrait.png" type="Texture" id=3]
 [ext_resource path="res://scratchboard/sprites/SpectreBattleSprite.tscn" type="PackedScene" id=4]
 [ext_resource path="res://game/PartyMemberStatBlock.gd" type="Script" id=5]
+[ext_resource path="res://game/actors/FlameProjectile.tscn" type="PackedScene" id=6]
+[ext_resource path="res://game/actors/FlameProjectileParticleImpact.tscn" type="PackedScene" id=7]
 
 [sub_resource type="Resource" id=1]
 script = ExtResource( 2 )
+projectile = ExtResource( 6 )
+projectile_impact = ExtResource( 7 )
 name = "Haunt"
-visual_id = 3
+visual_id = 1
 type = 0
 magnitude = 20
 accuracy = 1.0

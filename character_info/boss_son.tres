@@ -1,15 +1,19 @@
-[gd_resource type="Resource" load_steps=9 format=2]
+[gd_resource type="Resource" load_steps=11 format=2]
 
 [ext_resource path="res://game/PartyMemberStatBlock.gd" type="Script" id=1]
 [ext_resource path="res://game/PartyMember.gd" type="Script" id=2]
 [ext_resource path="res://game/PartyMemberAttack.gd" type="Script" id=3]
 [ext_resource path="res://images/battle/portraits/unknown_character_turn_portrait.png" type="Texture" id=4]
 [ext_resource path="res://scratchboard/sprites/TheSonBattleSprite.tscn" type="PackedScene" id=5]
+[ext_resource path="res://game/actors/HolyFlameProjectile.tscn" type="PackedScene" id=6]
+[ext_resource path="res://game/actors/HolyFlameProjectileParticleImpact.tscn" type="PackedScene" id=7]
 
 [sub_resource type="Resource" id=1]
 script = ExtResource( 3 )
+projectile = ExtResource( 6 )
+projectile_impact = ExtResource( 7 )
 name = "Repent!"
-visual_id = 2
+visual_id = 1
 type = 0
 magnitude = 24
 accuracy = 1.0
@@ -17,8 +21,10 @@ cost = 0
 
 [sub_resource type="Resource" id=2]
 script = ExtResource( 3 )
+projectile = ExtResource( 6 )
+projectile_impact = ExtResource( 7 )
 name = "Sinner!"
-visual_id = 2
+visual_id = 1
 type = 0
 magnitude = 35
 accuracy = 0.3

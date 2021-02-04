@@ -1,14 +1,18 @@
-[gd_resource type="Resource" load_steps=7 format=2]
+[gd_resource type="Resource" load_steps=9 format=2]
 
 [ext_resource path="res://game/PartyMember.gd" type="Script" id=1]
 [ext_resource path="res://game/PartyMemberAttack.gd" type="Script" id=2]
 [ext_resource path="res://images/battle/portraits/sekiro_test_turn_portrait.png" type="Texture" id=3]
 [ext_resource path="res://scratchboard/sprites/TheHolySpiritBattleSprite.tscn" type="PackedScene" id=4]
+[ext_resource path="res://game/actors/HolyFlameProjectile.tscn" type="PackedScene" id=5]
+[ext_resource path="res://game/actors/HolyFlameProjectileParticleImpact.tscn" type="PackedScene" id=6]
 
 [sub_resource type="Resource" id=1]
 script = ExtResource( 2 )
+projectile = ExtResource( 5 )
+projectile_impact = ExtResource( 6 )
 name = "Holy Flame."
-visual_id = 2
+visual_id = 1
 type = 0
 magnitude = 25
 accuracy = 1.0
@@ -16,8 +20,10 @@ cost = 0
 
 [sub_resource type="Resource" id=2]
 script = ExtResource( 2 )
+projectile = ExtResource( 5 )
+projectile_impact = ExtResource( 6 )
 name = "Soul Rend."
-visual_id = 2
+visual_id = 1
 type = 0
 magnitude = 40
 accuracy = 0.9
